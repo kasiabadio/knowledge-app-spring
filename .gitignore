@@ -1,0 +1,58 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### frontend
+web/frontend/.vscode
+web/frontend/node_modules
+
+
+# Compiled output
+web/frontend/dist
+web/frontend/tmp
+web/frontend/out-tsc
+web/frontend/bazel-out
+
+# Node
+web/frontend/node_modules
+web/frontend/npm-debug.log
+web/frontend/yarn-error.log
+
+# Miscellaneous
+web/frontend/.angular/cache
+web/frontend/.sass-cache/
+web/frontend/connect.lock
+web/frontend/coverage
+web/frontend/libpeerconnection.log
+web/frontend/testem.log
+web/frontend/typings

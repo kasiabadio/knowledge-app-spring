@@ -1,0 +1,37 @@
+.container {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  margin: 25 px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.back {
+  font-family: Arial, sans-serif;
+  position: absolute;
+  font-size: 12px;
+  top: 10px;
+  left: 30px;
+  display: flex;
+  white-space: nowrap;
+}
+
+ul {
+  max-height: 80vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+li {
+  display: flex;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}

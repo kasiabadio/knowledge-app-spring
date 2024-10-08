@@ -1,0 +1,34 @@
+
+<div class="container">
+  <div class="add">
+    <p>Dodaj do bazy wiedzy</p>
+    <button class="button buttonAdd" type="button" (click)="addKnowledge()">
+    </button>
+  </div>
+
+  <div class="search">
+    <form (submit)="searchKnowledge(attr.value); $event.preventDefault()">
+      <input #attr type="text" placeholder="Szukaj w bazie wiedzy" />
+      <button type="submit">Szukaj</button>
+    </form>
+  </div>
+
+  <div class="categoriesSearch">
+    <p>Przejdź do kategorii</p>
+    <button class="button buttonToCategories" type="button" (click)="navigateToCategories()">
+    </button>
+  </div>
+
+    <ul>
+      <li *ngFor="let k of knowledge">
+        <button class="button buttonRemove" type="button" (click)="deleteKnowledge(k)">
+        </button>
+        <button class="button buttonDetails" type="button" (click)="selectKnowledge(k)">
+          {{ k.title }}
+        </button>
+      </li>
+    </ul>
+</div>
+
+
+

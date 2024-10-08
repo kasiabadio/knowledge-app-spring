@@ -1,0 +1,21 @@
+
+<div class="container">
+  <div class="pagebutton back">
+    <button class="button buttonBack" type="button" (click)="backToKnowledge()">
+    </button>
+    <p>Cofnij</p>
+  </div>
+
+  <ul>
+    <li *ngFor="let c of categories">
+      <button class="button buttonDetails" type="button" (click)="selectCategoryKnowledge()">
+        {{ c.categoryName }}
+      </button>
+      <ul>
+        <li class="subListDetails" *ngFor="let ck of c.categoryKnowledges" [hidden]="!isVisible">
+          {{ ck.knowledge.idKnowledge }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

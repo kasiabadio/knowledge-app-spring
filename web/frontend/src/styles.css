@@ -1,0 +1,43 @@
+
+.buttonAdd {
+  background: url('./assets/add_to.png');
+}
+
+.buttonBack {
+  background: url('./assets/go_back.png');
+}
+
+.buttonEdit {
+  background: url('./assets/edit.png');
+}
+
+.buttonRemove{
+   background: url('./assets/delete_from.png');
+}
+
+.buttonToCategories{
+  background: url('./assets/categories.png');
+}
+
+.button {
+  border: none;
+  height: 45px;
+  width: 45px;
+  background-size: cover;
+  z-index: 1000;
+}
+
+.button:hover {
+   cursor: pointer;
+}
+
+.buttonDetails{
+  border-radius: 25px;
+  width: 300px;
+  padding: 8px 32px;
+  margin: 10px;
+}
+
+.buttonDetails:hover {
+  background-color: #FFBD59;
+}

@@ -1,0 +1,85 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin: 25 px;
+  width: 500 px;
+  max-height: 80vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.wrapper {
+  width: 500px;
+  padding: 20px;
+  height: 200px;
+}
+
+.pagebutton {
+    font-family: Arial, sans-serif;
+    position: absolute;
+    font-size: 12px;
+    display: flex;
+    white-space: nowrap;
+}
+
+.back  {
+  top: 10px;
+  left: 30px;
+}
+
+
+
+#title {
+  font-size: 24px;
+}
+
+
+.edit {
+  top: 60px;
+  right: 30px;
+}
+
+.delete {
+  top: 20px;
+  right: 30px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+#titleEdit {
+  width: 1000px;
+  height: 100px;
+}
+
+#contentEdit {
+  width: 1000px;
+  height: 1000px;
+}
+
+#authorEdit {
+  width: 1000px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.buttonSubmit {
+  width: 90px;
+}
+
