@@ -13,8 +13,14 @@ import java.util.Set;
 @Entity
 @Table(name = "Category")
 public class Category implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id_category") private Long idCategory;
-    @Column(name = "category_name") private String categoryName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_category")
+    private Long idCategory;
+
+    @Column(name = "category_name")
+    private String categoryName;
+
     @OneToMany(orphanRemoval = true, cascade=CascadeType.REMOVE, mappedBy = "category") @JsonManagedReference(value = "category-categoryKnowledgeGroup")
     Set<CategoryKnowledgeGroup> categoryKnowledges;
 

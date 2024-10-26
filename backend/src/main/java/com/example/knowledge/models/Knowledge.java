@@ -14,12 +14,25 @@ import lombok.Setter;
 @Entity
 @Table(name = "Knowledge")
 public class Knowledge implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id_knowledge") private Long idKnowledge;
-    @Column(name = "title") private String title;
-    @Column(name = "content") private String content;
-    @Column(name = "created_date") private Date createdDate;
-    @Column(name = "last_modified_date") private Date lastModifiedDate;
-    @Column(name = "author") private String author;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_knowledge")
+    private Long idKnowledge;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
+
+    @Column(name = "author")
+    private String author;
+
     @OneToMany(orphanRemoval = true, cascade=CascadeType.REMOVE, mappedBy = "knowledge") @JsonManagedReference(value = "knowledge-categoryKnowledgeGroup")
     Set<CategoryKnowledgeGroup> knowledgeCategories;
 
