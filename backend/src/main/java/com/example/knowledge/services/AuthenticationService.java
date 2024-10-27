@@ -1,3 +1,5 @@
+package com.example.knowledge.services;
+
 // Copyright 2024 Ali Bouali
 // Licensed under the Apache License, Version 2.0 (the "License");
 // You may not use this file except in compliance with the License.
@@ -11,14 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.example.knowledge.repositories;
+import com.example.knowledge.models.RegistrationRequest;
+import org.springframework.stereotype.Service;
 
-import com.example.knowledge.models.Token;
-import org.springframework.data.jpa.repository.JpaRepository;
+@Service
+public class AuthenticationService {
 
-import java.util.Optional;
+    public void register(RegistrationRequest request){
 
-public interface TokenRepository extends JpaRepository<Token, Integer> {
-
-    Optional<Token> findByToken(String token);
+    }
 }
