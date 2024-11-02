@@ -1,3 +1,5 @@
+package com.example.knowledge.responses;
+
 // Copyright 2024 Ali Bouali
 // Licensed under the Apache License, Version 2.0 (the "License");
 // You may not use this file except in compliance with the License.
@@ -11,16 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.example.knowledge.repositories;
 
-import com.example.knowledge.models.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Optional;
+@Getter
+@Setter
+@Builder
+public class AuthenticationResponse {
 
-@Repository
-public interface RoleRepository extends JpaRepository<Role, Integer> {
-
-    Optional<Role> findByName(String name);
+    private String token;
 }

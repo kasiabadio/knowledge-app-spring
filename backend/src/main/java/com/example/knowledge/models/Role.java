@@ -31,6 +31,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -38,7 +39,7 @@ public class Role {
     private Integer idRole;
 
     @Column(unique = true)
-    private String roleName;
+    private String name;
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore

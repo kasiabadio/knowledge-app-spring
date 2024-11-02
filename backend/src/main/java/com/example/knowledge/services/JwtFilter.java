@@ -12,9 +12,8 @@
 // limitations under the License.
 
 
-package com.example.knowledge.models;
+package com.example.knowledge.services;
 
-import com.example.knowledge.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         // if this is path, don't need to execute all the code, pass it
-        if (request.getServletPath().contains("/api/v1/auth")){
+        if (request.getServletPath().contains("/api/auth")){
             filterChain.doFilter(request, response);
             return;
         }

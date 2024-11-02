@@ -1,3 +1,5 @@
+package com.example.knowledge.requests;
+
 // Copyright 2024 Ali Bouali
 // Licensed under the Apache License, Version 2.0 (the "License");
 // You may not use this file except in compliance with the License.
@@ -12,7 +14,6 @@
 // limitations under the License.
 
 
-package com.example.knowledge.models;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,22 +22,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Builder
-public class RegistrationRequest {
+public class AuthenticationRequest {
 
-    @NotEmpty(message = "First name is mandatory")
-    @NotBlank(message = "First name is mandatory")
-    private String firstName;
-
-    @NotEmpty(message = "Last name is mandatory")
-    @NotBlank(message = "Last name is mandatory")
-    private String lastName;
-
-    @Email(message = "Email is not formatted - > ali@mail")
+    @Email(message = "Email is not formatted - > kasia@mail")
     @NotEmpty(message = "Email is mandatory")
     @NotBlank(message = "Email is mandatory")
     private String email;

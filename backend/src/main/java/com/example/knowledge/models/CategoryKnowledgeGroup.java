@@ -11,7 +11,7 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "CategoryKnowledgeGroup")
+@Table(name = "categoryKnowledgeGroup")
 public class CategoryKnowledgeGroup  {
 
     @EmbeddedId
