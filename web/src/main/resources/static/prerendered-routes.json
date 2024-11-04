@@ -1,7 +1,9 @@
 {
   "routes": [
     "/",
-    "/categories",
-    "/form"
+    "/knowledge/",
+    "/knowledge/categories",
+    "/knowledge/form",
+    "/register"
   ]
 }

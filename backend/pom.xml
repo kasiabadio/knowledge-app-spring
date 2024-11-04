@@ -19,5 +19,10 @@
 <!--            <artifactId>liquibase-core</artifactId>-->
 <!--            <version>4.29.0</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

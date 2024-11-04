@@ -3,11 +3,15 @@ import { KnowledgeFormComponent } from './knowledge-module/knowledge-form/knowle
 import { KnowledgeDetailComponent } from './knowledge-module/knowledge-detail/knowledge-detail.component';
 import { KnowledgeListComponent } from './knowledge-module/knowledge-list/knowledge-list.component';
 import { CategoryListComponent } from './category-module/category-list/category-list.component';
+import { RegisterComponent } from './login-module/register/register.component';
+import { LoginComponent } from './login-module/login/login.component';
 
 export const routes: Routes = [
-  { path: 'form', component: KnowledgeFormComponent },
-  { path: '', component: KnowledgeListComponent },
-  { path: 'detail/:id', component: KnowledgeDetailComponent },
-  { path: 'detail/edit/:id', component: KnowledgeDetailComponent },
-  { path: 'categories', component: CategoryListComponent }
+  { path: '', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'knowledge/form', component: KnowledgeFormComponent },
+  { path: 'knowledge/', component: KnowledgeListComponent },
+  { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },
+  { path: 'knowledge/detail/edit/:id', component: KnowledgeDetailComponent },
+  { path: 'knowledge/categories', component: CategoryListComponent }
   ];

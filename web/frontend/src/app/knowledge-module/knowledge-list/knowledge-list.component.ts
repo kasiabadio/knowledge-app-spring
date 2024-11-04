@@ -38,7 +38,7 @@ export class KnowledgeListComponent implements OnInit {
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
       console.log("Navigate to: " + knowledge.idKnowledge);
-      this.router.navigate(['/detail', knowledge.idKnowledge]);
+      this.router.navigate(['knowledge/detail', knowledge.idKnowledge]);
     }
 
   deleteKnowledge(knowledge: Knowledge){
@@ -63,11 +63,11 @@ export class KnowledgeListComponent implements OnInit {
     }
 
   addKnowledge(){
-    this.router.navigate(['/form']);
+    this.router.navigate(['knowledge/form']);
   }
 
   navigateToCategories(){
-    this.router.navigate(['/categories']);
+    this.router.navigate(['knowledge/categories']);
     }
 
 }
