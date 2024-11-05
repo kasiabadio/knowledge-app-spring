@@ -1,6 +1,7 @@
 {
   "routes": [
     "/",
+    "/activate-account",
     "/knowledge",
     "/knowledge/categories",
     "/knowledge/form",

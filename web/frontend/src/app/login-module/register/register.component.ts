@@ -31,7 +31,7 @@ import { TokenService } from '../../token/token.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  registerRequest: RegistrationRequest = {email: '', firstname: '', lastname: '', password: ''}
+  registerRequest: RegistrationRequest = {email: '', firstName: '', lastName: '', password: ''}
   errorMsg: Array<string> = [];
 
   constructor(

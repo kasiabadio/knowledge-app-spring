@@ -25,6 +25,7 @@ import com.example.knowledge.requests.RegistrationRequest;
 import com.example.knowledge.responses.AuthenticationResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -48,14 +50,14 @@ public class AuthenticationService {
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private String activationUrl = "http://localhost:4200/activate-account";
+    private String activationUrl = "http://localhost:8099/activate-account";
 
     public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-
+        log.info("Service: Register ");
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -73,6 +75,7 @@ public class AuthenticationService {
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
 
+        log.info("Service: send validation email");
         emailService.sendEmail(
                 user.getEmail(),
                 user.fullName(),
@@ -87,6 +90,7 @@ public class AuthenticationService {
     private String generateAndSaveActivationToken(User user){
         // generate a token and save it in a database
         String generatedToken = generateActivationCode(6);
+        log.info("Service: token {}", generatedToken);
         var token = Token.builder()
                 .token(generatedToken)
                 .createdAt(LocalDateTime.now())

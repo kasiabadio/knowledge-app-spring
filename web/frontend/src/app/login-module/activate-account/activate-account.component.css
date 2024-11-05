@@ -1,26 +1,74 @@
 .container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-.code-input {
-  display: flex;
-  gap: 8px;
-}
-
-.code-box {
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
+.text-center {
   text-align: center;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.code-box:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+.btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.activation-message,
+.activation-error {
+  text-align: center;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+
+.activation-message {
+  color: #28a745;
+  border-color: #c3e6cb;
+  background-color: #d4edda;
+}
+
+.activation-error {
+  color: #dc3545;
+  border-color: #f5c6cb;
+  background-color: #f8d7da;
 }

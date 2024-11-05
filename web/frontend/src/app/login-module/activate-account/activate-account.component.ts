@@ -11,15 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Modified by: Katarzyna Badio on 5.11.2024
 
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication-service.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { CodeInputModule } from 'angular-code-input';
-import { skipUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-activate-account',
@@ -31,37 +31,42 @@ import { skipUntil } from 'rxjs/operators';
 
 export class ActivateAccountComponent {
 
-  message = '';
-  isOkay = true;
-  submitted = false;
-  constructor(
-    private router: Router,
-    private authService: AuthenticationService
-  ) {}
+    message = '';
+    isOkay = false;
+    submitted = false;
+    code = '';
 
-  private confirmAccount(token: string) {
-    this.authService.confirm({
-      token
-    }).subscribe({
-      next: () => {
-        this.message = 'Your account has been successfully activated.\nNow you can proceed to login';
-        this.submitted = true;
-      },
-      error: () => {
-        this.message = 'Token has been expired or invalid';
-        this.submitted = true;
-        this.isOkay = false;
-      }
-    });
+    constructor(
+      private router: Router,
+      private authService: AuthenticationService
+    ) {}
+
+    private confirmAccount() {
+      if (!this.code || this.code.trim().length === 0) {
+            this.message = 'Please enter a valid activation code';
+            return;
+          }
+
+      const token = this.code.trim();
+      this.authService.confirm({ token }).subscribe({
+        next: () => {
+          this.message = 'Your account has been successfully activated. Now you can proceed to login';
+        },
+        error: () => {
+          this.message = 'Token has expired or is invalid';
+        }
+      });
+    }
+
+    submitCode() {
+       this.submitted = false;
+       this.confirmAccount();
+
+    }
+
+    redirectToLogin() {
+      this.router.navigate(['']);
+    }
   }
 
-  redirectToLogin() {
-    this.router.navigate(['login']);
-  }
 
-  onCodeCompleted(token: string) {
-    this.confirmAccount(token);
-  }
-
-  protected readonly skipUntil = skipUntil;
-}

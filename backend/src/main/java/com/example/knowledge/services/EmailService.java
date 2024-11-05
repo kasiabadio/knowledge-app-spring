@@ -18,6 +18,8 @@ import com.example.knowledge.models.EmailTemplateName;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,7 @@ import static io.jsonwebtoken.lang.Strings.UTF_8;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailService {
 
     private final JavaMailSender mailSender;
@@ -48,6 +51,7 @@ public class EmailService {
             String subject
     ) throws MessagingException {
 
+        log.info("EMAIL SERVICE");
         String templateName;
         if (emailTemplate == null){
             templateName = "confirm-email";
@@ -79,6 +83,7 @@ public class EmailService {
 
         helper.setText(template, true);
 
+        log.info("EMAIL SERVICE BEFORE SENDING");
         mailSender.send(mimeMessage);
     }
 }
