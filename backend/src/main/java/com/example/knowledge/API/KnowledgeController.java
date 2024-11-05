@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/knowledge")
-@CrossOrigin(origins = { CorsConfiguration.LOCALHOST_ORIGIN, CorsConfiguration.OPENSHIFT_ORIGIN})
+@CrossOrigin(origins = { CorsConfiguration.LOCALHOST_ORIGIN })
 public class KnowledgeController {
 
     private final KnowledgeService ks;

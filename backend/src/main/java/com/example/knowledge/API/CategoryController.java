@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/categories")
-@CrossOrigin(origins = { CorsConfiguration.LOCALHOST_ORIGIN, CorsConfiguration.OPENSHIFT_ORIGIN})
+@CrossOrigin(origins = { CorsConfiguration.LOCALHOST_ORIGIN })
 public class CategoryController {
 
     private final CategoryService cs;

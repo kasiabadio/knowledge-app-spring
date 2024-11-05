@@ -10,7 +10,7 @@ export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'knowledge/form', component: KnowledgeFormComponent },
-  { path: 'knowledge/', component: KnowledgeListComponent },
+  { path: 'knowledge', component: KnowledgeListComponent },
   { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },
   { path: 'knowledge/detail/edit/:id', component: KnowledgeDetailComponent },
   { path: 'knowledge/categories', component: CategoryListComponent }

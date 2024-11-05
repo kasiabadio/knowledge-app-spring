@@ -14,6 +14,7 @@
 
 package com.example.knowledge.API;
 
+import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.requests.AuthenticationRequest;
 import com.example.knowledge.responses.AuthenticationResponse;
 import com.example.knowledge.requests.RegistrationRequest;
@@ -30,6 +31,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication")
+@CrossOrigin(origins = { CorsConfiguration.LOCALHOST_ORIGIN})
 public class AuthenticationController {
 
     private final AuthenticationService service;
