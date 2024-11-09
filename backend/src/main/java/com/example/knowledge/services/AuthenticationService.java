@@ -132,6 +132,7 @@ public class AuthenticationService {
     public void activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
+
         if (LocalDateTime.now().isAfter(savedToken.getExpiresAt())){
             sendValidationEmail(savedToken.getUser());
             throw new RuntimeException("Activation token has expired." +
@@ -149,6 +150,7 @@ public class AuthenticationService {
 
     public String validatePasswordResetToken(String token){
         final PasswordResetToken passToken = passwordTokenRepository.findByToken(token);
+        System.out.println("Service: Retrieved Password Reset Token: " + (passToken != null ? passToken.getToken() : "null"));
 
         return !isTokenFound(passToken) ? "invalidToken"
                 : isTokenExpired(passToken) ? "expired"

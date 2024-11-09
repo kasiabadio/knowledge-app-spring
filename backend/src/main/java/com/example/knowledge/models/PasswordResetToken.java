@@ -1,14 +1,15 @@
 package com.example.knowledge.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PasswordResetToken {
 
     private static final int EXPIRATION  = 60 * 24;
