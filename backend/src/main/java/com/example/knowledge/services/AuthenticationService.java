@@ -17,6 +17,7 @@ package com.example.knowledge.services;
 
 
 import com.example.knowledge.models.*;
+import com.example.knowledge.repositories.PasswordTokenRepository;
 import com.example.knowledge.repositories.RoleRepository;
 import com.example.knowledge.repositories.TokenRepository;
 import com.example.knowledge.repositories.UserRepository;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,12 +54,13 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private String activationUrl = "http://localhost:8099/activate-account";
 
+    private final PasswordTokenRepository passwordTokenRepository;
+
     public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-        log.info("Service: Register ");
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -75,7 +78,6 @@ public class AuthenticationService {
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
 
-        log.info("Service: send validation email");
         emailService.sendEmail(
                 user.getEmail(),
                 user.fullName(),
@@ -143,5 +145,22 @@ public class AuthenticationService {
         userRepository.save(user);
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
+    }
+
+    public String validatePasswordResetToken(String token){
+        final PasswordResetToken passToken = passwordTokenRepository.findByToken(token);
+
+        return !isTokenFound(passToken) ? "invalidToken"
+                : isTokenExpired(passToken) ? "expired"
+                : null;
+    }
+
+    private boolean isTokenFound(PasswordResetToken passToken) {
+        return passToken != null;
+    }
+
+    private boolean isTokenExpired(PasswordResetToken passToken) {
+        final Calendar cal = Calendar.getInstance();
+        return passToken.getExpiryDate().before(cal.getTime());
     }
 }

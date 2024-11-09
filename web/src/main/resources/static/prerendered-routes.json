@@ -5,6 +5,7 @@
     "/knowledge",
     "/knowledge/categories",
     "/knowledge/form",
+    "/password-reset",
     "/register"
   ]
 }

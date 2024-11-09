@@ -51,7 +51,6 @@ public class EmailService {
             String subject
     ) throws MessagingException {
 
-        log.info("EMAIL SERVICE");
         String templateName;
         if (emailTemplate == null){
             templateName = "confirm-email";
@@ -83,7 +82,6 @@ public class EmailService {
 
         helper.setText(template, true);
 
-        log.info("EMAIL SERVICE BEFORE SENDING");
         mailSender.send(mimeMessage);
     }
 }

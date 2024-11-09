@@ -6,10 +6,12 @@ import { CategoryListComponent } from './category-module/category-list/category-
 import { RegisterComponent } from './login-module/register/register.component';
 import { LoginComponent } from './login-module/login/login.component';
 import { ActivateAccountComponent } from './login-module/activate-account/activate-account.component';
+import { PasswordResetComponent } from './login-module/password-reset/password-reset.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'password-reset', component: PasswordResetComponent },
   { path: 'activate-account', component: ActivateAccountComponent},
   { path: 'knowledge/form', component: KnowledgeFormComponent },
   { path: 'knowledge', component: KnowledgeListComponent },
