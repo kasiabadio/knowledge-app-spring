@@ -5,12 +5,14 @@ import com.example.knowledge.models.Dto.PasswordDto;
 import com.example.knowledge.models.User;
 import com.example.knowledge.services.AuthenticationService;
 import com.example.knowledge.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,15 +40,23 @@ public class UserController {
 
     @PostMapping("/resetPassword")
     public ResponseEntity<Map<String, String>> resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
-        User user = userService.findUserByEmail(userEmail);
-        if (user == null) {
-            return createResponse(HttpStatus.NOT_FOUND, "User not found");
-        }
-        String token = UUID.randomUUID().toString();
-        userService.createPasswordResetTokenForUser(user, token);
-        mailSender.send(userService.constructResetTokenEmail("http://localhost:8080/api", request.getLocale(), token, user));
+        try {
+            User user = userService.findUserByEmail(userEmail);
+            if (user == null) {
+                return createResponse(HttpStatus.NOT_FOUND, "User not found");
+            }
+            String token = UUID.randomUUID().toString();
+            userService.createPasswordResetTokenForUser(user, token);
+            mailSender.send(userService.constructResetTokenEmail("http://localhost:8080/api", request.getLocale(), token, user));
 
-        return createResponse(HttpStatus.OK, "Reset Password");
+            return createResponse(HttpStatus.OK, "Reset Password");
+        } catch (EntityNotFoundException e) {
+            return createResponse(HttpStatus.NOT_FOUND, "User not found with email: " + userEmail);
+        } catch (MailException e) {
+            return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error sending email. Please try again later.");
+        } catch (Exception e) {
+            return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred. Please try again later.");
+        }
     }
 
     @GetMapping("/changePassword")
@@ -63,17 +73,23 @@ public class UserController {
     @PostMapping("/savePassword")
     public ResponseEntity<Map<String, String>> savePassword(@RequestBody @Valid PasswordDto passwordDto) {
 
-        String result = authenticationService.validatePasswordResetToken(passwordDto.getToken());
-        if (result != null) {
-            return createResponse(HttpStatus.UNAUTHORIZED, "Unauthorized: " + result);
-        }
+        try {
+            String result = authenticationService.validatePasswordResetToken(passwordDto.getToken());
+            if (result != null) {
+                return createResponse(HttpStatus.UNAUTHORIZED, "Unauthorized: " + result);
+            }
 
-        Optional<User> user = userService.getUserByPasswordResetToken(passwordDto.getToken());
-        if (user.isPresent()) {
-            userService.changeUserPassword(user.get(), passwordDto.getNewPassword());
-            return createResponse(HttpStatus.OK, "Reset password success");
-        } else {
-            return createResponse(HttpStatus.BAD_REQUEST, "User not found");
+            Optional<User> user = userService.getUserByPasswordResetToken(passwordDto.getToken());
+            if (user.isPresent()) {
+                userService.changeUserPassword(user.get(), passwordDto.getNewPassword());
+                return createResponse(HttpStatus.OK, "Reset password success");
+            } else {
+                return createResponse(HttpStatus.BAD_REQUEST, "User not found");
+            }
+        } catch (EntityNotFoundException e) {
+            return createResponse(HttpStatus.BAD_REQUEST, "Invalid token or user not found");
+        } catch (Exception e) {
+            return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred. Please try again later.");
         }
     }
 
