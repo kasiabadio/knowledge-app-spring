@@ -48,7 +48,10 @@ public class SecurityConfiguration {
                         req.requestMatchers(
                                         "/auth/**",
                                         "/api/auth/**",
-                                        "/postman/**"
+                                        "/",
+                                        "/password-reset",
+                                        "/register",
+                                        "/activate-account"
                                 ).permitAll()
                                 .requestMatchers("/api/**")
                                 .authenticated()
@@ -57,6 +60,8 @@ public class SecurityConfiguration {
 
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // when we get a request we act on it as we don't know anything about this request
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // I want to check the authentication filter to check if user already has a token
                 .exceptionHandling(exceptions -> exceptions
