@@ -79,7 +79,7 @@ export class KnowledgeDetailComponent implements OnInit {
     deleteKnowledge(knowledge: Knowledge){
           console.log("Delete by id: " + knowledge.idKnowledge);
           this.serviceKnowledge.deleteKnowledge(knowledge.idKnowledge).subscribe();
-          this.router.navigate(['']);
+          this.router.navigate(['knowledge']);
       }
 
     editKnowledge(knowledge: Knowledge){
