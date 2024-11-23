@@ -19,6 +19,10 @@
   background: url('./assets/categories.png');
 }
 
+.buttonLogout{
+  background: url('./assets/logout.png');
+}
+
 .button {
   border: none;
   height: 45px;

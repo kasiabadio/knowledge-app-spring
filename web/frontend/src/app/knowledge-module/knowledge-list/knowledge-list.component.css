@@ -47,6 +47,15 @@ body, html {
   white-space: nowrap;
 }
 
+.logout{
+  position: absolute;
+  font-size: 12px;
+  top: 180px;
+  right: 30px;
+  display: flex;
+  white-space: nowrap;
+}
+
 ul {
   max-height: 80vh;
   position: absolute;
@@ -66,3 +75,4 @@ li {
 ul {
     list-style-type: none;
 }
+

@@ -19,6 +19,12 @@
     </button>
   </div>
 
+  <div class="logout">
+    <p>Wyloguj</p>
+    <button class="button buttonLogout" type="button" (click)="logout()">
+    </button>
+  </div>
+
     <ul>
       <li *ngFor="let k of knowledge">
         <button class="button buttonRemove" type="button" (click)="deleteKnowledge(k)">

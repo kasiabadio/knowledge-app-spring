@@ -5,6 +5,7 @@ import { Knowledge } from '../../models/knowledge';
 import { KnowledgeService } from '../../services/knowledge.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TokenService } from '../../token/token.service';
 
 @Component({
   selector: 'app-knowledge-list',
@@ -18,11 +19,12 @@ import { FormsModule } from '@angular/forms';
 export class KnowledgeListComponent implements OnInit {
   knowledge: Knowledge[] = [];
   selectedKnowledge: Knowledge | undefined;
+  token: string = '';
 
-
-  constructor(private service: KnowledgeService, private router: Router){}
+  constructor(private service: KnowledgeService,  private tokenService: TokenService, private router: Router){}
 
   ngOnInit(){
+        this.token = this.tokenService.token;
         this.loadKnowledge();
         }
 
@@ -68,6 +70,11 @@ export class KnowledgeListComponent implements OnInit {
 
   navigateToCategories(){
     this.router.navigate(['knowledge/categories']);
+    }
+
+  logout(){
+    this.tokenService.token = '';
+    this.router.navigate(['']);
     }
 
 }

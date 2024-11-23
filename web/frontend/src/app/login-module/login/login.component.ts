@@ -34,10 +34,13 @@ export class LoginComponent implements OnInit {
 
   authRequest: AuthenticationRequest = {email: '', password: ''};
   errorMsg: Array<string> = [];
+  token: string = '';
 
    constructor(private router: Router, private authService: AuthenticationService, private tokenService: TokenService){}
 
-  ngOnInit(){}
+  ngOnInit(){
+      this.token = this.tokenService.token;
+      }
 
   login() {
     this.errorMsg = [];
@@ -46,6 +49,7 @@ export class LoginComponent implements OnInit {
     }).subscribe({
       next: (res) => {
         this.tokenService.token = res.token as string;
+        this.token = this.tokenService.token;
         this.router.navigate(['knowledge']);
       },
       error: (err) => {
@@ -67,4 +71,7 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['password-reset'])
   }
 
+  backToKnowledge(){
+    this.router.navigate(['knowledge'])
+    }
 }
