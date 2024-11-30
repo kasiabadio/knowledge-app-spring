@@ -56,7 +56,7 @@ public class AuthenticationService {
 
     private final PasswordTokenRepository passwordTokenRepository;
 
-    public void register(RegistrationRequest request) throws MessagingException {
+    public void register(RegistrationRequest request) throws Exception {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
 
@@ -71,11 +71,15 @@ public class AuthenticationService {
                 .roles(List.of(userRole))
                 .build();
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e){
+            throw new Exception("Error saving new user: " + user.getIdUser(), e);
+        }
         sendValidationEmail(user);
     }
 
-    private void sendValidationEmail(User user) throws MessagingException {
+    private void sendValidationEmail(User user) throws Exception {
         var newToken = generateAndSaveActivationToken(user);
 
         emailService.sendEmail(
@@ -89,7 +93,7 @@ public class AuthenticationService {
         );
     }
 
-    private String generateAndSaveActivationToken(User user){
+    private String generateAndSaveActivationToken(User user) throws Exception {
         // generate a token and save it in a database
         String generatedToken = generateActivationCode(6);
         log.info("Service: token {}", generatedToken);
@@ -99,7 +103,12 @@ public class AuthenticationService {
                 .expiresAt(LocalDateTime.now().plusMinutes(15))
                 .user(user)
                 .build();
-        tokenRepository.save(token);
+
+        try {
+            tokenRepository.save(token);
+        } catch (Exception e){
+            throw new Exception("Error saving new token", e);
+        }
         return generatedToken;
     }
 
@@ -129,7 +138,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public void activateAccount(String token) throws MessagingException {
+    public void activateAccount(String token) throws Exception {
         Token savedToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
 
