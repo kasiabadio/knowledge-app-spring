@@ -1,3 +1,25 @@
+
+.login-background {
+  background-image: url('../../../assets/background-flowers.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Centered login content */
+.login-content {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for elevation */
+}
+
 /* Container styling */
 .login-container {
   max-width: 600px; /* Adjust width of the card */
@@ -42,5 +64,6 @@
 /* Adjust button and link layout */
 .d-flex {
   align-items: center;
+
   justify-content: space-between;
 }
