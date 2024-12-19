@@ -17,22 +17,22 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'password-reset', component: PasswordResetComponent },
     { path: 'activate-account', component: ActivateAccountComponent },
-    { path: 'home', component: HomeDetailComponent },
-    { path: 'private-knowledge', component: KnowledgeListComponent },
-    { path: 'admin-panel', component: AdminDetailComponent },
-    { path: 'knowledge/form', component: KnowledgeFormComponent },
-    { path: 'knowledge', component: KnowledgeListComponent },
-    { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },
-    { path: 'knowledge/detail/edit/:id', component: KnowledgeDetailComponent },
-    { path: 'knowledge/categories', component: CategoryListComponent },
-//
-//     // Routes with Navbar
-//     {
-//       path: 'navbar',
-//       component: NavbarDetailComponent, // Navbar wrapper
-//       children: [
-//
-//       ],
-//     },
+
+
+    // Routes with Navbar
+    {
+      path: 'navbar',
+      component: NavbarDetailComponent, // Navbar wrapper
+      children: [
+         { path: 'home', component: HomeDetailComponent },
+         // { path: 'private-knowledge', component: KnowledgeListComponent },
+          { path: 'admin-panel', component: AdminDetailComponent },
+          { path: 'knowledge/form', component: KnowledgeFormComponent },
+          { path: 'knowledge', component: KnowledgeListComponent },
+          { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },
+          { path: 'knowledge/detail/edit/:id', component: KnowledgeDetailComponent },
+          { path: 'knowledge/categories', component: CategoryListComponent },
+      ],
+    },
 
   ];
