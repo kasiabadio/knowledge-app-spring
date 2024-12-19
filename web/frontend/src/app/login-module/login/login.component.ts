@@ -39,7 +39,12 @@ export class LoginComponent implements OnInit {
    constructor(private router: Router, private authService: AuthenticationService, private tokenService: TokenService){}
 
   ngOnInit(){
+    console.log('Token on Init:', this.tokenService.token);
+    this.token = this.tokenService.token || '';
+      if (this.token) {
+        this.router.navigate(['knowledge']);
       }
+    }
 
   login() {
     this.errorMsg = [];

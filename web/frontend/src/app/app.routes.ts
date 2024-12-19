@@ -7,15 +7,32 @@ import { RegisterComponent } from './login-module/register/register.component';
 import { LoginComponent } from './login-module/login/login.component';
 import { ActivateAccountComponent } from './login-module/activate-account/activate-account.component';
 import { PasswordResetComponent } from './login-module/password-reset/password-reset.component';
+import { HomeDetailComponent } from './home-module/home-detail/home-detail.component';
+import { AdminDetailComponent } from './admin-module/admin-detail/admin-detail.component';
+import { NavbarDetailComponent } from './navbar-detail.component';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'password-reset', component: PasswordResetComponent },
-  { path: 'activate-account', component: ActivateAccountComponent},
-  { path: 'knowledge/form', component: KnowledgeFormComponent },
-  { path: 'knowledge', component: KnowledgeListComponent },
-  { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },
-  { path: 'knowledge/detail/edit/:id', component: KnowledgeDetailComponent },
-  { path: 'knowledge/categories', component: CategoryListComponent }
+  // Public routes
+    { path: '', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'password-reset', component: PasswordResetComponent },
+    { path: 'activate-account', component: ActivateAccountComponent },
+    { path: 'home', component: HomeDetailComponent },
+    { path: 'private-knowledge', component: KnowledgeListComponent },
+    { path: 'admin-panel', component: AdminDetailComponent },
+    { path: 'knowledge/form', component: KnowledgeFormComponent },
+    { path: 'knowledge', component: KnowledgeListComponent },
+    { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },
+    { path: 'knowledge/detail/edit/:id', component: KnowledgeDetailComponent },
+    { path: 'knowledge/categories', component: CategoryListComponent },
+//
+//     // Routes with Navbar
+//     {
+//       path: 'navbar',
+//       component: NavbarDetailComponent, // Navbar wrapper
+//       children: [
+//
+//       ],
+//     },
+
   ];

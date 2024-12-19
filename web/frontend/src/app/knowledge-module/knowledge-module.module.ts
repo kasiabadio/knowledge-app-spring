@@ -5,20 +5,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { KnowledgeDetailComponent } from './knowledge-detail/knowledge-detail.component';
 import { KnowledgeFormComponent } from './knowledge-form/knowledge-form.component';
 import { KnowledgeListComponent } from './knowledge-list/knowledge-list.component';
-import { KnowledgeService } from './services/knowledge.service';
+import { KnowledgeService } from '../services/knowledge.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    ],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    KnowledgeDetailComponent,
+    KnowledgeListComponent,
+    KnowledgeFormComponent
+  ],
+  exports: [
     KnowledgeDetailComponent,
     KnowledgeListComponent,
     KnowledgeFormComponent
     ],
-  imports: [
-    CommonModule,
-    HttpClientModule
-  ],
   providers: [KnowledgeService],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class KnowledgeModuleModule { }

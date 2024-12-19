@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { CategoryListComponent } from './category-list/category-list.component';
-import { CategoryService } from './services/category.service';
+import { CategoryService } from '../services/category.service';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CategoryDetailComponent,
-    CategoryListComponent
+
     ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    CategoryDetailComponent,
+    CategoryListComponent,
+    ],
+  exports: [
+    CategoryDetailComponent,
+    CategoryListComponent,
     ],
   providers: [CategoryService],
-  bootstrap: [AppComponent]
+  bootstrap: []
   })
 export class CategoryModuleModule { }

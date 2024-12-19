@@ -1,25 +1,33 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { KnowledgeModule } from './knowledge-module/knowledge-module.module';
-import { CategoryModule } from './category-module/category-module.module';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { KnowledgeModuleModule } from './knowledge-module/knowledge-module.module';
+import { CategoryModuleModule } from './category-module/category-module.module';
+import { AdminModuleModule } from './admin-module/admin-module.module';
+import { HomeModuleModule } from './home-module/home-module.module';
+
+import { NavbarDetailComponent } from './navbar-detail.component';
 
 @NgModule({
   declarations: [
-    AppComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     HttpClientModule,
-    KnowledgeModule,
-    CategoryModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    KnowledgeModuleModule,
+    CategoryModuleModule,
+    AdminModuleModule,
+    HomeModuleModule,
+    NavbarDetailComponent
   ],
-  providers: [HttpClientModule.withFetch()],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
