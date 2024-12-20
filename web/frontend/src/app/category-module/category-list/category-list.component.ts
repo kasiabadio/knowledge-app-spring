@@ -34,7 +34,7 @@ export class CategoryListComponent implements OnInit {
     }
 
   backToKnowledge(){
-    this.router.navigate(['navbar/knowledge']);
+    this.router.navigate(['knowledge']);
     }
 
 

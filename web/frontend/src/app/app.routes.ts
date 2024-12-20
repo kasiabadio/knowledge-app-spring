@@ -12,16 +12,10 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AdminDetailComponent } from './admin-module/admin-detail/admin-detail.component';
 
 export const routes: Routes = [
-  // Public routes
-    { path: '', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'password-reset', component: PasswordResetComponent },
-    { path: 'activate-account', component: ActivateAccountComponent },
-
 
     // Routes with Navbar
     {
-      path: 'main',
+      path: '',
       component: MainLayoutComponent,
       children: [
          { path: 'home', component: HomeDetailComponent },
@@ -34,5 +28,11 @@ export const routes: Routes = [
           { path: 'knowledge/categories', component: CategoryListComponent },
       ],
     },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'password-reset', component: PasswordResetComponent },
+    { path: 'activate-account', component: ActivateAccountComponent },
+
+    { path: '**', redirectTo: 'main' },
 
   ];

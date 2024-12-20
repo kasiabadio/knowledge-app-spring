@@ -1,9 +1,22 @@
 
 
-html, body {
+html {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-image: url('./assets/background-skyblue.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: -1;
+  background-attachment: fixed;
 }
 
 .buttonAdd {
@@ -31,6 +44,10 @@ html, body {
   background: url('./assets/logout.png');
 }
 
+.buttonLogin{
+  background: url('./assets/login.png');
+}
+
 .navbar-logo {
    width: 100px;
    height: 100px;
@@ -38,6 +55,7 @@ html, body {
    background-size: contain;
    cursor: pointer;
 }
+
 
 
 .button {

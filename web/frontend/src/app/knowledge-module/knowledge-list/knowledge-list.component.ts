@@ -40,7 +40,7 @@ export class KnowledgeListComponent implements OnInit {
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
       console.log("Navigate to: " + knowledge.idKnowledge);
-      this.router.navigate(['navbar/knowledge/detail', knowledge.idKnowledge]);
+      this.router.navigate(['knowledge/detail', knowledge.idKnowledge]);
     }
 
   deleteKnowledge(knowledge: Knowledge){

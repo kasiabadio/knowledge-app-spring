@@ -40,7 +40,7 @@
   white-space: nowrap;
 }
 
-.logout{
+.login {
   position: absolute;
   font-size: 12px;
   top: 250px;
@@ -48,3 +48,13 @@
   display: flex;
   white-space: nowrap;
 }
+
+.logout{
+  position: absolute;
+  font-size: 12px;
+  top: 300px;
+  right: 30px;
+  display: flex;
+  white-space: nowrap;
+}
+

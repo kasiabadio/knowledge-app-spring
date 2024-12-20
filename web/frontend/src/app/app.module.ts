@@ -25,7 +25,7 @@ import { routes } from './app.routes';
     CategoryModuleModule,
     AdminModuleModule,
     HomeModuleModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
   ],
   providers: [],
   bootstrap: [AppComponent],

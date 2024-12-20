@@ -39,10 +39,9 @@ export class LoginComponent implements OnInit {
    constructor(private router: Router, private authService: AuthenticationService, private tokenService: TokenService){}
 
   ngOnInit(){
-    console.log('Token on Init:', this.tokenService.token);
     this.token = this.tokenService.token || '';
       if (this.token) {
-        this.router.navigate(['main']);
+        this.router.navigate(['']);
       }
     }
 
@@ -54,7 +53,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         this.tokenService.token = res.token as string;
         this.token = this.tokenService.token;
-        this.router.navigate(['main']);
+        this.router.navigate(['']);
       },
       error: (err) => {
         console.log(err);
@@ -68,14 +67,14 @@ export class LoginComponent implements OnInit {
   }
 
   register() {
-    this.router.navigate(['main/register']);
+    this.router.navigate(['register']);
   }
 
   passwordReset(){
-    this.router.navigate(['main/password-reset'])
+    this.router.navigate(['password-reset'])
   }
 
   backToKnowledge(){
-    this.router.navigate(['main/knowledge'])
+    this.router.navigate(['knowledge'])
     }
 }

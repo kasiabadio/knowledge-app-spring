@@ -1,14 +1,3 @@
-.main-layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-image: url('/assets/background-skyblue.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  z-index: 0;
-}
 
 app-navbar-detail {
   position: fixed;
@@ -25,7 +14,9 @@ app-navbar-detail {
   display: flex;
   margin-top: 50px;
   height: calc(100vh - 50px);
-  z-index: 1;
+  z-index: 2;
+  position: relative;
+  overflow: visible;
 }
 
 app-sidebar-detail {
@@ -38,6 +29,7 @@ app-sidebar-detail {
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   backdrop-filter: blur(10px);
+  z-index: 900;
 }
 
 .content {
@@ -46,3 +38,12 @@ app-sidebar-detail {
   padding: 20px;
   overflow-y: auto;
 }
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+

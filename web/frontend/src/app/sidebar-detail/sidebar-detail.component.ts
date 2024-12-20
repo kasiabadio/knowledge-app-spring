@@ -16,22 +16,23 @@ import { Knowledge } from '../models/knowledge';
 })
 export class SidebarDetailComponent {
 
-    token: string = '';
-
     constructor(private service: KnowledgeService, private tokenService: TokenService, private router: Router){}
 
 
     addKnowledge(){
-        this.router.navigate(['navbar/knowledge/form']);
+        this.router.navigate(['knowledge/form']);
       }
 
     navigateToCategories(){
-      this.router.navigate(['navbar/knowledge/categories']);
+      this.router.navigate(['knowledge/categories']);
+      }
+
+    login(){
+      this.router.navigate(['login'])
       }
 
     logout(){
       this.tokenService.token = '';
-      this.router.navigate(['']);
       }
 
 //     searchKnowledge(searchText: string){
