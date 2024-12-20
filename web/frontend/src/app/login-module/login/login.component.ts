@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     console.log('Token on Init:', this.tokenService.token);
     this.token = this.tokenService.token || '';
       if (this.token) {
-        this.router.navigate(['navbar']);
+        this.router.navigate(['main']);
       }
     }
 
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         this.tokenService.token = res.token as string;
         this.token = this.tokenService.token;
-        this.router.navigate(['navbar']);
+        this.router.navigate(['main']);
       },
       error: (err) => {
         console.log(err);
@@ -68,14 +68,14 @@ export class LoginComponent implements OnInit {
   }
 
   register() {
-    this.router.navigate(['navbar/register']);
+    this.router.navigate(['main/register']);
   }
 
   passwordReset(){
-    this.router.navigate(['navbar/password-reset'])
+    this.router.navigate(['main/password-reset'])
   }
 
   backToKnowledge(){
-    this.router.navigate(['navbar/knowledge'])
+    this.router.navigate(['main/knowledge'])
     }
 }

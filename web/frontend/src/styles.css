@@ -22,6 +22,7 @@ html, body {
    background: url('./assets/delete_from.png');
 }
 
+
 .buttonToCategories{
   background: url('./assets/categories.png');
 }
@@ -29,6 +30,15 @@ html, body {
 .buttonLogout{
   background: url('./assets/logout.png');
 }
+
+.navbar-logo {
+   width: 100px;
+   height: 100px;
+   background: url('./assets/logo.png') no-repeat center center;
+   background-size: contain;
+   cursor: pointer;
+}
+
 
 .button {
   border: none;

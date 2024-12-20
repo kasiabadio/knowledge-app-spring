@@ -34,7 +34,7 @@ export class KnowledgeFormComponent implements OnInit {
         console.table(this.knowledgeForm.value);
           this.serviceKnowledge.createKnowledge(this.knowledgeForm.value).subscribe({
             next: ()=>{
-              this.router.navigate(['knowledge']);
+              this.router.navigate(['main/knowledge']);
               },
             error: err=>console.log(err)
             });
@@ -45,7 +45,7 @@ export class KnowledgeFormComponent implements OnInit {
 
 
     backToKnowledge(){
-        this.router.navigate(['knowledge']);
+        this.router.navigate(['main/knowledge']);
     }
 
 }

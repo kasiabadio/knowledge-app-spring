@@ -67,19 +67,19 @@ export class KnowledgeDetailComponent implements OnInit {
 
 
     backToKnowledge(){
-        this.router.navigate(['knowledge']);
+        this.router.navigate(['main/knowledge']);
     }
 
     backToDetail(){
       if (this.knowledge){
-          this.router.navigate(['knowledge/detail/', this.knowledge.idKnowledge]);
+          this.router.navigate(['main/knowledge/detail/', this.knowledge.idKnowledge]);
         }
     }
 
     deleteKnowledge(knowledge: Knowledge){
           console.log("Delete by id: " + knowledge.idKnowledge);
           this.serviceKnowledge.deleteKnowledge(knowledge.idKnowledge).subscribe();
-          this.router.navigate(['knowledge']);
+          this.router.navigate(['main/knowledge']);
       }
 
     editKnowledge(knowledge: Knowledge){
@@ -91,7 +91,7 @@ export class KnowledgeDetailComponent implements OnInit {
               knowledgeCategories: new FormArray([]),
           });
 
-        this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
+        this.router.navigate(['main/knowledge/detail/edit/', knowledge.idKnowledge]);
       }
 
     onCategoryChange(event: any, category: Category) {
@@ -151,7 +151,7 @@ export class KnowledgeDetailComponent implements OnInit {
           this.serviceKnowledge.updateKnowledge(this.knowledgeForm.value).subscribe({
             next: ()=>{
                 if (this.knowledge && this.knowledge.idKnowledge) {
-                  this.router.navigate(['knowledge/detail', this.knowledge.idKnowledge]);
+                  this.router.navigate(['main/knowledge/detail', this.knowledge.idKnowledge]);
                 } else {
                   console.error('Knowledge object or its id is undefined');
                 }

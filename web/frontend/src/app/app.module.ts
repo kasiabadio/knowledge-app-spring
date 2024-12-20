@@ -10,7 +10,8 @@ import { CategoryModuleModule } from './category-module/category-module.module';
 import { AdminModuleModule } from './admin-module/admin-module.module';
 import { HomeModuleModule } from './home-module/home-module.module';
 
-import { NavbarDetailComponent } from './navbar-detail.component';
+import { RouterModule } from '@angular/router';
+import { routes } from './app.routes';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { NavbarDetailComponent } from './navbar-detail.component';
     CategoryModuleModule,
     AdminModuleModule,
     HomeModuleModule,
-    NavbarDetailComponent
+    RouterModule.forRoot(routes),
   ],
   providers: [],
   bootstrap: [AppComponent],

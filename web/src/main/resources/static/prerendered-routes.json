@@ -2,12 +2,12 @@
   "routes": [
     "/",
     "/activate-account",
-    "/navbar",
-    "/navbar/admin-panel",
-    "/navbar/home",
-    "/navbar/knowledge",
-    "/navbar/knowledge/categories",
-    "/navbar/knowledge/form",
+    "/main",
+    "/main/admin-panel",
+    "/main/home",
+    "/main/knowledge",
+    "/main/knowledge/categories",
+    "/main/knowledge/form",
     "/password-reset",
     "/register"
   ]

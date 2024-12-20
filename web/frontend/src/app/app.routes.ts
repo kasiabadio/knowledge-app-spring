@@ -8,8 +8,8 @@ import { LoginComponent } from './login-module/login/login.component';
 import { ActivateAccountComponent } from './login-module/activate-account/activate-account.component';
 import { PasswordResetComponent } from './login-module/password-reset/password-reset.component';
 import { HomeDetailComponent } from './home-module/home-detail/home-detail.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AdminDetailComponent } from './admin-module/admin-detail/admin-detail.component';
-import { NavbarDetailComponent } from './navbar-detail.component';
 
 export const routes: Routes = [
   // Public routes
@@ -21,8 +21,8 @@ export const routes: Routes = [
 
     // Routes with Navbar
     {
-      path: 'navbar',
-      component: NavbarDetailComponent, // Navbar wrapper
+      path: 'main',
+      component: MainLayoutComponent,
       children: [
          { path: 'home', component: HomeDetailComponent },
          // { path: 'private-knowledge', component: KnowledgeListComponent },

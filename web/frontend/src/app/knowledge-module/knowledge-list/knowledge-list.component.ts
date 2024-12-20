@@ -40,7 +40,7 @@ export class KnowledgeListComponent implements OnInit {
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
       console.log("Navigate to: " + knowledge.idKnowledge);
-      this.router.navigate(['knowledge/detail', knowledge.idKnowledge]);
+      this.router.navigate(['navbar/knowledge/detail', knowledge.idKnowledge]);
     }
 
   deleteKnowledge(knowledge: Knowledge){
@@ -51,30 +51,7 @@ export class KnowledgeListComponent implements OnInit {
     this.loadKnowledge();
    }
 
-  searchKnowledge(searchText: string){
-    if (searchText.trim() !== ''){
-         this.service.findBy(searchText).subscribe({
-            next: (data: Knowledge[]) => {
-                this.knowledge = data;
-              },
-            error: err=> console.log(err)
-            })
-      } else {
-        this.loadKnowledge();
-        }
-    }
 
-  addKnowledge(){
-    this.router.navigate(['knowledge/form']);
-  }
 
-  navigateToCategories(){
-    this.router.navigate(['knowledge/categories']);
-    }
-
-  logout(){
-    this.tokenService.token = '';
-    this.router.navigate(['']);
-    }
 
 }
