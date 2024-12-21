@@ -1,7 +1,5 @@
 package com.example.knowledge.models;
 
-import com.example.knowledge.keys.CategoryKnowledgeKey;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,19 +12,16 @@ import java.util.*;
 @Table(name = "categoryKnowledgeGroup")
 public class CategoryKnowledgeGroup  {
 
-    @EmbeddedId
-    CategoryKnowledgeKey groupId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long groupId;
 
     @ManyToOne
-    @MapsId("idCategory")
     @JoinColumn(name = "id_category")
-    @JsonBackReference(value = "category-categoryKnowledgeGroup")
     Category category;
 
     @ManyToOne
-    @MapsId("idKnowledge")
     @JoinColumn(name = "id_knowledge")
-    @JsonBackReference(value = "knowledge-categoryKnowledgeGroup")
     Knowledge knowledge;
 
     public List<Knowledge> getKnowledgesByCategory(Category category, EntityManager entityManager){

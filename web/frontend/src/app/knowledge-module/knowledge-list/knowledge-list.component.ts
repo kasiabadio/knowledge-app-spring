@@ -7,12 +7,24 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TokenService } from '../../token/token.service';
 
+import { MatCardModule } from "@angular/material/card";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+
+
 @Component({
   selector: 'app-knowledge-list',
   templateUrl: './knowledge-list.component.html',
   styleUrls: ['./knowledge-list.component.css'],
   standalone: true,
-  imports: [ NgFor, CommonModule, FormsModule ],
+  imports: [
+    NgFor,
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule
+    ],
   providers: [ KnowledgeService ]
 })
 
@@ -30,11 +42,12 @@ export class KnowledgeListComponent implements OnInit {
 
   loadKnowledge(){
       this.service.getKnowledge().subscribe({
-              next: (data: Knowledge[]) => {
-                  this.knowledge = data;
-                },
-              error: err=> console.log(err)
-              })
+        next: (data: Knowledge[]) => {
+            console.log('Fetched Knowledge: data');
+            this.knowledge = data;
+          },
+        error: err=> console.log(err)
+        })
     }
 
   selectKnowledge(knowledge: Knowledge){

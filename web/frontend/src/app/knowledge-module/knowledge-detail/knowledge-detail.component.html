@@ -1,88 +1,72 @@
-<div class="pagebutton back" *ngIf="knowledgeForm">
-  <button class="button buttonBack" type="button" (click)="backToDetail()">
-  </button>
-  <p>Cofnij</p>
-</div>
+<div class="content">
 
-<div class="pagebutton back" *ngIf="!knowledgeForm">
-  <button class="button buttonBack" type="button" (click)="backToKnowledge()">
-  </button>
-  <p>Cofnij</p>
-</div>
-
-<div class="pagebutton delete" *ngIf="knowledge !knowledgeForm">
-  <p>Usuń z bazy wiedzy</p>
-  <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge)">
-  </button>
-</div>
-
-<div class="pagebutton edit" *ngIf="knowledge !knowledgeForm">
-  <p>Edytuj</p>
-  <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge)">
-  </button>
-</div>
-
-<div class="container">
-
-  <div *ngIf="knowledge && !knowledgeForm">
-    <p id="title">{{ knowledge.title }}</p>
-    <p>{{ knowledge.content }}</p>
-    <ul>
-      <li *ngFor="let c of knowledge.knowledgeCategories">category: {{c.groupId.idCategory}}, knowledge: {{c.groupId.idKnowledge}} </li>
-    </ul>
+  <div class="pagebutton back" *ngIf="knowledgeForm">
+    <button class="button buttonBack" type="button" (click)="backToDetail()">
+    </button>
+    <p>Cofnij</p>
   </div>
 
-  <ng-container *ngIf="knowledgeForm">
+  <div class="pagebutton back" *ngIf="!knowledgeForm">
+    <button class="button buttonBack" type="button" (click)="backToKnowledge()">
+    </button>
+    <p>Cofnij</p>
+  </div>
+
+  <div class="pagebutton delete" *ngIf="knowledge !knowledgeForm">
+    <p>Usuń z bazy wiedzy</p>
+    <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge)">
+    </button>
+  </div>
+
+  <div class="pagebutton edit" *ngIf="knowledge !knowledgeForm">
     <p>Edytuj</p>
-    <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
+    <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge)">
+    </button>
+  </div>
 
-      <div class="formGroup">
-        <label class="label" for="titleEdit">Tytuł</label>
-        <input type="text" class="formControl" id="titleEdit" formControlName="title">
-        <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
-          Tytuł jest wymagany.
+  <div class="container">
+
+    <div *ngIf="knowledge && !knowledgeForm">
+      <p id="title">{{ knowledge.title }}</p>
+      <p>{{ knowledge.content }}</p>
+      <ul>
+        <li *ngFor="let c of knowledge.knowledgeCategories">category: {{c.groupId.idCategory}}, knowledge: {{c.groupId.idKnowledge}} </li>
+      </ul>
+    </div>
+
+    <ng-container *ngIf="knowledgeForm">
+      <p>Edytuj</p>
+      <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
+
+        <div class="formGroup">
+          <label class="label" for="titleEdit">Tytuł</label>
+          <input type="text" class="formControl" id="titleEdit" formControlName="title">
+          <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
+            Tytuł jest wymagany.
+          </div>
         </div>
-      </div>
 
-      <div class="formGroup">
-        <label class="label" for="contentEdit">Zawartość</label>
-        <input type="text" class="formControl" id="contentEdit" formControlName="content">
-        <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
-          Zawartość jest wymagana.
+        <div class="formGroup">
+          <label class="label" for="contentEdit">Zawartość</label>
+          <input type="text" class="formControl" id="contentEdit" formControlName="content">
+          <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
+            Zawartość jest wymagana.
+          </div>
         </div>
-      </div>
 
-      <div class="formGroup">
-        <label class="label">Kategorie</label>
-        <p>Przytrzymaj Command(na macu) lub Control(na Windowsie) aby wybrać kilka elementów</p>
-        <div class="wrapper">
-          <ul>
-            <li *ngFor="let category of categories">
-              <label>
-                <input type="checkbox"
-                       [value]="category.idCategory"
-                       (change)="onCategoryChange($event, category)"
-                       [checked]="isSelected(category)">
-                {{ category.categoryName }}
-              </label>
-            </li>
-          </ul>
+
+        <div class="formGroup">
+          <label class="label" for="authorEdit">Autor</label>
+          <input type="text" class="formControl" id="authorEdit" formControlName="author">
+          <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
+            Proszę wpisać autora.
+          </div>
         </div>
-      </div>
 
+        <button type="submit" class="button buttonSubmit">Zaktualizuj</button>
+      </form>
+    </ng-container>
 
-      <div class="formGroup">
-        <label class="label" for="authorEdit">Autor</label>
-        <input type="text" class="formControl" id="authorEdit" formControlName="author">
-        <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
-          Proszę wpisać autora.
-        </div>
-      </div>
-
-      <button type="submit" class="button buttonSubmit">Zaktualizuj</button>
-    </form>
-  </ng-container>
-
+  </div>
 
 </div>
-

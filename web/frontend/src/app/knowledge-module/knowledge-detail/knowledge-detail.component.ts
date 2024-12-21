@@ -88,7 +88,6 @@ export class KnowledgeDetailComponent implements OnInit {
               title: new FormControl(knowledge.title),
               content: new FormControl(knowledge.content),
               author: new FormControl(knowledge.author),
-              knowledgeCategories: new FormArray([]),
           });
 
         this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
@@ -119,34 +118,6 @@ export class KnowledgeDetailComponent implements OnInit {
         console.log(this.knowledgeTemp)
 
         for (var i = 0; i < this.selectedCategoryIds.length; i++){
-          const selectedCategory = this.selectedCategoryIds[i];
-
-            this.categoryKnowledgeGroupTemp = {
-                groupId :  {
-                  idCategory: selectedCategory,
-                  idKnowledge: this.knowledgeTemp.idKnowledge
-                },
-                category: this.categories.find(c => c.idCategory === selectedCategory),
-                knowledge: this.knowledgeTemp
-              } as CategoryKnowledgeGroup;
-
-            console.log("This categoryKnowledgeGroup temp:");
-            console.log(this.categoryKnowledgeGroupTemp);
-
-            this.serviceCKG.createCategoryKnowledgeGroup(this.categoryKnowledgeGroupTemp).subscribe({
-              next: (createdCategoryKnowledgeGroup) => {
-                console.log('Successfully created CategoryKnowledgeGroup:', createdCategoryKnowledgeGroup);
-                this.knowledgeForm.knowledgeCategories.push(new FormControl(createdCategoryKnowledgeGroup));
-              },
-              error: (err) => {
-                console.error('Error creating CategoryKnowledgeGroup:', err);
-              }
-            });
-          }
-
-          console.log("Form value after update:");
-          console.log(this.knowledgeForm.value);
-
 
           this.serviceKnowledge.updateKnowledge(this.knowledgeForm.value).subscribe({
             next: ()=>{
@@ -158,6 +129,7 @@ export class KnowledgeDetailComponent implements OnInit {
               },
             error: err=>console.log(err)
             });
+          }
         } else {
               console.log('Form is invalid or knowledge is not defined');
         }

@@ -1,37 +1,40 @@
-<div class="pagebutton back">
-  <button class="button buttonBack" type="button" (click)="backToKnowledge()">
-  </button>
-  <p>Cofnij</p>
-</div>
+<div class="content">
+  <div class="pagebutton back">
+    <button class="button buttonBack" type="button" (click)="backToKnowledge()">
+    </button>
+    <p>Cofnij</p>
+  </div>
 
-<div class="container ">
-  <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
+  <div class="container ">
+    <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
 
-    <div class="formGroup">
-      <label class="label" for="title">Tytuł</label>
-      <input type="text" class="formControl" id="title" formControlName="title">
-      <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
-        Tytuł jest wymagany. Może zawierać tylko litery i cyfry.
+      <div class="formGroup">
+        <label class="label" for="title">Tytuł</label>
+        <input type="text" class="formControl" id="title" formControlName="title">
+        <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
+          Tytuł jest wymagany. Może zawierać tylko litery i cyfry.
+        </div>
       </div>
-    </div>
 
-    <div class="formGroup">
-      <label class="label" for="content">Zawartość</label>
-      <input type="text" class="formControl" id="content" formControlName="content">
-      <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
-        Zawartość jest wymagana.
+      <div class="formGroup">
+        <label class="label" for="content">Zawartość</label>
+        <input type="text" class="formControl" id="content" formControlName="content">
+        <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
+          Zawartość jest wymagana.
+        </div>
       </div>
-    </div>
 
 
-    <div class="formGroup">
-      <label class="label" for="author">Autor</label>
-      <input type="text" class="formControl" id="author" formControlName="author">
-      <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
-        Proszę wpisać autora. Może zawierać tylko litery i cyfry.
+      <div class="formGroup">
+        <label class="label" for="author">Autor</label>
+        <input type="text" class="formControl" id="author" formControlName="author">
+        <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
+          Proszę wpisać autora. Może zawierać tylko litery i cyfry.
+        </div>
       </div>
-    </div>
 
-    <button type="submit" class="button buttonSubmit">Dodaj</button>
-  </form>
+      <button type="submit" class="button buttonSubmit">Dodaj</button>
+    </form>
+  </div>
+
 </div>

@@ -34,16 +34,16 @@ app-sidebar-detail {
 
 
 .content-area {
-  position: fixed;
-  top: 200px;
-  left: 100px;
-  right: 100px;
-  height: 100%;
-  width: 700px;
-  background-color: rgba(255, 255, 255, 0.6);
-  padding: 20px;
-  border: none;
-  border-radius: 20px;
-  overflow: auto;
-  z-index: 3;
+  position: fixed; /* Keeps it fixed relative to the viewport */
+  top: 200px; /* Distance from the top */
+  left: 100px; /* Distance from the left */
+  right: 100px; /* Distance from the right */
+  height: calc(100vh - 200px); /* Adjust height dynamically based on viewport */
+  max-width: 700px; /* Restrict maximum width */
+  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
+  padding: 20px; /* Inner padding for content spacing */
+  border: none; /* No border */
+  border-radius: 20px; /* Rounded corners */
+  overflow: auto; /* Enable scrolling for overflowing content */
+  z-index: 3; /* Ensure it stays above other elements */
 }

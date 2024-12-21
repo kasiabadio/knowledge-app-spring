@@ -36,6 +36,9 @@ public class Knowledge implements Serializable {
     @OneToMany(orphanRemoval = true, cascade=CascadeType.REMOVE, mappedBy = "knowledge") @JsonManagedReference(value = "knowledge-categoryKnowledgeGroup")
     Set<CategoryKnowledgeGroup> knowledgeCategories;
 
+    @OneToMany(mappedBy = "knowledge")
+    Set<Comment> commentsUnderKnowledge;
+
     @Override
     public boolean equals(Object o){
         if (this == o){

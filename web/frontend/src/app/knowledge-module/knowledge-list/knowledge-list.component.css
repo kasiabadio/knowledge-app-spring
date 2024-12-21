@@ -1,28 +1,12 @@
-
-.knowledge-list-content {
-  position: relative; /* Ensure positioning is within the parent */
-  width: 100%; /* Restrict to full width of its parent */
-  max-height: 100%; /* Constrain height */
-  overflow-y: auto; /* Enable scrolling for long lists */
-  padding: 20px; /* Add padding to avoid touching edges */
-  background-color: rgba(255, 255, 255, 0.6); /* Add visible background if needed */
-  border-radius: 10px; /* Optional: rounded corners */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+    background-color: white;
+    color: black;
 }
 
-ul {
-  max-height: 80vh;
-  overflow-y: auto;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.card-container mat-card {
+  background-color: white;
 }
-
-li {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  white-space: nowrap;
-}
-
-
