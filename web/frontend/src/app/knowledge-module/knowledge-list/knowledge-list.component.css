@@ -1,41 +1,28 @@
-body, html {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.container {
-  font-family: Arial, sans-serif;
-  font-size: 24px;
-  margin: 25 px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.knowledge-list-content {
+  position: relative; /* Ensure positioning is within the parent */
+  width: 100%; /* Restrict to full width of its parent */
+  max-height: 100%; /* Constrain height */
+  overflow-y: auto; /* Enable scrolling for long lists */
+  padding: 20px; /* Add padding to avoid touching edges */
+  background-color: rgba(255, 255, 255, 0.6); /* Add visible background if needed */
+  border-radius: 10px; /* Optional: rounded corners */
 }
-
 
 ul {
   max-height: 80vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 li {
   display: flex;
-  white-space: nowrap;
   justify-content: center;
   align-items: center;
   height: 50px;
+  white-space: nowrap;
 }
 
-ul {
-    list-style-type: none;
-}
 

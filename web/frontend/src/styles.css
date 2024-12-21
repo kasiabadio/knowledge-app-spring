@@ -10,6 +10,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
+  top: 0;
   background-image: url('./assets/background-skyblue.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -80,3 +81,5 @@ body {
 .buttonDetails:hover {
   background-color: #FFBD59;
 }
+
+

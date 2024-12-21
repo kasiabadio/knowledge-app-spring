@@ -26,11 +26,11 @@ export class CategoryListComponent implements OnInit {
 
   loadCategories(){
     this.service.getCategories().subscribe({
-              next: (data: Category[]) => {
-                  this.categories = data;
-                },
-              error: err => console.log(err)
-              })
+        next: (data: Category[]) => {
+            this.categories = data;
+          },
+        error: err => console.log(err)
+        })
     }
 
   backToKnowledge(){

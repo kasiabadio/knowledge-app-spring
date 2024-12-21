@@ -1,13 +1,17 @@
 
-<ul>
-  <li *ngFor="let k of knowledge">
-    <button class="button buttonRemove" type="button" (click)="deleteKnowledge(k)">
-    </button>
-    <button class="button buttonDetails" type="button" (click)="selectKnowledge(k)">
-      {{ k.title }}
-    </button>
-  </li>
-</ul>
+<div class="knowledge-list-content">
+  <ul>
+    <li *ngFor="let k of knowledge">
+      <button class="button buttonRemove" type="button" (click)="deleteKnowledge(k)">
+      </button>
+      <button class="button buttonDetails" type="button" (click)="selectKnowledge(k)">
+        {{ k.title }}
+      </button>
+    </li>
+  </ul>
+</div>
+
+
 
 
 
