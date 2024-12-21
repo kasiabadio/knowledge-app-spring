@@ -1,30 +1,22 @@
 <div class="content">
+  <div class="knowledge-detail-container">
+    <div class="pagebutton back" *ngIf="!knowledgeForm">
+      <button class="button buttonBack" type="button" (click)="backToKnowledge()">
+      </button>
+      <p>Back</p>
+    </div>
 
-  <div class="pagebutton back" *ngIf="knowledgeForm">
-    <button class="button buttonBack" type="button" (click)="backToDetail()">
-    </button>
-    <p>Cofnij</p>
-  </div>
+    <div class="pagebutton delete" *ngIf="knowledge !knowledgeForm">
+      <p>Delete</p>
+      <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge)">
+      </button>
+    </div>
 
-  <div class="pagebutton back" *ngIf="!knowledgeForm">
-    <button class="button buttonBack" type="button" (click)="backToKnowledge()">
-    </button>
-    <p>Cofnij</p>
-  </div>
-
-  <div class="pagebutton delete" *ngIf="knowledge !knowledgeForm">
-    <p>Usuń z bazy wiedzy</p>
-    <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge)">
-    </button>
-  </div>
-
-  <div class="pagebutton edit" *ngIf="knowledge !knowledgeForm">
-    <p>Edytuj</p>
-    <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge)">
-    </button>
-  </div>
-
-  <div class="container">
+    <div class="pagebutton edit" *ngIf="knowledge !knowledgeForm">
+      <p>Edit</p>
+      <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge)">
+      </button>
+    </div>
 
     <div *ngIf="knowledge && !knowledgeForm">
       <p id="title">{{ knowledge.title }}</p>
@@ -35,38 +27,36 @@
     </div>
 
     <ng-container *ngIf="knowledgeForm">
-      <p>Edytuj</p>
+      <p>Edit</p>
       <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
 
         <div class="formGroup">
           <label class="label" for="titleEdit">Tytuł</label>
           <input type="text" class="formControl" id="titleEdit" formControlName="title">
           <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
-            Tytuł jest wymagany.
+            Title is required.
           </div>
         </div>
 
         <div class="formGroup">
-          <label class="label" for="contentEdit">Zawartość</label>
+          <label class="label" for="contentEdit">Content</label>
           <input type="text" class="formControl" id="contentEdit" formControlName="content">
           <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
-            Zawartość jest wymagana.
+            Content is required.
           </div>
         </div>
 
 
         <div class="formGroup">
-          <label class="label" for="authorEdit">Autor</label>
+          <label class="label" for="authorEdit">Author</label>
           <input type="text" class="formControl" id="authorEdit" formControlName="author">
           <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
-            Proszę wpisać autora.
+            Please enter author.
           </div>
         </div>
 
-        <button type="submit" class="button buttonSubmit">Zaktualizuj</button>
+        <button type="submit" class="button buttonSubmit">Submit</button>
       </form>
     </ng-container>
-
   </div>
-
 </div>
