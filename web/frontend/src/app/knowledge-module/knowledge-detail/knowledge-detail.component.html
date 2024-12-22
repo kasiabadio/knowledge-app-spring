@@ -31,8 +31,8 @@
       <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
 
         <div class="formGroup">
-          <label class="label" for="titleEdit">Tytuł</label>
-          <input type="text" class="formControl" id="titleEdit" formControlName="title">
+          <label class="label" for="titleEdit">Title</label>
+          <textarea type="text" class="formControl" id="titleEdit" formControlName="title"></textarea>
           <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
             Title is required.
           </div>
@@ -40,7 +40,7 @@
 
         <div class="formGroup">
           <label class="label" for="contentEdit">Content</label>
-          <input type="text" class="formControl" id="contentEdit" formControlName="content">
+          <textarea type="text" class="formControl" id="contentEdit" formControlName="content"></textarea>
           <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
             Content is required.
           </div>
@@ -49,7 +49,7 @@
 
         <div class="formGroup">
           <label class="label" for="authorEdit">Author</label>
-          <input type="text" class="formControl" id="authorEdit" formControlName="author">
+          <textarea type="text" class="formControl" id="authorEdit" formControlName="author"></textarea>
           <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
             Please enter author.
           </div>

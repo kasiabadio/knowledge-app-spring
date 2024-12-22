@@ -2,38 +2,37 @@
   <div class="pagebutton back">
     <button class="button buttonBack" type="button" (click)="backToKnowledge()">
     </button>
-    <p>Cofnij</p>
+    <p>Back</p>
   </div>
 
-  <div class="container ">
+  <div class="knowledge-edit-container ">
     <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
 
       <div class="formGroup">
-        <label class="label" for="title">Tytuł</label>
-        <input type="text" class="formControl" id="title" formControlName="title">
+        <label class="label" for="title">Title</label>
+        <textarea type="text" class="formControl" id="title" formControlName="title"></textarea>
         <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
-          Tytuł jest wymagany. Może zawierać tylko litery i cyfry.
+          Title is required. Must contain only numbers and letters.
         </div>
       </div>
 
       <div class="formGroup">
-        <label class="label" for="content">Zawartość</label>
-        <input type="text" class="formControl" id="content" formControlName="content">
+        <label class="label" for="content">Content</label>
+        <textarea type="text" class="formControl" id="content" formControlName="content"></textarea>
         <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
-          Zawartość jest wymagana.
+          Content is required.
         </div>
       </div>
-
 
       <div class="formGroup">
         <label class="label" for="author">Autor</label>
-        <input type="text" class="formControl" id="author" formControlName="author">
+        <textarea type="text" class="formControl" id="author" formControlName="author"></textarea>
         <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
-          Proszę wpisać autora. Może zawierać tylko litery i cyfry.
+          Please enter author. Can only contain numbers and letters.
         </div>
       </div>
 
-      <button type="submit" class="button buttonSubmit">Dodaj</button>
+      <button type="submit" class="button buttonSubmit">Add</button>
     </form>
   </div>
 

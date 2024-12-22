@@ -1,42 +1,52 @@
-.container {
+.knowledge-edit-container {
   font-family: Arial, sans-serif;
   font-size: 14px;
-  margin: 25 px;
-  width: 500 px;
-  max-height: 80vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  max-width: 100%; /* Ensure it doesn't exceed the parent */
+  padding: 20px;
+  background-color: #fff; /* White background */
+  border: 1px solid #ccc; /* Optional: Border for clarity */
+  border-radius: 10px; /* Rounded corners */
+  box-sizing: border-box; /* Include padding and border in total width */
 }
-
 
 .formGroup {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column; /* Arrange label and input vertically */
+  width: 100%; /* Ensure it fits within the container */
+}
+
+.formControl {
+  width: 300px;
+  height: 400px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  vertical-align: top;
+  line-height: 1.5;
+  text-align: start;
 }
 
 .back {
   font-family: Arial, sans-serif;
-  position: absolute;
   font-size: 12px;
-  top: 10px;
-  left: 30px;
   display: flex;
-  white-space: nowrap;
+  align-items: center; /* Align text with the button */
+  gap: 5px; /* Add spacing between button and text */
 }
 
-#title {
-  width: 1000px;
-  height: 100px;
-}
-
-#content {
-  width: 1000px;
-  height: 1000px;
-}
-
-#author {
-  width: 1000px;
+#title, #content, #author {
+  width: 100%; /* Full width of the parent container */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc; /* Add a border to inputs */
+  border-radius: 5px; /* Optional: Rounded corners for inputs */
+  box-sizing: border-box; /* Include padding and border in size calculations */
+  vertical-align: top;
+  line-height: 1.5;
+  text-align: start;
 }
 
 .label {
@@ -44,3 +54,4 @@
   margin-bottom: 5px;
   font-weight: bold;
 }
+

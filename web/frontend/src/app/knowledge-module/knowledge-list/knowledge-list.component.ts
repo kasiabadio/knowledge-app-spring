@@ -50,6 +50,12 @@ export class KnowledgeListComponent implements OnInit {
         })
     }
 
+  getFirstWords(content: string, wordCount: number): string {
+    if (!content) return '';
+    const words = content.split(' ');
+    return words.length > wordCount ? words.slice(0, wordCount).join(' ') + '...' : content;
+  }
+
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
       console.log("Navigate to: " + knowledge.idKnowledge);
