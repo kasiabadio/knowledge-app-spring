@@ -53,9 +53,22 @@ export class TokenService {
     if (token) {
       const jwtHelper = new JwtHelperService();
       const decodedToken = jwtHelper.decodeToken(token);
-      console.log(decodedToken.authorities);
       return decodedToken.authorities;
     }
     return [];
   }
+
+  get currentUser(): { email: string, fullName: string, authorities: string[] } | null {
+      const token = this.token;
+      if (token) {
+        const jwtHelper = new JwtHelperService();
+        const decodedToken = jwtHelper.decodeToken(token);
+        return {
+          email: decodedToken.sub,
+          fullName: decodedToken.fullName,
+          authorities: decodedToken.authorities
+        };
+      }
+      return null;
+    }
 }

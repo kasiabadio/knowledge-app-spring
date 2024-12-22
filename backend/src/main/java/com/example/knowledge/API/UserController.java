@@ -5,10 +5,12 @@ import com.example.knowledge.models.Dto.PasswordDto;
 import com.example.knowledge.models.User;
 import com.example.knowledge.services.AuthenticationService;
 import com.example.knowledge.services.UserService;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -30,6 +32,29 @@ public class UserController {
     private final JavaMailSender mailSender;
     private final MessageSource messageSource;
     private final AuthenticationService authenticationService;
+
+    @GetMapping("getUserIdByEmail/{email}")
+    private ResponseEntity<Optional<Long>> getUserIdByEmail(@PathVariable String email){
+
+        if (!StringUtils.isEmpty(email)){
+            log.info("Controller: Getting id user by email: {}", email);
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserIdByEmail(email));
+        } else {
+            log.error("Controller: no email provided");
+        }
+        return null;
+    }
+
+    @GetMapping("getUserByEmail/{email}")
+    private ResponseEntity<Optional<User>> getUserByEmail(@PathVariable String email){
+        if (!StringUtils.isEmpty(email)){
+            log.info("Controller: Getting user by email: {}", email);
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
+        } else {
+            log.error("Controller: no email provided");
+        }
+        return null;
+    }
 
     // Return a consistent JSON structure for all responses
     private ResponseEntity<Map<String, String>> createResponse(HttpStatus status, String message) {

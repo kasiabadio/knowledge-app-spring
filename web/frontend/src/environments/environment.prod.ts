@@ -3,6 +3,7 @@ export const environment = {
   apiUrlKnowledge: 'http://localhost:8080/api/knowledge',
   apiUrlCategories: 'http://localhost:8080/api/categories',
   apiUrlCategoriesKnowledges: 'http://localhost:8080/api/categories-knowledges',
-  apiUrlPassword: 'http://localhost:8080/api/users'
+  apiUrlPassword: 'http://localhost:8080/api/users',
+  apiUrlUsers: 'http://localhost:8080/api/users'
 };
 

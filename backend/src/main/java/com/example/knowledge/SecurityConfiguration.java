@@ -51,7 +51,9 @@ public class SecurityConfiguration {
                                         "/password-reset",
                                         "/register",
                                         "/activate-account",
-                                        "/api/knowledge/**"
+                                        "/api/knowledge/**",
+                                        "/api/users/getUserIdByEmail/**",
+                                        "/api/users/getUserByEmail/**"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/api/users",

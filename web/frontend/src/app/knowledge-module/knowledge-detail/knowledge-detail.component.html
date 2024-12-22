@@ -47,14 +47,6 @@
         </div>
 
 
-        <div class="formGroup">
-          <label class="label" for="authorEdit">Author</label>
-          <textarea type="text" class="formControl" id="authorEdit" formControlName="author"></textarea>
-          <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
-            Please enter author.
-          </div>
-        </div>
-
         <button type="submit" class="button buttonSubmit">Submit</button>
       </form>
     </ng-container>

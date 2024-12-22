@@ -24,14 +24,6 @@
         </div>
       </div>
 
-      <div class="formGroup">
-        <label class="label" for="author">Autor</label>
-        <textarea type="text" class="formControl" id="author" formControlName="author"></textarea>
-        <div *ngIf="knowledgeForm?.get('author')?.invalid && knowledgeForm?.get('author')?.touched" class="textDanger">
-          Please enter author. Can only contain numbers and letters.
-        </div>
-      </div>
-
       <button type="submit" class="button buttonSubmit">Add</button>
     </form>
   </div>

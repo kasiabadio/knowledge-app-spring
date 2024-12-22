@@ -56,7 +56,7 @@ public class KnowledgeService {
             return kr.save(knowledge);
         } catch (Exception e){
             log.error("Service: Error creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
-            throw e;
+            throw new RuntimeException("Could not save Knowledge entity. Reason: " + e.getMessage(), e);
         }
     }
 

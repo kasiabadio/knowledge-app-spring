@@ -40,7 +40,7 @@ export class KnowledgeService {
     }
 
   createKnowledge(knowledge: Knowledge): Observable<Knowledge> {
-    const url = `${this.apiUrl}/add`
+      const url = `${this.apiUrl}/add`
       return this.http.post<Knowledge>(url, knowledge).pipe(catchError(this.errorHandlingService.handleError));
     }
 

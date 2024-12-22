@@ -6,6 +6,7 @@ import com.example.knowledge.repositories.PasswordTokenRepository;
 import com.example.knowledge.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -26,6 +28,30 @@ public class UserService {
     private final MessageSource messageSource;
     private final PasswordEncoder passwordEncoder;
 
+
+    public Optional<Long> getUserIdByEmail(String email){
+        try {
+            log.info("Service: Getting id user by email: {}", email);
+            return userRepository
+                    .getUserIdByEmail(email);
+        } catch (EntityNotFoundException e){
+            log.error("Service: Failed to find user id with email: {}", email);
+            throw e;
+        }
+
+    }
+
+    public Optional<User> getUserByEmail(String email){
+        try {
+            log.info("Service: Getting user by email: {}", email);
+            return userRepository
+                    .getUserByEmail(email);
+        } catch (EntityNotFoundException e){
+            log.error("Service: Failed to find user with email: {}", email);
+            throw e;
+        }
+
+    }
 
     public void createPasswordResetTokenForUser(User user, String token) throws Exception {
 

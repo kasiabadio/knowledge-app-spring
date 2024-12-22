@@ -3,6 +3,8 @@ import { NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KnowledgeService } from '../../services/knowledge.service';
+import { TokenService } from '../../token/token.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-knowledge-form',
@@ -14,23 +16,42 @@ import { KnowledgeService } from '../../services/knowledge.service';
 export class KnowledgeFormComponent implements OnInit {
     knowledgeForm: any;
     validatorString: string;
+    currentUser: any;
 
-    constructor(private serviceKnowledge: KnowledgeService, private fb: FormBuilder, private router: Router) {
+    constructor(private serviceKnowledge: KnowledgeService,
+      private fb: FormBuilder,
+      private router: Router,
+      private tokenService: TokenService,
+      private userService: UserService) {
         this.validatorString = '^[a-zA-Z,.!?\\s-]+$';
     }
 
     ngOnInit(): void {
         this.knowledgeForm = this.fb.group({
-          title: ['', [Validators.required, Validators.pattern(this.validatorString)]],
-          content: ['', [Validators.required]],
-          author: ['', [Validators.required, Validators.pattern(this.validatorString)]]
-          });
+        title: ['', [Validators.required, Validators.pattern(this.validatorString)]],
+        content: ['', [Validators.required]],
+        user: [null, this.numberValidator]
+        });
+
+         this.currentUser = this.tokenService.currentUser;
+           if (this.currentUser) {
+               this.userService.getUserByEmail(this.currentUser.email).subscribe({
+                 next: (user) => {
+                   this.currentUser = user;
+                   console.log("Fetched user, id:", user.idUser);
+                   this.knowledgeForm.patchValue({ user: this.currentUser });
+                   }
+                 })
+           } else {
+              console.warn('No current user found.');
+           }
 
       }
 
     onSubmit(): void {
+
       if (this.knowledgeForm.valid){
-        console.log("Wartości w forms: ");
+        console.log('Submitting Knowledge Form...');
         console.table(this.knowledgeForm.value);
           this.serviceKnowledge.createKnowledge(this.knowledgeForm.value).subscribe({
             next: ()=>{
@@ -40,7 +61,18 @@ export class KnowledgeFormComponent implements OnInit {
             });
         } else {
           console.log("Not correct form");
+          console.log('Form Status:', this.knowledgeForm.status);
+          console.log('Form Errors:', this.knowledgeForm.errors);
+          console.log('Form Values:', this.knowledgeForm.value);
           }
+      }
+
+    numberValidator(control: any) {
+        const value = control.value;
+        if (value === null || value === undefined || isNaN(value)) {
+          return { invalidNumber: true }; // Return an error if not a valid number
+        }
+        return null; // Valid
       }
 
 

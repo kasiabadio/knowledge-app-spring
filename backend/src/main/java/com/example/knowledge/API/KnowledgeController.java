@@ -56,6 +56,7 @@ public class KnowledgeController {
 
     @PostMapping("/add")
     public ResponseEntity<Knowledge> createKnowledge(@RequestBody Knowledge knowledge){
+        log.info("Saving Knowledge: {}", knowledge);
         Knowledge knowledgeNew = ks.createKnowledge(knowledge);
         if (knowledgeNew != null){
             log.info("Controller: Creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());

@@ -1,6 +1,5 @@
 package com.example.knowledge.repositories;
 import com.example.knowledge.models.Knowledge;
-import com.example.knowledge.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

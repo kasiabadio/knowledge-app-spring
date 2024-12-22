@@ -1,4 +1,4 @@
-import { CategoryKnowledgeGroup } from './categoryknowledgegroup';
+import { User } from './user';
 
 export interface Knowledge {
     idKnowledge: number,
@@ -6,6 +6,6 @@ export interface Knowledge {
     content: string,
     createdDate: Date,
     lastModifiedDate: Date,
-    author: string,
+    user: User,
     knowledgeCategories: any[]
   }

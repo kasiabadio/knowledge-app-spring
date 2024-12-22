@@ -44,7 +44,9 @@ export class KnowledgeDetailComponent implements OnInit {
             });
 
             this.loadCategories();
-          }
+
+
+     }
 
     loadCategories(){
           this.serviceCategory.getCategories().subscribe({
@@ -87,7 +89,7 @@ export class KnowledgeDetailComponent implements OnInit {
               idKnowledge: new FormControl(knowledge.idKnowledge),
               title: new FormControl(knowledge.title),
               content: new FormControl(knowledge.content),
-              author: new FormControl(knowledge.author),
+              user: new FormControl(knowledge.user),
           });
 
         this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
