@@ -10,3 +10,15 @@
 .card-container mat-card {
   background-color: white;
 }
+
+.searchAdvanced,
+.searchSimple {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+}
+
+.searchSimple {
+  top: 60px;
+}

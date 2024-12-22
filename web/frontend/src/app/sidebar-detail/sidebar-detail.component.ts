@@ -16,7 +16,9 @@ import { Knowledge } from '../models/knowledge';
 })
 export class SidebarDetailComponent {
 
-    constructor(private service: KnowledgeService, private tokenService: TokenService, private router: Router){}
+    constructor(private service: KnowledgeService,
+      private tokenService: TokenService,
+      private router: Router){}
 
 
     addKnowledge(){
@@ -35,17 +37,5 @@ export class SidebarDetailComponent {
       this.tokenService.token = '';
       }
 
-//     searchKnowledge(searchText: string){
-//       if (searchText.trim() !== ''){
-//            this.service.findBy(searchText).subscribe({
-//               next: (data: Knowledge[]) => {
-//                   this.knowledge = data;
-//                 },
-//               error: err=> console.log(err)
-//               })
-//         } else {
-//           this.loadKnowledge();
-//           }
-//       }
 
 }

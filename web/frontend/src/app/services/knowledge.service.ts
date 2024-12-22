@@ -17,75 +17,41 @@ export class KnowledgeService {
     private errorHandlingService: ErrorHandlingService
     ) { }
 
+
   getKnowledge(): Observable<Knowledge[]>{
     const url = `${this.apiUrl}/all`;
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      };
-    return this.http.get<Knowledge[]>(url, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+    return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   getKnowledgeById(id: number): Observable<Knowledge> {
-      const url = `${this.apiUrl}/${id}`;
-      const token = localStorage.getItem('token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        };
-      return this.http.get<Knowledge>(url, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+      const url = `${this.apiUrl}/getById/${id}`;
+      return this.http.get<Knowledge>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
-  getKnowledgeByTitleAndAuthor(title: string, author: string){
-      const url = `${this.apiUrl}/${title}/${author}`;
-      const token = localStorage.getItem('token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        };
-      return this.http.get<Knowledge>(url, {headers}).pipe(catchError(this.errorHandlingService.handleError));
-    }
 
   getKnowledgeByTitlePhrase(titlePhrase: string){
-      const url = `${this.apiUrl}/search/${titlePhrase}`;
-      const token = localStorage.getItem('token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        };
-      return this.http.get<Knowledge[]>(url, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+      const url = `${this.apiUrl}/searchByPhrase/${titlePhrase}`;
+      return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   findBy(phrase: string){
-      const url = `${this.apiUrl}/searchAll/${phrase}`;
-      const token = localStorage.getItem('token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        };
-      return this.http.get<Knowledge[]>(url, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+      const url = `${this.apiUrl}/searchAllByPhrase/${phrase}`;
+      return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   createKnowledge(knowledge: Knowledge): Observable<Knowledge> {
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      };
-      return this.http.post<Knowledge>(this.apiUrl, knowledge, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+    const url = `${this.apiUrl}/add`
+      return this.http.post<Knowledge>(url, knowledge).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   updateKnowledge(knowledge: Knowledge): Observable<Knowledge>{
-    const url = `${this.apiUrl}/${knowledge.idKnowledge}`;
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      };
-    return this.http.put<Knowledge>(url, knowledge, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+    const url = `${this.apiUrl}/update/${knowledge.idKnowledge}`;
+    return this.http.put<Knowledge>(url, knowledge).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   deleteKnowledge(id: number): Observable<void>{
-    const url = `${this.apiUrl}/${id}`;
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      };
-    return this.http.delete<void>(url, {headers}).pipe(catchError(this.errorHandlingService.handleError));
+    const url = `${this.apiUrl}/delete/${id}`;
+    return this.http.delete<void>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
 }

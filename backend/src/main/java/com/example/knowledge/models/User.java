@@ -12,6 +12,7 @@
 // limitations under the License.
 
 package com.example.knowledge.models;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -67,8 +68,13 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
-    Set<Comment> userComments;
+    private Set<Comment> comments;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private Set<Knowledge> knowledges;
 
     @Override
     public String getName() {
@@ -117,5 +123,15 @@ public class User implements UserDetails, Principal {
 
     public String fullName(){
         return firstName + " " + lastName;
+    }
+
+    public void addKnowledge(Knowledge knowledge){
+        knowledges.add(knowledge);
+        knowledge.setUser(this);
+    }
+
+    public void removeKnowledge(Knowledge knowledge){
+        knowledges.remove(knowledge);
+        knowledge.setUser(this);
     }
 }

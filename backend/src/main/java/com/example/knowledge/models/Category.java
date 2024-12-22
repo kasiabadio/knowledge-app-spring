@@ -21,8 +21,8 @@ public class Category implements Serializable {
     @Column(name = "category_name")
     private String categoryName;
 
-    @OneToMany(orphanRemoval = true, cascade=CascadeType.REMOVE, mappedBy = "category") @JsonManagedReference(value = "category-categoryKnowledgeGroup")
-    Set<CategoryKnowledgeGroup> categoryKnowledges;
+    @OneToMany(mappedBy = "category", orphanRemoval = true, cascade=CascadeType.REMOVE)
+    Set<CategoryKnowledgeGroup> knowledges;
 
     @Override
     public boolean equals(Object o){
@@ -35,12 +35,12 @@ public class Category implements Serializable {
         Category category = (Category) o;
         return Objects.equals(idCategory, category.idCategory) &&
                 Objects.equals(categoryName, category.categoryName) &&
-                Objects.equals(categoryKnowledges, category.categoryKnowledges);
+                Objects.equals(knowledges, category.knowledges);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(idCategory, categoryName, categoryKnowledges);
+        return Objects.hash(idCategory, categoryName, knowledges);
     }
 
     @Override
@@ -48,6 +48,6 @@ public class Category implements Serializable {
         return "Category{" +
                 "id=" + idCategory +
                 ", category name=" + categoryName +
-                ", categoryKnowledges size=" + categoryKnowledges.size();
+                ", categoryKnowledges size=" + knowledges.size();
     }
 }

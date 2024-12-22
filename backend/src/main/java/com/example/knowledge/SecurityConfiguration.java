@@ -48,12 +48,17 @@ public class SecurityConfiguration {
                         req.requestMatchers(
                                         "/auth/**",
                                         "/api/auth/**",
-                                        "/",
                                         "/password-reset",
                                         "/register",
-                                        "/activate-account"
+                                        "/activate-account",
+                                        "/api/knowledge/**"
                                 ).permitAll()
-                                .requestMatchers("/api/**")
+                                .requestMatchers(
+                                        "/api/users",
+                                        "/api/categories",
+                                        "/api/categories-knowledges",
+                                        "/api/comments"
+                                )
                                 .authenticated()
                                 .anyRequest()
                                 .authenticated()

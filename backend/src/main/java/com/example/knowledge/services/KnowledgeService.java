@@ -24,23 +24,14 @@ public class KnowledgeService {
 
     public Knowledge getKnowledgeById(Long id){
         log.info("Service: Getting Knowledge entry: {}", id);
-        return kr.findById(id).orElseThrow(() ->
+        return kr.getByIdPublic(id).orElseThrow(() ->
                 new EntityNotFoundException("Knowledge entity not found with id " + id));
     }
 
-    public List<Knowledge> getKnowledgeByTitleAndAuthor(String title, String author) throws GlobalExceptionHandler.EmptyListException {
-
-        List<Knowledge> items = kr.findKnowledgeByTitleAndAuthor(title, author);
-        if (items.isEmpty()){
-            throw new GlobalExceptionHandler.EmptyListException("Can't find knowledge entries with " + title + " and " + author);
-        }
-        log.info("Service: Getting Knowledge entry: title: {} author: {}", title, author);
-        return items;
-    }
 
     public List<Knowledge> getKnowledgeByTitlePhrase(String titlePhrase) throws GlobalExceptionHandler.EmptyListException {
 
-        List<Knowledge> items = kr.findKnowledgeTitlePhrase(titlePhrase);
+        List<Knowledge> items = kr.findKnowledgeTitlePhrasePublic(titlePhrase);
         if (items.isEmpty()){
             throw new GlobalExceptionHandler.EmptyListException("Can't find knowledge entries with titlePhrase:  " + titlePhrase);
         }
@@ -48,8 +39,8 @@ public class KnowledgeService {
         return items;
     }
 
-    public List<Knowledge> findBy(String title, String content, String author) throws GlobalExceptionHandler.EmptyListException {
-        List<Knowledge> items =  kr.findBy(title, content, author);
+    public List<Knowledge> findBy(String title, String content) throws GlobalExceptionHandler.EmptyListException {
+        List<Knowledge> items =  kr.findByPublic(title, content);
         if (items.isEmpty()){
             throw new GlobalExceptionHandler.EmptyListException("Can't find knowledge entries with phrase:  " + title);
         }
@@ -70,14 +61,14 @@ public class KnowledgeService {
     }
 
     public Knowledge updateKnowledge(Knowledge knowledge){
-        Knowledge k = kr.findById(knowledge.getIdKnowledge()).orElseThrow(() -> new
+        Knowledge k = kr.getByIdPublic(knowledge.getIdKnowledge()).orElseThrow(() -> new
                 EntityNotFoundException("Knowledge entity not found with id: " +
                 knowledge.getIdKnowledge()));
 
         Date currentDate = new Date();
         k.setLastModifiedDate(currentDate);
         k.setIdKnowledge(knowledge.getIdKnowledge());
-        k.setAuthor(knowledge.getAuthor());
+        k.setUser(knowledge.getUser());
         k.setTitle(knowledge.getTitle());
         k.setContent(knowledge.getContent());
         try {
@@ -95,7 +86,7 @@ public class KnowledgeService {
     }
 
     public List<Knowledge> getAllKnowledge() {
-        return kr.findAll();
+        return kr.findAllPublic();
     }
 
 }

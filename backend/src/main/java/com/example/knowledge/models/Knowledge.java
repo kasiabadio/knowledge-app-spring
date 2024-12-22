@@ -14,6 +14,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "knowledge")
 public class Knowledge implements Serializable {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_knowledge")
     private Long idKnowledge;
@@ -30,14 +31,20 @@ public class Knowledge implements Serializable {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
 
-    @Column(name = "author")
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "idUser")
+    private User user;
 
-    @OneToMany(orphanRemoval = true, cascade=CascadeType.REMOVE, mappedBy = "knowledge") @JsonManagedReference(value = "knowledge-categoryKnowledgeGroup")
-    Set<CategoryKnowledgeGroup> knowledgeCategories;
+    @Column(name = "isPublicKnowledge")
+    private boolean isPublicKnowledge;
 
-    @OneToMany(mappedBy = "knowledge")
-    Set<Comment> commentsUnderKnowledge;
+    @JsonManagedReference
+    @OneToMany( mappedBy = "knowledge", cascade=CascadeType.REMOVE, orphanRemoval = true)
+    Set<CategoryKnowledgeGroup> categories;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "knowledge", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Comment> comments;
 
     @Override
     public boolean equals(Object o){
@@ -53,12 +60,12 @@ public class Knowledge implements Serializable {
                 Objects.equals(content, knowledge.content) &&
                 Objects.equals(createdDate, knowledge.createdDate) &&
                 Objects.equals(lastModifiedDate, knowledge.lastModifiedDate) &&
-                Objects.equals(author, knowledge.author);
+                Objects.equals(user, knowledge.user);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(idKnowledge, title, content, createdDate, lastModifiedDate, author);
+        return Objects.hash(idKnowledge, title, content, createdDate, lastModifiedDate, user);
     }
 
     @Override
@@ -69,8 +76,19 @@ public class Knowledge implements Serializable {
                 ", content=" + content +
                 ", createdDate=" + createdDate +
                 ", lastModifiedDate=" + lastModifiedDate +
-                ", author=" + author +
+                ", author=" + user.fullName() +
                 '}';
+    }
+
+
+    public void addComment(Comment comment){
+        comments.add(comment);
+        comment.setKnowledge(this);
+    }
+
+    public void removeComment(Comment comment){
+        comments.remove(comment);
+        comment.setKnowledge(null);
     }
 
 }

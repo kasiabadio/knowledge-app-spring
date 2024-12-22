@@ -21,4 +21,6 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "id_knowledge")
     Knowledge knowledge;
+
+
 }

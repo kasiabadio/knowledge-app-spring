@@ -28,23 +28,13 @@ public class KnowledgeController {
         this.ks = ks;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<Knowledge> getKnowledgeById(@PathVariable Long id){
         log.info("Controller: Getting Knowledge entry: {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(ks.getKnowledgeById(id));
     }
 
-    @GetMapping("{title}/{author}")
-    public ResponseEntity<List<Knowledge>> getKnowledgeByTitleAndAuthor(@PathVariable String title, @PathVariable String author) throws GlobalExceptionHandler.EmptyListException {
-        if (title.trim().isEmpty() || author.trim().isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.emptyList());
-        }
-        log.info("Controller: Getting Knowledge entries: title: {} author: {}", title, author);
-        return ResponseEntity.status(HttpStatus.OK).body(ks.getKnowledgeByTitleAndAuthor(title, author));
-    }
-
-    @GetMapping("search/{titlePhrase}")
+    @GetMapping("searchByPhrase/{titlePhrase}")
     public ResponseEntity<List<Knowledge>> getKnowledgeByTitlePhrase(@PathVariable String titlePhrase) throws GlobalExceptionHandler.EmptyListException {
         if (titlePhrase.trim().isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -54,17 +44,17 @@ public class KnowledgeController {
         return ResponseEntity.status(HttpStatus.OK).body(ks.getKnowledgeByTitlePhrase(titlePhrase));
     }
 
-    @GetMapping("searchAll/{phrase}")
+    @GetMapping("searchAllByPhrase/{phrase}")
     public ResponseEntity<List<Knowledge>> findBy(@PathVariable String phrase) throws GlobalExceptionHandler.EmptyListException {
         if (phrase.trim().isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Collections.emptyList());
         }
         log.info("Controller: Getting Knowledge entries: phrase: {}", phrase);
-        return ResponseEntity.status(HttpStatus.OK).body(ks.findBy(phrase, phrase, phrase));
+        return ResponseEntity.status(HttpStatus.OK).body(ks.findBy(phrase, phrase));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Knowledge> createKnowledge(@RequestBody Knowledge knowledge){
         Knowledge knowledgeNew = ks.createKnowledge(knowledge);
         if (knowledgeNew != null){
@@ -75,7 +65,7 @@ public class KnowledgeController {
         }
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Knowledge> updateKnowledge(@RequestBody Knowledge knowledge){
         Knowledge updatedKnowledge = ks.updateKnowledge(knowledge);
         if (updatedKnowledge != null){
@@ -86,7 +76,7 @@ public class KnowledgeController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteKnowledge(@PathVariable Long id){
         log.info("Controller: Deleting Knowledge entry: {}", id);
         ks.deleteKnowledge(id);

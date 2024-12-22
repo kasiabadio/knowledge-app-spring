@@ -1,5 +1,6 @@
 package com.example.knowledge.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +17,12 @@ public class CategoryKnowledgeGroup  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long groupId;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_category")
     Category category;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_knowledge")
     Knowledge knowledge;

@@ -37,6 +37,7 @@ export class KnowledgeListComponent implements OnInit {
 
   ngOnInit(){
         this.token = this.tokenService.token;
+        console.log("Knowledge list public initialized");
         this.loadKnowledge();
         }
 
@@ -56,12 +57,14 @@ export class KnowledgeListComponent implements OnInit {
     return words.length > wordCount ? words.slice(0, wordCount).join(' ') + '...' : content;
   }
 
+// TODO: only if author
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
       console.log("Navigate to: " + knowledge.idKnowledge);
       this.router.navigate(['knowledge/detail', knowledge.idKnowledge]);
     }
 
+// TODO: only if author
   deleteKnowledge(knowledge: Knowledge){
     console.log("Delete by id: " + knowledge.idKnowledge);
     this.service.deleteKnowledge(knowledge.idKnowledge).subscribe({
@@ -70,7 +73,31 @@ export class KnowledgeListComponent implements OnInit {
     this.loadKnowledge();
    }
 
+ searchKnowledgeAdvanced(searchText: string){
+       if (searchText.trim() !== ''){
+            this.service.findBy(searchText).subscribe({
+               next: (data: Knowledge[]) => {
+                   this.knowledge = data;
+                 },
+               error: err=> console.log(err)
+               })
+         } else {
+           this.loadKnowledge();
+           }
+       }
 
+   searchKnowledgeSimple(searchText: string){
+       if (searchText.trim() !== ''){
+         this.service.getKnowledgeByTitlePhrase(searchText).subscribe({
+           next: (data: Knowledge[]) => {
+             this.knowledge = data;
+             },
+           error: err => console.log(err)
+           })
+        } else {
+             this.loadKnowledge();
+             }
+     }
 
 
 }

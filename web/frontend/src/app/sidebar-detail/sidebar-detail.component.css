@@ -12,15 +12,6 @@
   top: 0px;
 }
 
-.search {
-  position: absolute;
-  font-size: 12px;
-  top: 100px;
-  right: 30px;
-  display: flex;
-  white-space: nowrap;
-}
-
 
 .add {
   position: absolute;
