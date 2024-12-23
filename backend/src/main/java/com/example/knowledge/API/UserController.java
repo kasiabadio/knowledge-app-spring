@@ -33,6 +33,16 @@ public class UserController {
     private final MessageSource messageSource;
     private final AuthenticationService authenticationService;
 
+    @GetMapping("/all")
+    private ResponseEntity<List<User>> getUsersNotAdmins(){
+        List<User> users = userService.getUsersNotAdmins();
+        if (!users.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body(users);
+        } else {
+            return null;
+        }
+    }
+
     @GetMapping("getUserIdByEmail/{email}")
     private ResponseEntity<Optional<Long>> getUserIdByEmail(@PathVariable String email){
 

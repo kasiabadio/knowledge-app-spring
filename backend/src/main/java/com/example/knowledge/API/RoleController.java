@@ -38,7 +38,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/deleteRole/{userId}/{roleId}")
-    public ResponseEntity<?> cdeleteRoleForUser(@PathVariable Long userId,
+    public ResponseEntity<?> deleteRoleForUser(@PathVariable Long userId,
                                                @PathVariable Long roleId){
         log.info("Trying deleting role: id user: {}, id role: {}", userId, roleId);
         try {

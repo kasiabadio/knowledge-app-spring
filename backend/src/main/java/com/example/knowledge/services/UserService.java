@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.context.MessageSource;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -31,6 +32,10 @@ public class UserService {
     private final MessageSource messageSource;
     private final PasswordEncoder passwordEncoder;
 
+
+    public List<User> getUsersNotAdmins(){
+        return userRepository.getUsersNotAdmins();
+    }
 
     public void createRoleForUser(Long userId, Long roleId){
         try {
@@ -59,7 +64,6 @@ public class UserService {
 
     public void deleteRoleForUser(Long userId, Long roleId){
         try {
-            //roleRepository.addRoleToUser(userId, roleId);
             Optional<User> user = getUserById(userId);
             if (user.isPresent()){
                 User user2 = user.get();
