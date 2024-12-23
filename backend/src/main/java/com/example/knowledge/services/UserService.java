@@ -1,8 +1,10 @@
 package com.example.knowledge.services;
 
 import com.example.knowledge.models.PasswordResetToken;
+import com.example.knowledge.models.Role;
 import com.example.knowledge.models.User;
 import com.example.knowledge.repositories.PasswordTokenRepository;
+import com.example.knowledge.repositories.RoleRepository;
 import com.example.knowledge.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +27,73 @@ public class UserService {
 
     private final PasswordTokenRepository passwordTokenRepository;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final MessageSource messageSource;
     private final PasswordEncoder passwordEncoder;
 
+
+    public void createRoleForUser(Long userId, Long roleId){
+        try {
+            Optional<User> user = getUserById(userId);
+            if (user.isPresent()){
+                User user2 = user.get();
+                Optional<Role> role = roleRepository.findById(Math.toIntExact(roleId));
+                if (role.isPresent()){
+                    Role role2 = role.get();
+                    user2.addRole(role2);
+                    userRepository.save(user2);
+                } else {
+                    log.warn("Service: Role with ID {} not found", roleId);
+                    throw new IllegalArgumentException("Role not found");
+                }
+            } else {
+                log.warn("Service: User with ID {} not found", userId);
+                throw new IllegalArgumentException("User not found");
+            }
+
+        } catch (Exception e){
+            log.error("Service: Failed to create UserRole, id user: {}, id role: {}", userId, roleId);
+            throw e;
+        }
+    }
+
+    public void deleteRoleForUser(Long userId, Long roleId){
+        try {
+            //roleRepository.addRoleToUser(userId, roleId);
+            Optional<User> user = getUserById(userId);
+            if (user.isPresent()){
+                User user2 = user.get();
+                Optional<Role> role = roleRepository.findById(Math.toIntExact(roleId));
+                if (role.isPresent()){
+                    Role role2 = role.get();
+                    user2.removeRole(role2);
+                    userRepository.save(user2);
+                } else {
+                    log.warn("Service: Role with ID {} not found", roleId);
+                    throw new IllegalArgumentException("Role not found");
+                }
+            } else {
+                log.warn("Service: User with ID {} not found", userId);
+                throw new IllegalArgumentException("User not found");
+            }
+
+        } catch (Exception e){
+            log.error("Service: Failed to delete UserRole, id user: {}, id role: {}", userId, roleId);
+            throw e;
+        }
+    }
+
+    public Optional<User> getUserById(Long id){
+        try {
+            log.info("Service: Gettin user by id: {}", id);
+            return userRepository
+                    .getUserById(id);
+        } catch (EntityNotFoundException e){
+            log.error("Service: Failed to find user with id: {}", id);
+            throw e;
+        }
+
+    }
 
     public Optional<Long> getUserIdByEmail(String email){
         try {

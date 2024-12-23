@@ -134,4 +134,19 @@ public class User implements UserDetails, Principal {
         knowledges.remove(knowledge);
         knowledge.setUser(this);
     }
+
+    public void addRole(Role role){
+        if (!roles.contains(role)){
+            roles.add(role);
+            role.getUsers().add(this);
+        }
+    }
+
+    public void removeRole(Role role){
+        while (roles.contains(role)){
+            roles.remove(role);
+            role.getUsers().remove(this);
+        }
+
+    }
 }

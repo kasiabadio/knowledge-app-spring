@@ -71,21 +71,11 @@ export class KnowledgeListComponent implements OnInit {
     return words.length > wordCount ? words.slice(0, wordCount).join(' ') + '...' : content;
   }
 
-// TODO: only if author
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
       console.log("Navigate to: " + knowledge.idKnowledge);
       this.router.navigate(['knowledge/detail', knowledge.idKnowledge]);
     }
-
-// TODO: only if author
-  deleteKnowledge(knowledge: Knowledge){
-    console.log("Delete by id: " + knowledge.idKnowledge);
-    this.service.deleteKnowledge(knowledge.idKnowledge).subscribe({
-      error: err=>console.log(err)
-      });
-    this.loadKnowledge();
-   }
 
  searchKnowledgeAdvanced(searchText: string){
        if (searchText.trim() !== ''){

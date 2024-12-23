@@ -1,21 +1,32 @@
 <div class="content">
   <div class="knowledge-detail-container">
-    <div class="pagebutton back" *ngIf="!knowledgeForm">
+    <div class="pagebutton back" *ngIf="!knowledgeForm ">
       <button class="button buttonBack" type="button" (click)="backToKnowledge()">
       </button>
       <p>Back</p>
     </div>
 
-    <div class="pagebutton delete" *ngIf="knowledge !knowledgeForm">
+    <div class="pagebutton delete" *ngIf="knowledge && !knowledgeForm &&
+         serviceToken.currentUser !== null &&
+         ((serviceToken.currentUser.authorities?.includes('AUTHOR') && checkIfAuthorIsTheSame() === true) ||
+          checkIfIsAdmin() === true)">
       <p>Delete</p>
       <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge)">
       </button>
     </div>
 
-    <div class="pagebutton edit" *ngIf="knowledge !knowledgeForm">
+    <div class="pagebutton edit" *ngIf="knowledge && !knowledgeForm &&
+         serviceToken.currentUser !== null &&
+         ((serviceToken.currentUser.authorities?.includes('AUTHOR') && checkIfAuthorIsTheSame() === true)
+         || checkIfIsAdmin() === true)">
       <p>Edit</p>
       <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge)">
       </button>
+    </div>
+
+    <div *ngIf="knowledge && !knowledgeForm">
+      <p id="title">{{ knowledge.title }}</p>
+      <p>{{ knowledge.content }}</p>
     </div>
 
     <ng-container *ngIf="knowledgeForm">

@@ -1,11 +1,12 @@
 <div class="sidebar">
-  <div class="add">
-    <p>Dodaj do bazy wiedzy</p>
+  <div class="add" *ngIf="tokenService.currentUser !== null &&
+  tokenService.currentUser.authorities?.includes('AUTHOR')">
+    <p>Add to knowledge</p>
     <button class="button buttonAdd" type="button" (click)="addKnowledge()">
     </button>
   </div>
   <div class="categoriesSearch">
-    <p>Przejdź do kategorii</p>
+    <p>Go to categories</p>
     <button class="button buttonToCategories" type="button" (click)="navigateToCategories()">
     </button>
   </div>
@@ -15,7 +16,7 @@
     <button class="button buttonLogin" type="button" (click)="login()">
     </button>
   </div>
-  <div class="logout">
+  <div class="logout" *ngIf="tokenService.currentUser !== null">
     <p>Logout</p>
     <button class="button buttonLogout" type="button" (click)="logout()">
     </button>

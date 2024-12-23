@@ -39,6 +39,7 @@ public class KnowledgeController {
 
     @GetMapping("searchByPhrase/{titlePhrase}")
     public ResponseEntity<List<Knowledge>> getKnowledgeByTitlePhrase(@PathVariable String titlePhrase) throws GlobalExceptionHandler.EmptyListException {
+        log.info("Controller: Attempt to get Knowledge entries by title phrase: {}", titlePhrase);
         if (titlePhrase.trim().isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Collections.emptyList());

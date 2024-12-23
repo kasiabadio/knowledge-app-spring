@@ -36,6 +36,7 @@ public class KnowledgeService {
 
     public List<Knowledge> getKnowledgeByTitlePhrase(String titlePhrase) throws GlobalExceptionHandler.EmptyListException {
 
+        log.info("Service: Attempt to search by title phrase: {}", titlePhrase);
         List<Knowledge> items = kr.findKnowledgeTitlePhrasePublic(titlePhrase);
         if (items.isEmpty()){
             throw new GlobalExceptionHandler.EmptyListException("Can't find knowledge entries with titlePhrase:  " + titlePhrase);

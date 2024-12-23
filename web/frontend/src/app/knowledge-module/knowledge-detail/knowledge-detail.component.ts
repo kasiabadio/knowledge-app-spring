@@ -10,7 +10,7 @@ import { Knowledge } from '../../models/knowledge';
 import { CategoryKnowledgeGroup } from '../../models/categoryknowledgegroup';
 import { Category } from '../../models/category';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { TokenService } from '../../token/token.service';
 
 
 @Component({
@@ -32,7 +32,12 @@ export class KnowledgeDetailComponent implements OnInit {
     categoryTemp!: Category;
     knowledgeTemp!: Knowledge;
 
-    constructor(private cd: ChangeDetectorRef, private serviceKnowledge: KnowledgeService,  private serviceCategory: CategoryService, private serviceCKG: CategoryknowledgegroupService, private route: ActivatedRoute, private router: Router) {
+    constructor(private cd: ChangeDetectorRef,
+       private serviceKnowledge: KnowledgeService,
+       private serviceCategory: CategoryService,
+       public serviceToken: TokenService,
+       private route: ActivatedRoute,
+       private router: Router) {
         this.id = '';
       }
 
@@ -45,7 +50,19 @@ export class KnowledgeDetailComponent implements OnInit {
 
             this.loadCategories();
 
+     }
 
+   checkIfAuthorIsTheSame(){
+     console.log("Check if author is the same " + this.serviceToken?.currentUser?.email + " " +  this.knowledge?.user.email);
+      if (this.serviceToken?.currentUser?.email === this.knowledge?.user.email){
+        return true;
+        }
+      return false;
+     }
+
+   checkIfIsAdmin(){
+     console.log("Check if is admin " + this.serviceToken?.currentUser?.authorities);
+     return this.serviceToken?.currentUser?.authorities?.includes('ADMIN') || false;
      }
 
     loadCategories(){

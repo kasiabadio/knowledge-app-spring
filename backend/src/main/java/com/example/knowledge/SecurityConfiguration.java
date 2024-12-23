@@ -52,6 +52,7 @@ public class SecurityConfiguration {
                                         "/register",
                                         "/activate-account",
                                         "/api/knowledge/**",
+                                        "/api/roles/**",
                                         "/api/users/getUserIdByEmail/**",
                                         "/api/users/getUserByEmail/**"
                                 ).permitAll()

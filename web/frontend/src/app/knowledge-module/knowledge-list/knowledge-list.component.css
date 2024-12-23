@@ -5,10 +5,20 @@
     grid-row-gap: 1rem;
     background-color: white;
     color: black;
+    margin-top: 100px;
 }
 
 .card-container mat-card {
   background-color: white;
+}
+
+.search-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .searchAdvanced,

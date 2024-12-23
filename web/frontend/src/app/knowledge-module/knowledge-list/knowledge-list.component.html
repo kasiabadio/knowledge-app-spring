@@ -1,18 +1,20 @@
 
 <div class="content">
 
-  <div class="searchAdvanced">
-    <form (submit)="searchKnowledgeAdvanced(attr.value); $event.preventDefault()">
-      <input #attr type="text" placeholder="Type title/content/category" />
-      <button type="submit">Search advanced</button>
-    </form>
-  </div>
+  <div class="search-area">
+    <div class="searchAdvanced">
+      <form (submit)="searchKnowledgeAdvanced(attr1.value); $event.preventDefault()">
+        <input #attr1 type="text" placeholder="Type title/content/category" />
+        <button type="submit">Search advanced</button>
+      </form>
+    </div>
 
-  <div class="searchSimple">
-    <form (submit)="searchKnowledgeSimple(attr.value); $event.preventDefault()">
-      <input #attr type="text" placeholder="Type title" />
-      <button type="submit">Search simple</button>
-    </form>
+    <div class="searchSimple">
+      <form (submit)="searchKnowledgeSimple(attr2.value); $event.preventDefault()">
+        <input #attr2 type="text" placeholder="Type title" />
+        <button type="submit">Search simple</button>
+      </form>
+    </div>
   </div>
 
   <div class="card-container">
