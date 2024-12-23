@@ -7,5 +7,7 @@ export interface Knowledge {
     createdDate: Date,
     lastModifiedDate: Date,
     user: User,
-    knowledgeCategories: any[]
+    isPublicKnowledge: boolean,
+    categories: any[]
+    comments: any[]
   }

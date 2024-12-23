@@ -30,16 +30,15 @@ export class KnowledgeFormComponent implements OnInit {
         this.knowledgeForm = this.fb.group({
         title: ['', [Validators.required, Validators.pattern(this.validatorString)]],
         content: ['', [Validators.required]],
-        user: [null, this.numberValidator]
+        userId: [null, Validators.required]
         });
 
          this.currentUser = this.tokenService.currentUser;
            if (this.currentUser) {
-               this.userService.getUserByEmail(this.currentUser.email).subscribe({
-                 next: (user) => {
-                   this.currentUser = user;
-                   console.log("Fetched user, id:", user.idUser);
-                   this.knowledgeForm.patchValue({ user: this.currentUser });
+               this.userService.getUserIdByEmail(this.currentUser.email).subscribe({
+                 next: (id) => {
+                   console.log("Fetched user, id:", id);
+                   this.knowledgeForm.patchValue({ userId: id });
                    }
                  })
            } else {

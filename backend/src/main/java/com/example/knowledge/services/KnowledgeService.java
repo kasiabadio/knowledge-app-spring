@@ -1,8 +1,11 @@
 package com.example.knowledge.services;
 
 import com.example.knowledge.GlobalExceptionHandler;
+import com.example.knowledge.models.Dto.KnowledgeDto;
 import com.example.knowledge.models.Knowledge;
+import com.example.knowledge.models.User;
 import com.example.knowledge.repositories.KnowledgeRepository;
+import com.example.knowledge.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +19,12 @@ import java.util.List;
 public class KnowledgeService {
 
     private final KnowledgeRepository kr;
+    private final UserRepository ur;
 
     @Autowired
-    public KnowledgeService(KnowledgeRepository kr){
+    public KnowledgeService(KnowledgeRepository kr, UserRepository ur){
         this.kr = kr;
+        this.ur = ur;
     }
 
     public Knowledge getKnowledgeById(Long id){
@@ -47,10 +52,17 @@ public class KnowledgeService {
         return items;
     }
 
-    public Knowledge createKnowledge(Knowledge knowledge){
-        Date currentDate = new Date();
-        knowledge.setCreatedDate(currentDate);
-        knowledge.setLastModifiedDate(currentDate);
+    public Knowledge createKnowledge(KnowledgeDto knowledgeDto){
+        User user = ur.findById(Math.toIntExact(knowledgeDto.getUserId()))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+        Knowledge knowledge = new Knowledge();
+        log.info("Service: Preparing Knowledge entry: {}", knowledge.getIdKnowledge());
+        knowledge.setTitle(knowledgeDto.getTitle());
+        knowledge.setContent(knowledgeDto.getContent());
+        knowledge.setUser(user);
+        knowledge.setCreatedDate(new Date());
+        knowledge.setLastModifiedDate(new Date());
+        user.addKnowledge(knowledge);
         try {
             log.info("Service: Creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
             return kr.save(knowledge);

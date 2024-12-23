@@ -18,14 +18,6 @@
       </button>
     </div>
 
-    <div *ngIf="knowledge && !knowledgeForm">
-      <p id="title">{{ knowledge.title }}</p>
-      <p>{{ knowledge.content }}</p>
-      <ul>
-        <li *ngFor="let c of knowledge.knowledgeCategories">category: {{c.groupId.idCategory}}, knowledge: {{c.groupId.idKnowledge}} </li>
-      </ul>
-    </div>
-
     <ng-container *ngIf="knowledgeForm">
       <p>Edit</p>
       <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">

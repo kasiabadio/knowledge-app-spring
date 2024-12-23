@@ -1,14 +1,17 @@
 package com.example.knowledge.API;
 import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.GlobalExceptionHandler;
+import com.example.knowledge.models.Dto.KnowledgeDto;
 import com.example.knowledge.services.KnowledgeService;
 import com.example.knowledge.models.Knowledge;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,14 +58,20 @@ public class KnowledgeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Knowledge> createKnowledge(@RequestBody Knowledge knowledge){
-        log.info("Saving Knowledge: {}", knowledge);
-        Knowledge knowledgeNew = ks.createKnowledge(knowledge);
-        if (knowledgeNew != null){
-            log.info("Controller: Creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
-            return ResponseEntity.status(HttpStatus.CREATED).body(knowledgeNew);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<Knowledge> createKnowledge(@RequestBody KnowledgeDto knowledgeDto){
+        log.info("Saving Knowledge: {}", knowledgeDto);
+
+        try{
+            Knowledge knowledgeNew = ks.createKnowledge(knowledgeDto);
+            log.info("Controller: Creating new Knowledge entry: {}", knowledgeDto.getTitle());
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(knowledgeNew);
+        } catch (Exception e) {
+            log.error("Controller exception of creating new knowledge: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .build();
         }
     }
 
@@ -87,7 +96,13 @@ public class KnowledgeController {
     @GetMapping("/all")
     public ResponseEntity<List<Knowledge>> getAllKnowledge() {
         log.info("Controller: Getting all knowledge");
-        return ResponseEntity.status(HttpStatus.OK).body(ks.getAllKnowledge());
+        List<Knowledge> knowledgeList = ks.getAllKnowledge();
+        if (knowledgeList == null) {
+            knowledgeList = new ArrayList<>();
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(knowledgeList);
     }
 
 

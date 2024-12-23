@@ -41,15 +41,29 @@ export class KnowledgeListComponent implements OnInit {
         this.loadKnowledge();
         }
 
-  loadKnowledge(){
-      this.service.getKnowledge().subscribe({
-        next: (data: Knowledge[]) => {
-            console.log('Fetched Knowledge: data');
-            this.knowledge = data;
-          },
-        error: err=> console.log(err)
-        })
-    }
+  loadKnowledge() {
+    this.service.getKnowledge().subscribe({
+      next: (data: Knowledge[]) => {
+        console.log('Fetched Knowledge:', data);
+        this.knowledge = data;
+      },
+      error: (err) => {
+        console.error('Error while fetching Knowledge:', err);
+        if (err.status) {
+          console.error(`HTTP Status: ${err.status}`);
+        }
+        if (err.error) {
+          console.error('Backend Error Response:', err.error);
+        }
+        if (err.message) {
+          console.error('Error Message:', err.message);
+        }
+      },
+      complete: () => {
+        console.log('Knowledge fetching completed.');
+      },
+    });
+  }
 
   getFirstWords(content: string, wordCount: number): string {
     if (!content) return '';

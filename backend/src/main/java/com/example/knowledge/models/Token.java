@@ -14,6 +14,7 @@
 
 package com.example.knowledge.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -39,6 +40,7 @@ public class Token {
     private LocalDateTime expiresAt;
     private LocalDateTime validatedAt;
 
+    @JsonBackReference
     @ManyToOne
     private User user;
 }

@@ -2,6 +2,7 @@ package com.example.knowledge.models;
 import java.io.Serializable;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,7 @@ public class Knowledge implements Serializable {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "idUser")
     private User user;
@@ -39,7 +41,7 @@ public class Knowledge implements Serializable {
     private boolean isPublicKnowledge;
 
     @JsonManagedReference
-    @OneToMany( mappedBy = "knowledge", cascade=CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "knowledge", cascade=CascadeType.REMOVE, orphanRemoval = true)
     Set<CategoryKnowledgeGroup> categories;
 
     @JsonManagedReference
