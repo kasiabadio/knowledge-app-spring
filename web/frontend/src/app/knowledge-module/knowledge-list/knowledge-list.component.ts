@@ -3,9 +3,13 @@ import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { Knowledge } from '../../models/knowledge';
 import { Category } from '../../models/category';
+import { UserDto } from '../../models/user-dto';
+
 import { KnowledgeService } from '../../services/knowledge.service';
 import { CategoryService } from '../../services/category.service';
+import { UserService } from '../../services/user.service';
 import { CategoryKnowledgeGroupService } from '../../services/categoryknowledgegroup.service';
+
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TokenService } from '../../token/token.service';
@@ -37,10 +41,13 @@ export class KnowledgeListComponent implements OnInit {
   token: string = '';
   categories: Category[] = [];
   selectedCategories: Category[] = [];
+  authors: UserDto[] = [];
+  selectedAuthors: UserDto[] = [];
 
   constructor(private service: KnowledgeService,
     private categoryService: CategoryService,
     private categoryKnowledgeGroupService: CategoryKnowledgeGroupService,
+    private userService: UserService,
     private tokenService: TokenService,
     private router: Router
     ){}
@@ -48,8 +55,9 @@ export class KnowledgeListComponent implements OnInit {
   ngOnInit(){
         this.token = this.tokenService.token;
         console.log("Knowledge list public initialized");
-        this.loadKnowledge();
         this.loadCategories();
+        this.loadKnowledgeFromAuthors();
+        this.loadKnowledge();
         }
 
   loadKnowledge() {
@@ -111,6 +119,28 @@ export class KnowledgeListComponent implements OnInit {
       }
     }
 
+    loadKnowledgeFromAuthors() {
+      this.knowledge = [];
+
+      this.userService.getAuthors().subscribe({
+        next: (data: UserDto[]) => {
+          this.authors = data;
+          this.selectedAuthors.forEach((author) => {
+            this.knowledge = this.removeDuplicates([...this.knowledge, ...author.knowledges]);
+          });
+
+          this.filterOnlyPublicKnowledge();
+        },
+        error: (err) => {
+          console.error("Error fetching Authors ", err);
+        }
+      });
+    }
+
+    filterOnlyPublicKnowledge() {
+      this.knowledge = this.knowledge.filter((knowledge: Knowledge) => knowledge.isPublicKnowledge);
+    }
+
   removeDuplicates(array: Knowledge[]): Knowledge[] {
     return array.filter((item, index, self) =>
       index === self.findIndex((t) => t.title === item.title && t.content === item.content)
@@ -158,8 +188,5 @@ export class KnowledgeListComponent implements OnInit {
              this.loadKnowledge();
              }
      }
-
-
-
 
 }

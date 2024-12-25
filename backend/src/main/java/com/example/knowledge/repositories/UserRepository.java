@@ -40,4 +40,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "JOIN u.roles r " +
             "WHERE r.idRole IN (1, 2) AND r.idRole != 3")
     List<User> getUsersNotAdmins();
+
+    @Query("SELECT DISTINCT u FROM User u " +
+            "JOIN u.roles r " +
+            "WHERE r.idRole = 3")
+    List<User> getAuthors();
 }

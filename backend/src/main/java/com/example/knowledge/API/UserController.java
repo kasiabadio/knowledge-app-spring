@@ -2,9 +2,11 @@ package com.example.knowledge.API;
 
 import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.models.Dto.PasswordDto;
+import com.example.knowledge.models.Dto.UserDto;
 import com.example.knowledge.models.User;
 import com.example.knowledge.services.AuthenticationService;
 import com.example.knowledge.services.UserService;
+import com.example.knowledge.services.mapper.UserMapper;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +35,7 @@ public class UserController {
     private final MessageSource messageSource;
     private final AuthenticationService authenticationService;
 
+
     @GetMapping("/all")
     private ResponseEntity<List<User>> getUsersNotAdmins(){
         List<User> users = userService.getUsersNotAdmins();
@@ -40,6 +43,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(users);
         } else {
             return null;
+        }
+    }
+
+    @GetMapping("/allAuthors")
+    private ResponseEntity<List<UserDto>> getAuthors(){
+        List<User> authors = userService.getAuthors();
+        if (!authors.isEmpty()) {
+            List<UserDto> authorDtos = UserMapper.mapToUserDtoList(authors);
+            return ResponseEntity.status(HttpStatus.OK).body(authorDtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 

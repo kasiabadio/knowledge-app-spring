@@ -37,6 +37,10 @@ public class UserService {
         return userRepository.getUsersNotAdmins();
     }
 
+    public List<User> getAuthors(){
+        return userRepository.getAuthors();
+    }
+
     public void createRoleForUser(Long userId, Long roleId){
         try {
             Optional<User> user = getUserById(userId);

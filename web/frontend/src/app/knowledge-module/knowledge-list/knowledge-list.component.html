@@ -4,7 +4,7 @@
   <div class="search-area">
     <div class="searchAdvanced">
       <form (submit)="searchKnowledgeAdvanced(attr1.value); $event.preventDefault()">
-        <input #attr1 type="text" placeholder="Type title/content/category" />
+        <input #attr1 type="text" placeholder="Type title / content" />
         <button type="submit">Search advanced</button>
       </form>
     </div>
@@ -17,13 +17,24 @@
     </div>
 
     <div class="categoriesSearch">
-      <label for="categories">Select Categories</label>
+      <label for="categories">Select Categories</label><br/>
       <select id="categories" multiple [(ngModel)]="selectedCategories" class="formControl">
         <option *ngFor="let category of categories" [ngValue]="category">
           {{ category.categoryName }}
         </option>
       </select>
       <button type="submit" (click)="loadKnowledgeFromCategories()">Search selected categories</button>
+    </div>
+
+
+    <div class="authorSearch">
+      <label for="authors">Select Authors</label><br/>
+      <select id="authors" multiple [(ngModel)]="selectedAuthors" class="formControl">
+        <option *ngFor="let author of authors" [ngValue]="author">
+          {{ author.firstName + " " + author.lastName }}
+        </option>
+      </select>
+      <button type="submit" (click)="loadKnowledgeFromAuthors()">Search selected authors</button>
     </div>
 
     <div class="showAllKnowledge">

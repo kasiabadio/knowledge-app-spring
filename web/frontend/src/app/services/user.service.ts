@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { UserDto } from '../models/user-dto';
 import { User } from '../models/user';
+
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
@@ -26,6 +28,11 @@ export class UserService {
   getUserByEmail(email: string){
     const url = `${this.apiUrl}/getUserByEmail/${email}`;
     return this.http.get<User>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
+  getAuthors(){
+    const url = `${this.apiUrl}/allAuthors`;
+    return this.http.get<UserDto[]>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
 }

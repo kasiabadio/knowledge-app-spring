@@ -56,6 +56,7 @@ public class SecurityConfiguration {
                                         "/api/roles/**",
                                         "/api/users/getUserIdByEmail/**",
                                         "/api/users/getUserByEmail/**",
+                                        "/api/users/allAuthors",
                                         "/api/categories/all",
                                         "/api/categories-knowledges/**"
                                 ).permitAll()
