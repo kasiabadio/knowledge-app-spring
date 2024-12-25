@@ -25,12 +25,6 @@ export class CategoryListComponent implements OnInit {
    }
 
   loadCategories(){
-    this.service.getCategories().subscribe({
-        next: (data: Category[]) => {
-            this.categories = data;
-          },
-        error: err => console.log(err)
-        })
     }
 
   backToKnowledge(){
@@ -38,7 +32,5 @@ export class CategoryListComponent implements OnInit {
     }
 
 
-  selectCategoryKnowledge(){
-    this.isVisible = !this.isVisible;
-    }
+
 }

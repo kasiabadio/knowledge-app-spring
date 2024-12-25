@@ -6,7 +6,7 @@
   </div>
 
   <div class="knowledge-edit-container ">
-    <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="knowledgeForm">
 
       <div class="formGroup">
         <label class="label" for="title">Title</label>
@@ -24,8 +24,20 @@
         </div>
       </div>
 
-      <button type="submit" class="button buttonSubmit">Add</button>
     </form>
+
+    <div class="formGroup">
+      <label for="categories">Select Categories</label>
+      <select id="categories" multiple [(ngModel)]="selectedCategories" class="formControl">
+        <option *ngFor="let category of categories" [ngValue]="category.categoryName">
+          {{ category.categoryName }}
+        </option>
+      </select>
+    </div>
+
   </div>
+
+  <button type="button" class="button buttonSubmit" (click)="onSubmit()">Add</button>
+
 
 </div>

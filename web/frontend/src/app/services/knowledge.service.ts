@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Knowledge } from '../models/knowledge';
+import { Category } from '../models/category';
 import { KnowledgeDto } from '../models/knowledge-dto';
 
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
 import { ErrorHandlingService } from './error-handling.service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -43,9 +45,11 @@ export class KnowledgeService {
       return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
-  createKnowledge(knowledge: KnowledgeDto): Observable<Knowledge> {
+  createKnowledge(knowledge: KnowledgeDto, categories: string[]): Observable<Knowledge> {
       const url = `${this.apiUrl}/add`
-      return this.http.post<any>(url, knowledge).pipe(catchError(this.errorHandlingService.handleError));
+      let params = new HttpParams()
+          .set('categories', categories.join(','));
+      return this.http.post<any>(url, knowledge, {params}).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   updateKnowledge(knowledge: Knowledge): Observable<Knowledge>{

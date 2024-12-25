@@ -3,11 +3,13 @@ package com.example.knowledge.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.*;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -27,6 +29,11 @@ public class CategoryKnowledgeGroup  {
     @ManyToOne
     @JoinColumn(name = "id_knowledge")
     Knowledge knowledge;
+
+    public CategoryKnowledgeGroup(Category category, Knowledge knowledge){
+        this.category = category;
+        this.knowledge = knowledge;
+    }
 
     public List<Knowledge> getKnowledgesByCategory(Category category, EntityManager entityManager){
         String query = "SELECT ck.knowledge FROM CategoryKnowledgeGroup ck WHERE ck.category = :category";

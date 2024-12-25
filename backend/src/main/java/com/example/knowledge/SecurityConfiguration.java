@@ -51,16 +51,19 @@ public class SecurityConfiguration {
                                         "/password-reset",
                                         "/register",
                                         "/activate-account",
-                                        "/api/knowledge/**",
+                                        "/api/knowledge/all",
+                                        "/api/knowledge/add",
                                         "/api/roles/**",
                                         "/api/users/getUserIdByEmail/**",
-                                        "/api/users/getUserByEmail/**"
+                                        "/api/users/getUserByEmail/**",
+                                        "/api/categories/all"
                                 ).permitAll()
                                 .requestMatchers(
-                                        "/api/users",
-                                        "/api/categories",
-                                        "/api/categories-knowledges",
-                                        "/api/comments"
+                                        "/api/knowledge/**",
+                                        "/api/users/**",
+                                        "/api/categories/**",
+                                        "/api/categories-knowledges/**",
+                                        "/api/comments/**"
                                 )
                                 .authenticated()
                                 .anyRequest()

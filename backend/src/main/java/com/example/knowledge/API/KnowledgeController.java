@@ -1,7 +1,9 @@
 package com.example.knowledge.API;
 import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.GlobalExceptionHandler;
+import com.example.knowledge.models.Category;
 import com.example.knowledge.models.Dto.KnowledgeDto;
+import com.example.knowledge.repositories.CategoryRepository;
 import com.example.knowledge.services.KnowledgeService;
 import com.example.knowledge.models.Knowledge;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class KnowledgeController {
 
     private final KnowledgeService ks;
+    private final CategoryRepository cr;
 
     @Autowired
-    public KnowledgeController(KnowledgeService ks){
+    public KnowledgeController(KnowledgeService ks, CategoryRepository cr){
         this.ks = ks;
+        this.cr = cr;
     }
 
     @GetMapping("/getById/{id}")
@@ -59,20 +64,32 @@ public class KnowledgeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Knowledge> createKnowledge(@RequestBody KnowledgeDto knowledgeDto){
-        log.info("Saving Knowledge: {}", knowledgeDto);
+    public ResponseEntity<Knowledge> createKnowledge(@RequestBody KnowledgeDto knowledgeDto,
+                                                     @RequestParam List<String> categories){
+
+        if (knowledgeDto == null || categories == null || categories.isEmpty()) {
+            log.error("Invalid input: knowledgeDto or categories are null/empty");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(null);
+        }
 
         try{
-            Knowledge knowledgeNew = ks.createKnowledge(knowledgeDto);
             log.info("Controller: Creating new Knowledge entry: {}", knowledgeDto.getTitle());
+            log.info("Received categories: {}", categories);
+            log.info("Categories.length: {}", categories.size());
+
+            List<Category> categoryObjects = categories.stream()
+                    .map(cr::findByName)
+                    .collect(Collectors.toList());
+
+            Knowledge knowledgeNew = ks.createKnowledge(knowledgeDto, categoryObjects);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(knowledgeNew);
         } catch (Exception e) {
             log.error("Controller exception of creating new knowledge: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .build();
+            throw e;
         }
     }
 

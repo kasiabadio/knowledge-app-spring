@@ -6,10 +6,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 @Entity
@@ -84,6 +85,9 @@ public class Knowledge implements Serializable {
 
 
     public void addComment(Comment comment){
+        if (this.comments == null) {
+            this.comments = new HashSet<>();
+        }
         comments.add(comment);
         comment.setKnowledge(this);
     }
@@ -91,6 +95,19 @@ public class Knowledge implements Serializable {
     public void removeComment(Comment comment){
         comments.remove(comment);
         comment.setKnowledge(null);
+    }
+
+    public void addCategory(CategoryKnowledgeGroup ckg){
+        if (this.categories == null) {
+            this.categories = new HashSet<>();
+        }
+        categories.add(ckg);
+        ckg.setKnowledge(this);
+    }
+
+    public void removeCategory(CategoryKnowledgeGroup ckg){
+        categories.remove(ckg);
+        ckg.setKnowledge(null);
     }
 
 }

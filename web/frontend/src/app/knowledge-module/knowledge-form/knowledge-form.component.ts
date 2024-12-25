@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KnowledgeService } from '../../services/knowledge.service';
 import { TokenService } from '../../token/token.service';
 import { UserService } from '../../services/user.service';
+import { CategoryService } from '../../services/category.service';
+import { Category } from '../../models/category';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-knowledge-form',
   standalone: true,
-  imports: [ NgIf, ReactiveFormsModule ],
+  imports: [ FormsModule, NgIf, NgFor, ReactiveFormsModule, MatFormFieldModule, MatSelectModule ],
   templateUrl: './knowledge-form.component.html',
   styleUrls: ['./knowledge-form.component.css'],
 })
@@ -17,12 +22,16 @@ export class KnowledgeFormComponent implements OnInit {
     knowledgeForm: any;
     validatorString: string;
     currentUser: any;
+    categories: Category[] = [];
+    selectedCategories: string[] = [];
+
 
     constructor(private serviceKnowledge: KnowledgeService,
       private fb: FormBuilder,
       private router: Router,
       private tokenService: TokenService,
-      private userService: UserService) {
+      private userService: UserService,
+      private categoryService: CategoryService) {
         this.validatorString = '^[a-zA-Z,.!?\\s-]+$';
     }
 
@@ -45,6 +54,16 @@ export class KnowledgeFormComponent implements OnInit {
               console.warn('No current user found.');
            }
 
+         this.categoryService.getCategories().subscribe({
+             next: (categories) => {
+                 console.log("Fetched categories:", categories);
+                 this.categories = categories; // Assign fetched categories to the property
+             },
+             error: (err) => {
+                 console.error("Error fetching categories:", err);
+             }
+         });
+
       }
 
     onSubmit(): void {
@@ -52,7 +71,8 @@ export class KnowledgeFormComponent implements OnInit {
       if (this.knowledgeForm.valid){
         console.log('Submitting Knowledge Form...');
         console.table(this.knowledgeForm.value);
-          this.serviceKnowledge.createKnowledge(this.knowledgeForm.value).subscribe({
+        console.log("Selected categories: "+ this.selectedCategories);
+          this.serviceKnowledge.createKnowledge(this.knowledgeForm.value, this.selectedCategories).subscribe({
             next: ()=>{
               this.router.navigate(['knowledge']);
               },

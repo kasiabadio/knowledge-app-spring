@@ -1,6 +1,8 @@
 package com.example.knowledge.services;
 
 import com.example.knowledge.GlobalExceptionHandler;
+import com.example.knowledge.models.Category;
+import com.example.knowledge.models.CategoryKnowledgeGroup;
 import com.example.knowledge.models.Dto.KnowledgeDto;
 import com.example.knowledge.models.Knowledge;
 import com.example.knowledge.models.User;
@@ -53,17 +55,28 @@ public class KnowledgeService {
         return items;
     }
 
-    public Knowledge createKnowledge(KnowledgeDto knowledgeDto){
+    public Knowledge createKnowledge(KnowledgeDto knowledgeDto, List<Category> categories){
         User user = ur.findById(Math.toIntExact(knowledgeDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
         Knowledge knowledge = new Knowledge();
-        log.info("Service: Preparing Knowledge entry: {}", knowledge.getIdKnowledge());
         knowledge.setTitle(knowledgeDto.getTitle());
         knowledge.setContent(knowledgeDto.getContent());
         knowledge.setUser(user);
         knowledge.setCreatedDate(new Date());
         knowledge.setLastModifiedDate(new Date());
+        log.info("Service: Preparing Knowledge entry: {}", knowledge.getIdKnowledge());
+
+
+        // add categories to knowledge && add knowledge to categories
+        for (int i = 0; i < categories.size(); i++){
+            CategoryKnowledgeGroup ckg = new CategoryKnowledgeGroup(categories.get(i), knowledge);
+            knowledge.addCategory(ckg);
+            categories.get(i).addKnowledge(ckg);
+        }
+
         user.addKnowledge(knowledge);
+
         try {
             log.info("Service: Creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
             return kr.save(knowledge);

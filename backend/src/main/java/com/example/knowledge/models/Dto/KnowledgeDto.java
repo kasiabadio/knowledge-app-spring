@@ -1,6 +1,9 @@
 package com.example.knowledge.models.Dto;
 
+import com.example.knowledge.models.CategoryKnowledgeGroup;
 import lombok.Getter;
+
+import java.util.Set;
 
 @Getter
 public class KnowledgeDto {
