@@ -22,7 +22,8 @@
   white-space: nowrap;
 }
 
-.categoriesSearch {
+
+.login {
   position: absolute;
   font-size: 12px;
   top: 200px;
@@ -31,19 +32,10 @@
   white-space: nowrap;
 }
 
-.login {
-  position: absolute;
-  font-size: 12px;
-  top: 250px;
-  right: 30px;
-  display: flex;
-  white-space: nowrap;
-}
-
 .logout{
   position: absolute;
   font-size: 12px;
-  top: 300px;
+  top: 250px;
   right: 30px;
   display: flex;
   white-space: nowrap;

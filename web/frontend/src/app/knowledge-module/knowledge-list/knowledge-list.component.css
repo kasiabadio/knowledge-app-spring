@@ -22,7 +22,7 @@
 }
 
 .searchAdvanced,
-.searchSimple {
+.searchSimple, .categoriesSearch {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -32,3 +32,9 @@
 .searchSimple {
   top: 60px;
 }
+
+.categoriesSearch {
+  top: 140px;
+}
+
+

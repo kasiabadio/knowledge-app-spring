@@ -25,9 +25,6 @@ export class SidebarDetailComponent {
         this.router.navigate(['knowledge/form']);
       }
 
-    navigateToCategories(){
-      this.router.navigate(['knowledge/categories']);
-      }
 
     login(){
       this.router.navigate(['login'])

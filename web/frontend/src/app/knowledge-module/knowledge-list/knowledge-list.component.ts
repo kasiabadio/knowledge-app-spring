@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { Knowledge } from '../../models/knowledge';
+import { Category } from '../../models/category';
 import { KnowledgeService } from '../../services/knowledge.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +33,7 @@ export class KnowledgeListComponent implements OnInit {
   knowledge: Knowledge[] = [];
   selectedKnowledge: Knowledge | undefined;
   token: string = '';
+  categories: Category[] = [];
 
   constructor(private service: KnowledgeService,  private tokenService: TokenService, private router: Router){}
 
@@ -64,6 +66,10 @@ export class KnowledgeListComponent implements OnInit {
       },
     });
   }
+
+  loadCategories(){
+
+    }
 
   getFirstWords(content: string, wordCount: number): string {
     if (!content) return '';
@@ -102,6 +108,10 @@ export class KnowledgeListComponent implements OnInit {
              this.loadKnowledge();
              }
      }
+
+   searchByCategories(){
+
+   }
 
 
 }

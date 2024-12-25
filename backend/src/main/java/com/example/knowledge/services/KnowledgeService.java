@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -22,11 +23,15 @@ public class KnowledgeService {
 
     private final KnowledgeRepository kr;
     private final UserRepository ur;
+    private final CategoryKnowledgeGroupService ckgr;
 
     @Autowired
-    public KnowledgeService(KnowledgeRepository kr, UserRepository ur){
+    public KnowledgeService(KnowledgeRepository kr,
+                            UserRepository ur,
+                            CategoryKnowledgeGroupService ckgr){
         this.kr = kr;
         this.ur = ur;
+        this.ckgr = ckgr;
     }
 
     public Knowledge getKnowledgeById(Long id){
@@ -55,33 +60,50 @@ public class KnowledgeService {
         return items;
     }
 
-    public Knowledge createKnowledge(KnowledgeDto knowledgeDto, List<Category> categories){
+    public Knowledge createKnowledge(KnowledgeDto knowledgeDto, List<Category> categories) {
         User user = ur.findById(Math.toIntExact(knowledgeDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
+        // Create and initialize the Knowledge object
         Knowledge knowledge = new Knowledge();
         knowledge.setTitle(knowledgeDto.getTitle());
         knowledge.setContent(knowledgeDto.getContent());
         knowledge.setUser(user);
         knowledge.setCreatedDate(new Date());
         knowledge.setLastModifiedDate(new Date());
-        log.info("Service: Preparing Knowledge entry: {}", knowledge.getIdKnowledge());
 
-
-        // add categories to knowledge && add knowledge to categories
-        for (int i = 0; i < categories.size(); i++){
-            CategoryKnowledgeGroup ckg = new CategoryKnowledgeGroup(categories.get(i), knowledge);
-            knowledge.addCategory(ckg);
-            categories.get(i).addKnowledge(ckg);
+        // Ensure the categories field is initialized
+        if (knowledge.getCategories() == null) {
+            knowledge.setCategories(new HashSet<>());
         }
 
-        user.addKnowledge(knowledge);
+        log.info("Service: Preparing Knowledge entry: {}", knowledge.getIdKnowledge());
+
+        // Save Knowledge first to make it persistent
+        Knowledge savedKnowledge = kr.save(knowledge);
+
+        // Add categories to knowledge and link knowledge to categories
+        for (Category category : categories) {
+            // Create CategoryKnowledgeGroup
+            CategoryKnowledgeGroup ckg = new CategoryKnowledgeGroup(category, savedKnowledge);
+
+            // Save the CategoryKnowledgeGroup
+            ckgr.createCategoryKnowledgeGroupService(ckg);
+
+            // Link the CategoryKnowledgeGroup with Knowledge and Category
+            savedKnowledge.addCategory(ckg);
+            category.addKnowledge(ckg);
+        }
+
+        // Link the Knowledge object to the User
+        user.addKnowledge(savedKnowledge);
 
         try {
-            log.info("Service: Creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
-            return kr.save(knowledge);
-        } catch (Exception e){
-            log.error("Service: Error creating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
+            // Update and save the Knowledge object with all relationships
+            log.info("Service: Creating new Knowledge entry: {} {}", savedKnowledge.getIdKnowledge(), savedKnowledge.getTitle());
+            return kr.save(savedKnowledge);
+        } catch (Exception e) {
+            log.error("Service: Error creating new Knowledge entry: {} {}", savedKnowledge.getIdKnowledge(), savedKnowledge.getTitle());
             throw new RuntimeException("Could not save Knowledge entity. Reason: " + e.getMessage(), e);
         }
     }
