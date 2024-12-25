@@ -64,7 +64,6 @@ public class KnowledgeService {
         User user = ur.findById(Math.toIntExact(knowledgeDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
-        // Create and initialize the Knowledge object
         Knowledge knowledge = new Knowledge();
         knowledge.setTitle(knowledgeDto.getTitle());
         knowledge.setContent(knowledgeDto.getContent());
@@ -72,34 +71,24 @@ public class KnowledgeService {
         knowledge.setCreatedDate(new Date());
         knowledge.setLastModifiedDate(new Date());
 
-        // Ensure the categories field is initialized
         if (knowledge.getCategories() == null) {
             knowledge.setCategories(new HashSet<>());
         }
 
         log.info("Service: Preparing Knowledge entry: {}", knowledge.getIdKnowledge());
 
-        // Save Knowledge first to make it persistent
         Knowledge savedKnowledge = kr.save(knowledge);
 
-        // Add categories to knowledge and link knowledge to categories
         for (Category category : categories) {
-            // Create CategoryKnowledgeGroup
             CategoryKnowledgeGroup ckg = new CategoryKnowledgeGroup(category, savedKnowledge);
-
-            // Save the CategoryKnowledgeGroup
             ckgr.createCategoryKnowledgeGroupService(ckg);
-
-            // Link the CategoryKnowledgeGroup with Knowledge and Category
             savedKnowledge.addCategory(ckg);
             category.addKnowledge(ckg);
         }
 
-        // Link the Knowledge object to the User
         user.addKnowledge(savedKnowledge);
 
         try {
-            // Update and save the Knowledge object with all relationships
             log.info("Service: Creating new Knowledge entry: {} {}", savedKnowledge.getIdKnowledge(), savedKnowledge.getTitle());
             return kr.save(savedKnowledge);
         } catch (Exception e) {

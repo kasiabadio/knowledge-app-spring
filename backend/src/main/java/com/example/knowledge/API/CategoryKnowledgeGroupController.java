@@ -3,6 +3,7 @@ package com.example.knowledge.API;
 import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.GlobalExceptionHandler;
 import com.example.knowledge.models.CategoryKnowledgeGroup;
+import com.example.knowledge.models.Knowledge;
 import com.example.knowledge.services.CategoryKnowledgeGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class CategoryKnowledgeGroupController {
     @Autowired
     public CategoryKnowledgeGroupController(CategoryKnowledgeGroupService ckgs){
         this.ckgs = ckgs;
+    }
+
+    @GetMapping("getKnowledges/{categoryName}")
+    public List<Knowledge> getAllKnowledgesFromCategory(@PathVariable String categoryName){
+        log.info("Controller getting all knowledges for category: "+ categoryName);
+        return ckgs.getAllKnowledgesFromCategory(categoryName);
     }
 
 }

@@ -5,7 +5,6 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormGroup, FormControl, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { KnowledgeService } from '../../services/knowledge.service';
 import { CategoryService } from '../../services/category.service';
-import { CategoryknowledgegroupService } from '../../services/categoryknowledgegroup.service';
 import { Knowledge } from '../../models/knowledge';
 import { CategoryKnowledgeGroup } from '../../models/categoryknowledgegroup';
 import { Category } from '../../models/category';
@@ -24,7 +23,6 @@ export class KnowledgeDetailComponent implements OnInit {
     id: string;
     knowledge: Knowledge | undefined;
     knowledgeForm: any;
-    categoryKnowledgeGroups: CategoryKnowledgeGroup[] = [];
     categories: Category[] = [];
     selectedCategoryIds: number[] = [];
 

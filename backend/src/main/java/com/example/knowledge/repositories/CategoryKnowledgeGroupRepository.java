@@ -12,4 +12,7 @@ import java.util.List;
 public interface CategoryKnowledgeGroupRepository extends JpaRepository<CategoryKnowledgeGroup, Long> {
 
 
+    @Query("SELECT c FROM CategoryKnowledgeGroup c WHERE c.category.idCategory = :categoryId")
+    List<CategoryKnowledgeGroup> getAllKnowledgeFromOneCategory(@Param("categoryId") Long categoryId);
+
 }

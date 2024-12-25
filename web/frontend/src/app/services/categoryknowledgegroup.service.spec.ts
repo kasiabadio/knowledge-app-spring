@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CategoryknowledgegroupService } from './categoryknowledgegroup.service';
+import { CategoryKnowledgeGroupService } from './categoryknowledgegroup.service';
 
-describe('CategoryknowledgegroupService', () => {
-  let service: CategoryknowledgegroupService;
+describe('CategoryKnowledgeGroupService', () => {
+  let service: CategoryKnowledgeGroupService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CategoryknowledgegroupService);
+    service = TestBed.inject(CategoryKnowledgeGroupService);
   });
 
   it('should be created', () => {

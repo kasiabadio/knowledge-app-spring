@@ -4,6 +4,8 @@ import { NgFor } from '@angular/common';
 import { Knowledge } from '../../models/knowledge';
 import { Category } from '../../models/category';
 import { KnowledgeService } from '../../services/knowledge.service';
+import { CategoryService } from '../../services/category.service';
+import { CategoryKnowledgeGroupService } from '../../services/categoryknowledgegroup.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TokenService } from '../../token/token.service';
@@ -34,13 +36,20 @@ export class KnowledgeListComponent implements OnInit {
   selectedKnowledge: Knowledge | undefined;
   token: string = '';
   categories: Category[] = [];
+  selectedCategories: Category[] = [];
 
-  constructor(private service: KnowledgeService,  private tokenService: TokenService, private router: Router){}
+  constructor(private service: KnowledgeService,
+    private categoryService: CategoryService,
+    private categoryKnowledgeGroupService: CategoryKnowledgeGroupService,
+    private tokenService: TokenService,
+    private router: Router
+    ){}
 
   ngOnInit(){
         this.token = this.tokenService.token;
         console.log("Knowledge list public initialized");
         this.loadKnowledge();
+        this.loadCategories();
         }
 
   loadKnowledge() {
@@ -50,7 +59,7 @@ export class KnowledgeListComponent implements OnInit {
         this.knowledge = data;
       },
       error: (err) => {
-        console.error('Error while fetching Knowledge:', err);
+        console.error('Error while fetching Knowledge: ', err);
         if (err.status) {
           console.error(`HTTP Status: ${err.status}`);
         }
@@ -68,8 +77,45 @@ export class KnowledgeListComponent implements OnInit {
   }
 
   loadCategories(){
-
+      this.categoryService.getCategories().subscribe({
+        next: (data: Category[]) => {
+          this.categories = data;
+          },
+        error: (err) => {
+            console.error("Error fetching Categories: ", err);
+            if (err.status) {
+              console.error(`HTTP Status: ${err.status}`);
+            }
+            if (err.error) {
+              console.error('Backend Error Response:', err.error);
+            }
+            if (err.message) {
+              console.error('Error Message:', err.message);
+            }
+          }
+        })
     }
+
+  loadKnowledgeFromCategories(){
+    this.knowledge = []
+    for (let i = 0; i < this.selectedCategories.length; i++){
+      console.log("Selected category: " + this.selectedCategories[i].categoryName);
+      this.categoryKnowledgeGroupService.getAllKnowledgesFromCategory(this.selectedCategories[i].categoryName).subscribe({
+        next: (data: Knowledge[]) => {
+           this.knowledge = this.removeDuplicates([...this.knowledge, ...data]);
+          },
+        error: (err) => {
+               console.error("Error fetching Knowledge by category: ", err);
+          }
+        })
+      }
+    }
+
+  removeDuplicates(array: Knowledge[]): Knowledge[] {
+    return array.filter((item, index, self) =>
+      index === self.findIndex((t) => t.title === item.title && t.content === item.content)
+    );
+  }
 
   getFirstWords(content: string, wordCount: number): string {
     if (!content) return '';
@@ -91,6 +137,8 @@ export class KnowledgeListComponent implements OnInit {
                  },
                error: err=> console.log(err)
                })
+         } else if (this.selectedCategories.length > 0){
+            this.loadKnowledgeFromCategories();
          } else {
            this.loadKnowledge();
            }
@@ -104,14 +152,14 @@ export class KnowledgeListComponent implements OnInit {
              },
            error: err => console.log(err)
            })
-        } else {
+        } else if (this.selectedCategories.length > 0){
+          this.loadKnowledgeFromCategories();
+          } else {
              this.loadKnowledge();
              }
      }
 
-   searchByCategories(){
 
-   }
 
 
 }

@@ -5,33 +5,22 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
 import { ErrorHandlingService } from './error-handling.service';
+import { Category } from '../models/category';
+import { Knowledge } from '../models/knowledge';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryknowledgegroupService {
+export class CategoryKnowledgeGroupService {
   private apiUrl = environment.apiUrlCategoriesKnowledges;
   constructor(
     private http: HttpClient,
     private errorHandlingService: ErrorHandlingService
     ) { }
 
-    getCategoryKnowledgeGroupsByCategory(categoryId: number) {
-      const url = `${this.apiUrl}/by-category/${categoryId}`;
-      return this.http.get<CategoryKnowledgeGroup[]>(url).pipe(catchError(this.errorHandlingService.handleError));
-      }
+  getAllKnowledgesFromCategory(categoryName: string){
+    const url = `${this.apiUrl}/getKnowledges/${categoryName}`;
+    return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
 
-    getCategoryKnowledgeGroupByKnowledge(knowledgeId: number) {
-      const url = `${this.apiUrl}/by-knowledge/${knowledgeId}`;
-      return this.http.get<CategoryKnowledgeGroup[]>(url).pipe(catchError(this.errorHandlingService.handleError));
-      }
-
-    getCategoryKnowledgeGroup(categoryName: string, knowledgeId: number) {
-      const url = `${this.apiUrl}/element/${categoryName}/${knowledgeId}`;
-      return this.http.get<CategoryKnowledgeGroup>(url).pipe(catchError(this.errorHandlingService.handleError));
-      }
-
-    createCategoryKnowledgeGroup(ckg: CategoryKnowledgeGroup){
-      return this.http.post<CategoryKnowledgeGroup>(this.apiUrl, ckg).pipe(catchError(this.errorHandlingService.handleError));
-      }
 }

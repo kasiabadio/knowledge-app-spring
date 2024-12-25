@@ -56,13 +56,13 @@ public class SecurityConfiguration {
                                         "/api/roles/**",
                                         "/api/users/getUserIdByEmail/**",
                                         "/api/users/getUserByEmail/**",
-                                        "/api/categories/all"
+                                        "/api/categories/all",
+                                        "/api/categories-knowledges/**"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/api/knowledge/**",
                                         "/api/users/**",
                                         "/api/categories/**",
-                                        "/api/categories-knowledges/**",
                                         "/api/comments/**"
                                 )
                                 .authenticated()

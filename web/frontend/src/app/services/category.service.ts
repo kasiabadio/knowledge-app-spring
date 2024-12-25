@@ -36,16 +36,6 @@ export class CategoryService {
     return this.http.get<Category>(this.apiUrl, {params});
     }
 
-//   getCategoryById(id: number): Observable<Category>{
-//     const url = `${this.apiUrl}/${id}`;
-//     return this.http.get<Category>(url).pipe(catchError(this.errorHandlingService.handleError));
-//     }
-//
-//   getCategoryByName(categoryName: string) {
-//     const url = `${this.apiUrl}/${categoryName}`;
-//     return this.http.get<Category>(url).pipe(catchError(this.errorHandlingService.handleError));
-//     }
-
   findByCategoryName(name: string){
     const url = `${this.apiUrl}/searchAll/${name}`;
     return this.http.get<Category[]>(url).pipe(catchError(this.errorHandlingService.handleError));

@@ -17,13 +17,22 @@
     </div>
 
     <div class="categoriesSearch">
-      <p>Search by categories</p>
-      <button class="button buttonToCategories" type="button" (click)="searchByCategories()">
-      </button>
+      <label for="categories">Select Categories</label>
+      <select id="categories" multiple [(ngModel)]="selectedCategories" class="formControl">
+        <option *ngFor="let category of categories" [ngValue]="category">
+          {{ category.categoryName }}
+        </option>
+      </select>
+      <button type="submit" (click)="loadKnowledgeFromCategories()">Search selected categories</button>
     </div>
+
+    <div class="showAllKnowledge">
+      <button type="submit" (click)="loadKnowledge()">Show all knowledge</button>
+    </div>
+
+
+
   </div>
-
-
 
   <div class="card-container">
     <mat-card
