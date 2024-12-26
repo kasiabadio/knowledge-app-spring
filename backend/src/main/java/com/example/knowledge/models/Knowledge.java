@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
 import lombok.*;
@@ -39,6 +40,7 @@ public class Knowledge implements Serializable {
     private User user;
 
     @Column(name = "isPublicKnowledge")
+    @JsonProperty("isPublicKnowledge")
     private boolean isPublicKnowledge;
 
     @JsonManagedReference
