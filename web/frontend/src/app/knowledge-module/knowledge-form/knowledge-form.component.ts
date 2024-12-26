@@ -39,7 +39,8 @@ export class KnowledgeFormComponent implements OnInit {
         this.knowledgeForm = this.fb.group({
         title: ['', [Validators.required, Validators.pattern(this.validatorString)]],
         content: ['', [Validators.required]],
-        userId: [null, Validators.required]
+        userId: [null, Validators.required],
+        isPublicKnowledge: [true]
         });
 
          this.currentUser = this.tokenService.currentUser;

@@ -78,6 +78,7 @@ public class KnowledgeController {
             log.info("Controller: Creating new Knowledge entry: {}", knowledgeDto.getTitle());
             log.info("Received categories: {}", categories);
             log.info("Categories.length: {}", categories.size());
+            log.info("isPublicKnowledge: {}", knowledgeDto.getIsPublicKnowledge());
 
             List<Category> categoryObjects = categories.stream()
                     .map(cr::findByName)

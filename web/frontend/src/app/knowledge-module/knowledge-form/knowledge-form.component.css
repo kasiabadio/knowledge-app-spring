@@ -59,3 +59,9 @@
   font-weight: bold;
 }
 
+.smallCheckbox {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px; /* Add space between label and checkbox */
+  vertical-align: middle; /* Align checkbox with text */
+}

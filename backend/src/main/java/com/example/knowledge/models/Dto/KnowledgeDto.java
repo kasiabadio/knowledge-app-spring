@@ -10,6 +10,7 @@ public class KnowledgeDto {
     private String title;
     private String content;
     private Long userId;
+    private Boolean isPublicKnowledge;
 
     @Override
     public String toString() {

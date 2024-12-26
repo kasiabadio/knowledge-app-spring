@@ -70,6 +70,8 @@ public class KnowledgeService {
         knowledge.setUser(user);
         knowledge.setCreatedDate(new Date());
         knowledge.setLastModifiedDate(new Date());
+        log.info("Is public knowledge: {}", knowledgeDto.getIsPublicKnowledge());
+        knowledge.setPublicKnowledge(knowledgeDto.getIsPublicKnowledge());
 
         if (knowledge.getCategories() == null) {
             knowledge.setCategories(new HashSet<>());

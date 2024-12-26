@@ -128,10 +128,7 @@ export class KnowledgeListComponent implements OnInit {
           this.selectedAuthors.forEach((author) => {
             this.knowledge = this.removeDuplicates([...this.knowledge, ...author.knowledges]);
           });
-          console.log("Authors knowledge: ", JSON.stringify(this.knowledge, null, 2));
           this.filterOnlyPublicKnowledge();
-          console.log("Authors knowledge after filter: ", JSON.stringify(this.knowledge, null, 2));
-
         },
         error: (err) => {
           console.error("Error fetching Authors ", err);
