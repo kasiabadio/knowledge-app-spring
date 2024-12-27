@@ -51,8 +51,7 @@ public class SecurityConfiguration {
                                         "/password-reset",
                                         "/register",
                                         "/activate-account",
-                                        "/api/knowledge/all",
-                                        "/api/knowledge/add",
+                                        "/api/knowledge/**",
                                         "/api/roles/**",
                                         "/api/users/getUserIdByEmail/**",
                                         "/api/users/getUserByEmail/**",
@@ -61,7 +60,7 @@ public class SecurityConfiguration {
                                         "/api/categories-knowledges/**"
                                 ).permitAll()
                                 .requestMatchers(
-                                        "/api/knowledge/**",
+
                                         "/api/users/**",
                                         "/api/categories/**",
                                         "/api/comments/**"

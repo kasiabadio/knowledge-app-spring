@@ -6,21 +6,23 @@
       <p>Back</p>
     </div>
 
-    <div class="pagebutton delete" *ngIf="knowledge && !knowledgeForm &&
-         serviceToken.currentUser !== null &&
-         ((serviceToken.currentUser.authorities?.includes('AUTHOR') && checkIfAuthorIsTheSame() === true) ||
-          checkIfIsAdmin() === true)">
+    <div
+      class="pagebutton delete"
+      *ngIf="knowledge && !knowledgeForm &&
+         serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
+         checkIfAuthorIsTheSame() || checkIfIsAdmin()">
       <p>Delete</p>
-      <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge)">
+      <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge!)">
       </button>
     </div>
 
-    <div class="pagebutton edit" *ngIf="knowledge && !knowledgeForm &&
-         serviceToken.currentUser !== null &&
-         ((serviceToken.currentUser.authorities?.includes('AUTHOR') && checkIfAuthorIsTheSame() === true)
-         || checkIfIsAdmin() === true)">
+    <div
+      class="pagebutton edit"
+      *ngIf="knowledge && !knowledgeForm &&
+         serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
+         checkIfAuthorIsTheSame() || checkIfIsAdmin()">
       <p>Edit</p>
-      <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge)">
+      <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge!)">
       </button>
     </div>
 

@@ -3,6 +3,15 @@
   <nav class="navbar">
     <div class="navbar-logo">
     </div>
+    <div>
+      <p>You're logged in as {{ this.tokenService.currentUser?.email }}</p>
+      <ul *ngIf="this.tokenService.currentUser?.authorities?.length; else noAuthorities">
+        <li *ngFor="let privilege of this.tokenService.currentUser?.authorities">{{ privilege }}</li>
+      </ul>
+    </div>
+    <ng-template #noAuthorities>
+      <p>No user data available.</p>
+    </ng-template>
     <ul class="navbar-links">
       <li><a routerLink="home">Home</a></li>
       <li><a routerLink="knowledge">Public knowledge</a></li>

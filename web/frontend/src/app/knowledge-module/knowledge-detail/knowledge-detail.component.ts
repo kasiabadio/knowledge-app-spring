@@ -40,23 +40,29 @@ export class KnowledgeDetailComponent implements OnInit {
       }
 
     ngOnInit(){
-            this.route.params.subscribe(params => {
-                this.id = params['id'];
-                const idInt = parseInt(params['id'], 10);
-                this.fetchKnowledgeDetails(idInt);
-            });
+        this.route.params.subscribe(params => {
+            this.id = params['id'];
+            const idInt = parseInt(params['id'], 10);
+            this.fetchKnowledgeDetails(idInt);
+        });
 
-            this.loadCategories();
+        this.loadCategories();
 
      }
 
-   checkIfAuthorIsTheSame(){
-     console.log("Check if author is the same " + this.serviceToken?.currentUser?.email + " " +  this.knowledge?.user.email);
-      if (this.serviceToken?.currentUser?.email === this.knowledge?.user.email){
-        return true;
-        }
-      return false;
+   checkIfAuthorIsTheSame() {
+     const currentUserEmail = this.serviceToken?.currentUser?.email;
+     const knowledgeUserEmail = this.knowledge?.user?.email;
+
+     console.log("Check if author is the same", { currentUserEmail, knowledgeUserEmail });
+
+     if (!currentUserEmail || !knowledgeUserEmail) {
+       console.warn("Missing email data in checkIfAuthorIsTheSame()");
+       return false;
      }
+
+     return currentUserEmail === knowledgeUserEmail;
+   }
 
    checkIfIsAdmin(){
      console.log("Check if is admin " + this.serviceToken?.currentUser?.authorities);
