@@ -8,9 +8,7 @@
 
     <div
       class="pagebutton delete"
-      *ngIf="knowledge && !knowledgeForm &&
-         serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
-         checkIfAuthorIsTheSame() || checkIfIsAdmin()">
+      *ngIf="canDelete === true">
       <p>Delete</p>
       <button class="button buttonRemove" type="button" (click)="deleteKnowledge(knowledge!)">
       </button>
@@ -18,9 +16,7 @@
 
     <div
       class="pagebutton edit"
-      *ngIf="knowledge && !knowledgeForm &&
-         serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
-         checkIfAuthorIsTheSame() || checkIfIsAdmin()">
+      *ngIf="canEdit === true">
       <p>Edit</p>
       <button class="button buttonEdit" type="button" (click)="editKnowledge(knowledge!)">
       </button>
@@ -55,5 +51,23 @@
         <button type="submit" class="button buttonSubmit">Submit</button>
       </form>
     </ng-container>
+
+    <div class="card-container">
+      <mat-card
+        *ngFor="let c of comments">
+<!--        <mat-card-header>-->
+<!--          <mat-card-title><h4>Author: {{ c.user.firstName + " " + c.user.lastName }}</h4></mat-card-title>-->
+<!--        </mat-card-header>-->
+
+        <mat-card-content>
+          <p>Created date: {{ c.createdDate }}</p>
+          <p>{{ c.content }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button class="button buttonDelete" type="button" (click)="deleteComment(c.groupId)">Delete</button>
+        </mat-card-actions>
+
+      </mat-card>
   </div>
 </div>

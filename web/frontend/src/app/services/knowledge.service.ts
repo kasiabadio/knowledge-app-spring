@@ -24,10 +24,19 @@ export class KnowledgeService {
 
   getKnowledge(): Observable<Knowledge[]>{
     const url = `${this.apiUrl}/all`;
-    return this.http.get<Knowledge[]>(url).
-    pipe(tap((response: Knowledge[]) => console.log('Raw getKnowledge response:', response)),
-      catchError(this.errorHandlingService.handleError));
+    return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
+
+  getAuthorId(id: number){
+    const url = `${this.apiUrl}/getAuthorEmail/${id}`;
+    return this.http.get<number>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
+  getAllComments(id: number){
+    const url = `${this.apiUrl}/getAllComments/${id}`;
+    return this.http.get<any[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
 
   getKnowledgeById(id: number): Observable<Knowledge> {
       const url = `${this.apiUrl}/getById/${id}`;

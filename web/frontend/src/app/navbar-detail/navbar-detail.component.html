@@ -15,8 +15,9 @@
     <ul class="navbar-links">
       <li><a routerLink="home">Home</a></li>
       <li><a routerLink="knowledge">Public knowledge</a></li>
-      <li><a routerLink="private-knowledge">Private knowledge</a></li>
-      <li><a routerLink="admin-panel">Admin panel</a></li>
+      <li *ngIf="this.tokenService.currentUser?.authorities?.includes('USER')"><a routerLink="private-knowledge">Private knowledge</a></li>
+      <li *ngIf="this.tokenService.currentUser?.authorities?.includes('USER')"><a routerLink="user-panel">User panel</a></li>
+      <li *ngIf="this.tokenService.currentUser?.authorities?.includes('ADMIN')"><a routerLink="admin-panel">Admin panel</a></li>
     </ul>
 
   </nav>

@@ -57,13 +57,12 @@ public class SecurityConfiguration {
                                         "/api/users/getUserByEmail/**",
                                         "/api/users/allAuthors",
                                         "/api/categories/all",
-                                        "/api/categories-knowledges/**"
+                                        "/api/categories-knowledges/**",
+                                        "/api/comments/**"
                                 ).permitAll()
                                 .requestMatchers(
-
                                         "/api/users/**",
-                                        "/api/categories/**",
-                                        "/api/comments/**"
+                                        "/api/categories/**"
                                 )
                                 .authenticated()
                                 .anyRequest()

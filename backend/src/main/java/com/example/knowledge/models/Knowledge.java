@@ -43,11 +43,11 @@ public class Knowledge implements Serializable {
     @JsonProperty("isPublicKnowledge")
     private boolean isPublicKnowledge;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "knowledge", cascade=CascadeType.REMOVE, orphanRemoval = true)
     Set<CategoryKnowledgeGroup> categories;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "knowledge", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Comment> comments;
 

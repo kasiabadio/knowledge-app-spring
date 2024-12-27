@@ -62,7 +62,7 @@ export class KnowledgeListComponent implements OnInit {
 
   loadKnowledge() {
     this.service.getKnowledge().subscribe({
-      next: (data: Knowledge[]) => {
+      next: (data: any[]) => {
         console.log('Fetched Knowledge:', data);
         this.knowledge = data;
       },
@@ -86,7 +86,7 @@ export class KnowledgeListComponent implements OnInit {
 
   loadCategories(){
       this.categoryService.getCategories().subscribe({
-        next: (data: Category[]) => {
+        next: (data: any[]) => {
           this.categories = data;
           },
         error: (err) => {

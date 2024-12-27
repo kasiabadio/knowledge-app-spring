@@ -12,6 +12,7 @@
 // limitations under the License.
 
 package com.example.knowledge.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -68,11 +69,11 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "user")
     private Set<Comment> comments;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "user")
     private Set<Knowledge> knowledges;
 
@@ -133,6 +134,16 @@ public class User implements UserDetails, Principal {
     public void removeKnowledge(Knowledge knowledge){
         knowledges.remove(knowledge);
         knowledge.setUser(this);
+    }
+
+    public void addComment(Comment comment){
+        comments.add(comment);
+        comment.setUser(this);
+    }
+
+    public void removeComment(Comment comment){
+        comments.remove(comment);
+        comment.setUser(this);
     }
 
     public void addRole(Role role){

@@ -1,11 +1,8 @@
 package com.example.knowledge.services;
 
 import com.example.knowledge.GlobalExceptionHandler;
-import com.example.knowledge.models.Category;
-import com.example.knowledge.models.CategoryKnowledgeGroup;
+import com.example.knowledge.models.*;
 import com.example.knowledge.models.Dto.KnowledgeDto;
-import com.example.knowledge.models.Knowledge;
-import com.example.knowledge.models.User;
 import com.example.knowledge.repositories.KnowledgeRepository;
 import com.example.knowledge.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.time.LocalDateTime;
+
 
 @Slf4j
 @Service
@@ -34,10 +34,22 @@ public class KnowledgeService {
         this.ckgr = ckgr;
     }
 
+    public Set<Comment> getAllComments(Long knowledgeId){
+        Knowledge knowledge = kr.findById(knowledgeId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid knowledge ID"));
+
+        return knowledge.getComments();
+    }
+
     public Knowledge getKnowledgeById(Long id){
         log.info("Service: Getting Knowledge entry: {}", id);
         return kr.getByIdPublic(id).orElseThrow(() ->
                 new EntityNotFoundException("Knowledge entity not found with id " + id));
+    }
+
+    public Long getAuthorId(Long knowledgeId){
+        log.info("Service: Getting id of a user author for knowledge id: {}", knowledgeId);
+        return kr.getAuthorId(knowledgeId);
     }
 
 
@@ -70,7 +82,6 @@ public class KnowledgeService {
         knowledge.setUser(user);
         knowledge.setCreatedDate(new Date());
         knowledge.setLastModifiedDate(new Date());
-        log.info("Is public knowledge: {}", knowledgeDto.getIsPublicKnowledge());
         knowledge.setPublicKnowledge(knowledgeDto.getIsPublicKnowledge());
 
         if (knowledge.getCategories() == null) {
@@ -106,6 +117,7 @@ public class KnowledgeService {
 
         Date currentDate = new Date();
         k.setLastModifiedDate(currentDate);
+        k.setCreatedDate(currentDate);
         k.setIdKnowledge(knowledge.getIdKnowledge());
         k.setUser(knowledge.getUser());
         k.setTitle(knowledge.getTitle());

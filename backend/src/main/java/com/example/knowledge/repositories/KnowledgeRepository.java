@@ -17,7 +17,6 @@ public interface KnowledgeRepository extends JpaRepository<Knowledge, Long> {
     @Query("SELECT k FROM Knowledge k WHERE k.title LIKE %:phrase% AND k.isPublicKnowledge = true")
     List<Knowledge> findKnowledgeTitlePhrasePublic(@Param("phrase") String phrase);
 
-    // TODO: add search by category
     @Query("SELECT k FROM Knowledge k WHERE (k.title LIKE %:title% OR " +
             "k.content LIKE %:content%) " +
             " AND k.isPublicKnowledge = true")
@@ -26,4 +25,7 @@ public interface KnowledgeRepository extends JpaRepository<Knowledge, Long> {
 
     @Query("SELECT k FROM Knowledge k WHERE k.isPublicKnowledge = true")
     List<Knowledge> findAllPublic();
+
+    @Query("SELECT k.user.idUser FROM Knowledge k WHERE k.idKnowledge = :knowledgeId")
+    Long getAuthorId(@Param("knowledgeId") Long knowledgeId);
 }

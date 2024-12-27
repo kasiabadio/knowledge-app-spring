@@ -2,10 +2,12 @@ package com.example.knowledge.API;
 import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.GlobalExceptionHandler;
 import com.example.knowledge.models.Category;
+import com.example.knowledge.models.Comment;
 import com.example.knowledge.models.Dto.KnowledgeDto;
 import com.example.knowledge.repositories.CategoryRepository;
 import com.example.knowledge.services.KnowledgeService;
 import com.example.knowledge.models.Knowledge;
+import com.example.knowledge.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +32,35 @@ public class KnowledgeController {
 
     private final KnowledgeService ks;
     private final CategoryRepository cr;
+    private final UserService us;
 
     @Autowired
-    public KnowledgeController(KnowledgeService ks, CategoryRepository cr){
+    public KnowledgeController(KnowledgeService ks, CategoryRepository cr, UserService us){
         this.ks = ks;
         this.cr = cr;
+        this.us = us;
+    }
+
+    @GetMapping("/getAllComments/{knowledgeId}")
+    public ResponseEntity<List<Comment>> getAllComments(@PathVariable Long knowledgeId) {
+        log.info("Controller: Getting all Comments for Knowledge: {}", knowledgeId);
+
+        Set<Comment> commentSet = ks.getAllComments(knowledgeId);
+        List<Comment> commentList = new ArrayList<>(commentSet);
+
+        return ResponseEntity.status(HttpStatus.OK).body(commentList);
     }
 
     @GetMapping("/getById/{id}")
     public ResponseEntity<Knowledge> getKnowledgeById(@PathVariable Long id){
         log.info("Controller: Getting Knowledge entry: {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(ks.getKnowledgeById(id));
+    }
+
+    @GetMapping("/getAuthorEmail/{idKnowledge}")
+    public ResponseEntity<Long> getAuthorId(@PathVariable Long idKnowledge){
+        log.info("Controller: Getting Email of a author of knowledge with id: {}", idKnowledge);
+        return ResponseEntity.status(HttpStatus.OK).body(ks.getAuthorId(idKnowledge));
     }
 
     @GetMapping("searchByPhrase/{titlePhrase}")
