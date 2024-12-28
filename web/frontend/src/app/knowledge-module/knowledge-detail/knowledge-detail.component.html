@@ -55,11 +55,9 @@
     <div class="card-container">
       <mat-card
         *ngFor="let c of comments">
-<!--        <mat-card-header>-->
-<!--          <mat-card-title><h4>Author: {{ c.user.firstName + " " + c.user.lastName }}</h4></mat-card-title>-->
-<!--        </mat-card-header>-->
 
         <mat-card-content>
+          <p>Author: {{ c.user.firstName + " " + c.user.lastName  }}</p>
           <p>Created date: {{ c.createdDate }}</p>
           <p>{{ c.content }}</p>
         </mat-card-content>
@@ -69,5 +67,22 @@
         </mat-card-actions>
 
       </mat-card>
+    </div>
+
+    <ng-container *ngIf="commentForm">
+      <p>Comments</p>
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()">
+
+        <div class="formGroup">
+          <label class="label" for="content">Content</label>
+          <textarea type="text" class="formControl" id="content" formControlName="content" required></textarea>
+          <div *ngIf="commentForm.get('content')?.touched && commentForm.get('content')?.invalid" class="error">
+            Content is required.
+          </div>
+        </div>
+
+        <button type="submit" class="button buttonSubmit">Submit Comment</button>
+      </form>
+    </ng-container>
   </div>
 </div>

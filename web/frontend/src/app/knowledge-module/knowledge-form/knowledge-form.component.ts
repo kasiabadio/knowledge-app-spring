@@ -58,7 +58,7 @@ export class KnowledgeFormComponent implements OnInit {
          this.categoryService.getCategories().subscribe({
              next: (categories) => {
                  console.log("Fetched categories:", categories);
-                 this.categories = categories; // Assign fetched categories to the property
+                 this.categories = categories;
              },
              error: (err) => {
                  console.error("Error fetching categories:", err);
@@ -90,9 +90,9 @@ export class KnowledgeFormComponent implements OnInit {
     numberValidator(control: any) {
         const value = control.value;
         if (value === null || value === undefined || isNaN(value)) {
-          return { invalidNumber: true }; // Return an error if not a valid number
+          return { invalidNumber: true };
         }
-        return null; // Valid
+        return null;
       }
 
 

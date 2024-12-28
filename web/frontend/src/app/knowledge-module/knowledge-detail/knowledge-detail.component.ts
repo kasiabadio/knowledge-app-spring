@@ -1,14 +1,18 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { KnowledgeService } from '../../services/knowledge.service';
 import { CategoryService } from '../../services/category.service';
 import { UserService } from '../../services/user.service';
+import { CommentService } from '../../services/comment.service';
+import { TokenService } from '../../token/token.service';
+
 import { Knowledge } from '../../models/knowledge';
 import { Comment } from '../../models/comment';
 import { Category } from '../../models/category';
-import { TokenService } from '../../token/token.service';
+
 import { MatCardModule } from '@angular/material/card';
 import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
@@ -24,10 +28,14 @@ export class KnowledgeDetailComponent implements OnInit {
   id: string;
   knowledge: Knowledge | undefined;
   knowledgeTemp: Knowledge | undefined;
+
   knowledgeForm: any;
+  commentForm: any;
+
   categories: Category[] = [];
-  selectedCategoryIds: number[] = [];
   comments: any[] = [];
+  selectedCategoryIds: number[] = [];
+
   currentAuthorId: number = -1;
   currentUserId: number = -1;
   canEdit: boolean = false;
@@ -37,6 +45,7 @@ export class KnowledgeDetailComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private serviceKnowledge: KnowledgeService,
     private serviceCategory: CategoryService,
+    private serviceComments: CommentService,
     public serviceToken: TokenService,
     private serviceUser: UserService,
     private route: ActivatedRoute,
@@ -50,6 +59,10 @@ export class KnowledgeDetailComponent implements OnInit {
       this.id = params['id'];
       const idInt = parseInt(this.id, 10);
       this.cd.detectChanges();
+
+      this.commentForm = new FormGroup({
+            content: new FormControl('', Validators.required),
+          });
 
       this.fetchKnowledgeDetails(idInt).subscribe({
         next: () => {
@@ -247,4 +260,45 @@ export class KnowledgeDetailComponent implements OnInit {
       console.log('Form is invalid or knowledge is not defined');
     }
   }
+
+  onSubmitComment(): void {
+    if (this.commentForm.valid && this.knowledge){
+//       console.log("Comment form values: ");
+//       console.table(this.commentForm.value);
+//
+//       console.log("Knowledge object: ", this.knowledge);
+//       console.log("Current User ID: ", this.currentUserId);
+//
+
+      const content = this.commentForm.get("content").value;
+
+      if (!content) {
+        console.error('Content is undefined or empty');
+        return;
+      } else {
+        console.log("Content of the comment: " + content);
+        }
+
+
+      this.serviceComments.createComment(
+        this.currentUserId,
+        this.knowledge.idKnowledge,
+        content).subscribe({
+        next: ()=>{
+             this.loadComments();
+             this.commentForm.reset()
+             this.cd.detectChanges();
+          },
+         error: (err) => {
+           console.error('Error submitting comment:', err);
+         },
+       })
+      } else {
+        console.log("Not correct form comment");
+        console.log('Form comment Status:', this.commentForm.status);
+        console.log('Form comment Errors:', this.commentForm.errors);
+        console.log('Form comment Values:', this.commentForm.value);
+        }
+
+    }
 }

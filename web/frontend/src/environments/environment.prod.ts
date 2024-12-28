@@ -4,6 +4,7 @@ export const environment = {
   apiUrlCategories: 'http://localhost:8080/api/categories',
   apiUrlCategoriesKnowledges: 'http://localhost:8080/api/categories-knowledges',
   apiUrlPassword: 'http://localhost:8080/api/users',
-  apiUrlUsers: 'http://localhost:8080/api/users'
+  apiUrlUsers: 'http://localhost:8080/api/users',
+  apiUrlComments: 'http://localhost:8080/api/comments'
 };
 

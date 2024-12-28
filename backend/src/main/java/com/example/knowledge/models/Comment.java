@@ -20,7 +20,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long groupId;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_user")
     User user;
