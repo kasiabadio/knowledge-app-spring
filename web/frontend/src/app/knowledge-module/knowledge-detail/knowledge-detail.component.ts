@@ -279,20 +279,37 @@ export class KnowledgeDetailComponent implements OnInit {
         console.log("Content of the comment: " + content);
         }
 
-
-      this.serviceComments.createComment(
-        this.currentUserId,
-        this.knowledge.idKnowledge,
-        content).subscribe({
-        next: ()=>{
-             this.loadComments();
-             this.commentForm.reset()
-             this.cd.detectChanges();
+       if (this.currentUserId !== -1){ // Logged in user
+         this.serviceComments.createComment(
+         this.currentUserId,
+         this.knowledge.idKnowledge,
+         content).subscribe({
+         next: ()=>{
+              this.loadComments();
+              this.commentForm.reset()
+              this.cd.detectChanges();
+           },
+          error: (err) => {
+            console.error('Error submitting comment:', err);
           },
-         error: (err) => {
-           console.error('Error submitting comment:', err);
-         },
-       })
+        })
+      } else { // Anonymous
+        this.serviceComments.createComment(
+         3,
+         this.knowledge.idKnowledge,
+         content).subscribe({
+         next: ()=>{
+              this.loadComments();
+              this.commentForm.reset()
+              this.cd.detectChanges();
+           },
+          error: (err) => {
+            console.error('Error submitting comment:', err);
+          },
+        })
+
+        }
+
       } else {
         console.log("Not correct form comment");
         console.log('Form comment Status:', this.commentForm.status);

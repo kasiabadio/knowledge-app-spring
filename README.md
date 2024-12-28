@@ -13,25 +13,24 @@ Component requirements (functional and non-functional).
 
 a.	Functional requirements
 
--	The system must allow users to log in with an email and password as an admin or user.
+-	The system must allow users to log in with an email and password as an admin / author / user.
 -	User can logout.
--	The system must allow to register as an admin or user with an email, password, name, surname.
+-	The system must allow to register as a user with an email, password, name, surname.
 -	There must be confirmation of  registration sent to an email.
 -	There must be password reset functionality.
 
--	User can add his/her own knowledge through forms.
--	User can edit and delete his/her knowledge.
--	User can view all his/her knowledge in form of a list.
--	User can view detailed page of a knowledge.
--	User can see the messages about public posts confirmation or deny.
 
--	User or admin can search knowledge.
--	User or admin can search categories.
--	User or admin can search posts written only by specific user.
+-	User can add, edit and delete his/her own knowledge through forms.
+-	User can view all his/her knowledge in form of a list.
+-	User can view detailed page of a knowledge and comments under it.
+-	It is possible to add comments as an anonymous or registered user.
+
+
+-	User or admin can search knowledge, categories and authors.
+
 
 -	Admin can view admin dashboard.
 -	Admin can manage user accounts through the admin dashboard.
--	Admin can manage public posts, accept the addition or deny it. If it is denied he/she must give the reason by providing the message.
 -	Admin can view who is the most active user, who has added the most number of posts.
 
 
