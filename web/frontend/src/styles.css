@@ -93,3 +93,26 @@ body {
   z-index: 5;
 }
 
+.formGroup {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column; /* Arrange label and input vertically */
+  width: 100%; /* Ensure it fits within the container */
+}
+
+.formControl {
+  width: 300px;
+  height: 400px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  vertical-align: top;
+  line-height: 1.5;
+  text-align: start;
+}
+
+.formControl option {
+  padding: 8px;
+}

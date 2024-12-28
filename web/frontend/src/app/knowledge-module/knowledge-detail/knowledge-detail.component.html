@@ -25,15 +25,16 @@
     <div *ngIf="knowledge && !knowledgeForm">
       <p id="title">{{ knowledge.title }}</p>
       <p>{{ knowledge.content }}</p>
+      <p>Categories: {{ formattedCategories }}</p>
     </div>
 
     <ng-container *ngIf="knowledgeForm">
       <p>Edit</p>
-      <form [formGroup]="knowledgeForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="knowledgeForm">
 
         <div class="formGroup">
           <label class="label" for="titleEdit">Title</label>
-          <textarea type="text" class="formControl" id="titleEdit" formControlName="title"></textarea>
+          <textarea type="text" class="formControl" id="titleEdit" formControlName="titleEdit"></textarea>
           <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
             Title is required.
           </div>
@@ -41,15 +42,34 @@
 
         <div class="formGroup">
           <label class="label" for="contentEdit">Content</label>
-          <textarea type="text" class="formControl" id="contentEdit" formControlName="content"></textarea>
+          <textarea type="text" class="formControl" id="contentEdit" formControlName="contentEdit"></textarea>
           <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
             Content is required.
           </div>
         </div>
 
+        <div class="formGroup">
+          <label class="label" for="isPublicKnowledgeEdit">Public Knowledge</label>
+          <input
+            type="checkbox"
+            id="isPublicKnowledgeEdit"
+            class="formControl smallCheckbox"
+            formControlName="isPublicKnowledgeEdit"
+          />
+        </div>
 
-        <button type="submit" class="button buttonSubmit">Submit</button>
       </form>
+
+      <div class="formGroup">
+        <label for="categoriesEdit">Select Categories</label>
+        <select id="categoriesEdit" multiple [(ngModel)]="selectedCategories" class="formControl">
+          <option *ngFor="let category of categories" [ngValue]="category.categoryName">
+            {{ category.categoryName }}
+          </option>
+        </select>
+      </div>
+      <button type="button" class="button buttonSubmit" (click)="onSubmit()">Add</button>
+
     </ng-container>
 
     <div class="card-container">

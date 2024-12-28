@@ -32,6 +32,11 @@ export class KnowledgeService {
     return this.http.get<number>(url).pipe(catchError(this.errorHandlingService.handleError));
     }
 
+  getAllCategories(id: number){
+    const url = `${this.apiUrl}/getAllCategories/${id}`;
+    return this.http.get<any[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
   getAllComments(id: number){
     const url = `${this.apiUrl}/getAllComments/${id}`;
     return this.http.get<any[]>(url).pipe(catchError(this.errorHandlingService.handleError));
@@ -56,14 +61,14 @@ export class KnowledgeService {
 
   createKnowledge(knowledge: KnowledgeDto, categories: string[]): Observable<Knowledge> {
       const url = `${this.apiUrl}/add`
-      let params = new HttpParams()
-          .set('categories', categories.join(','));
-      return this.http.post<any>(url, knowledge, {params}).pipe(catchError(this.errorHandlingService.handleError));
+      let params = new HttpParams().set('categories', categories.join(','));
+      return this.http.post<any>(url, knowledge, { params }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
-  updateKnowledge(knowledge: Knowledge): Observable<Knowledge>{
-    const url = `${this.apiUrl}/update/${knowledge.idKnowledge}`;
-    return this.http.put<Knowledge>(url, knowledge).pipe(catchError(this.errorHandlingService.handleError));
+  updateKnowledge(knowledge: KnowledgeDto, idKnowledge: number, categories: string[]): Observable<Knowledge>{
+    const url = `${this.apiUrl}/update/${idKnowledge}`;
+    let params = new HttpParams().set('categories', categories.join(','));
+    return this.http.put<any>(url, knowledge, { params }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   deleteKnowledge(id: number): Observable<void>{

@@ -131,3 +131,10 @@ button:hover {
   background-color: #ed9107;
   transform: scale(1.05);
 }
+
+.smallCheckbox {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px; /* Add space between label and checkbox */
+  vertical-align: middle; /* Align checkbox with text */
+}

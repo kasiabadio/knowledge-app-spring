@@ -15,10 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +36,16 @@ public class KnowledgeController {
         this.ks = ks;
         this.cr = cr;
         this.us = us;
+    }
+
+    @GetMapping("/getAllCategories/{knowledgeId}")
+    public ResponseEntity<List<Category>> getAllCategories(@PathVariable Long knowledgeId) {
+        log.info("Controller: Getting all Categories for Knowledge: {}", knowledgeId);
+
+        Set<Category> categoriesSet = ks.getAllCategories(knowledgeId);
+        List<Category> categoriesList = new ArrayList<>(categoriesSet);
+
+        return ResponseEntity.status(HttpStatus.OK).body(categoriesList);
     }
 
     @GetMapping("/getAllComments/{knowledgeId}")
@@ -115,11 +122,26 @@ public class KnowledgeController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Knowledge> updateKnowledge(@RequestBody Knowledge knowledge){
-        Knowledge updatedKnowledge = ks.updateKnowledge(knowledge);
+    @PutMapping("/update/{idKnowledge}")
+    public ResponseEntity<Knowledge> updateKnowledge(@RequestBody KnowledgeDto knowledge,
+                                                     @PathVariable Long idKnowledge,
+                                                     @RequestParam String categories){
+
+        if (categories == null || categories.isEmpty()) {
+            log.error("Categories parameter is missing or empty.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        log.info("Controller: Trying to update knowledge with id: {}", idKnowledge);
+        List<String> categoryList = Arrays.asList(categories.split(","));
+
+        List<Category> categoryObjects = categoryList.stream()
+                .map(cr::findByName)
+                .collect(Collectors.toList());
+
+        Knowledge updatedKnowledge = ks.updateKnowledge(knowledge, idKnowledge, categoryObjects);
         if (updatedKnowledge != null){
-            log.info("Controller: Updating Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
+            log.info("Controller: Updating Knowledge entry: {} {}", idKnowledge, knowledge.getTitle());
             return ResponseEntity.status(HttpStatus.CREATED).body(updatedKnowledge);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

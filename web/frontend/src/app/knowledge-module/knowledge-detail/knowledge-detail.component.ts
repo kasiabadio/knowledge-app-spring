@@ -10,19 +10,21 @@ import { CommentService } from '../../services/comment.service';
 import { TokenService } from '../../token/token.service';
 
 import { Knowledge } from '../../models/knowledge';
+import { KnowledgeDto } from '../../models/knowledge-dto';
 import { Comment } from '../../models/comment';
 import { Category } from '../../models/category';
 
 import { MatCardModule } from '@angular/material/card';
 import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-knowledge-detail',
   templateUrl: './knowledge-detail.component.html',
   styleUrls: ['./knowledge-detail.component.css'],
   standalone: true,
-  imports: [NgIf, NgFor, ReactiveFormsModule, MatCardModule],
+  imports: [NgIf, NgFor, ReactiveFormsModule, MatCardModule, FormsModule],
 })
 export class KnowledgeDetailComponent implements OnInit {
   id: string;
@@ -32,7 +34,10 @@ export class KnowledgeDetailComponent implements OnInit {
   knowledgeForm: any;
   commentForm: any;
 
+  retrievedCategories: Category[] = [];
   categories: Category[] = [];
+  selectedCategories: string[] = [];
+
   comments: any[] = [];
   selectedCategoryIds: number[] = [];
 
@@ -59,10 +64,18 @@ export class KnowledgeDetailComponent implements OnInit {
       this.id = params['id'];
       const idInt = parseInt(this.id, 10);
       this.cd.detectChanges();
+      console.log('Knowledge Object:', JSON.stringify(this.knowledge, null, 2));
+
 
       this.commentForm = new FormGroup({
             content: new FormControl('', Validators.required),
           });
+
+      this.serviceKnowledge.getAllCategories(idInt).subscribe({
+        next: (data) => {
+          this.retrievedCategories = data;
+          }
+        })
 
       this.fetchKnowledgeDetails(idInt).subscribe({
         next: () => {
@@ -85,6 +98,12 @@ export class KnowledgeDetailComponent implements OnInit {
         error: (err) => console.error('Error fetching knowledge details:', err),
       });
     });
+  }
+
+ get formattedCategories(): string {
+    return this.retrievedCategories
+      ? this.retrievedCategories.map(category => category.categoryName).join(', ')
+      : '';
   }
 
   updatePermissions() {
@@ -110,7 +129,7 @@ export class KnowledgeDetailComponent implements OnInit {
       this.serviceKnowledge.getAllComments(id).subscribe({
         next: (data: any[]) => {
           this.comments = data;
-          console.log('Comments: ', JSON.stringify(data, null, 2));
+          this.comments.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
         },
         error: (err) => console.error(err),
       });
@@ -211,14 +230,15 @@ export class KnowledgeDetailComponent implements OnInit {
 
   editKnowledge(knowledge: Knowledge) {
     this.knowledgeForm = new FormGroup({
-      idKnowledge: new FormControl(knowledge.idKnowledge),
-      title: new FormControl(knowledge.title),
-      content: new FormControl(knowledge.content),
-      user: new FormControl(knowledge.user),
+      titleEdit: new FormControl(knowledge.title, [Validators.required]),
+      contentEdit: new FormControl(knowledge.content, [Validators.required]),
+      isPublicKnowledgeEdit: new FormControl(knowledge.isPublicKnowledge)
     });
-
-    this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
+  this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
   }
+
+
+
 
   onCategoryChange(event: any, category: Category) {
     const isChecked = event.target.checked;
@@ -238,24 +258,24 @@ export class KnowledgeDetailComponent implements OnInit {
 
   onSubmit(): void {
     if (this.knowledgeForm.valid && this.knowledge) {
-      console.log('Form values: ');
-      console.table(this.knowledgeForm.value);
-      this.knowledgeTemp = this.knowledgeForm.value;
-      console.log('Knowledge temp');
-      console.log(this.knowledgeTemp);
 
-      for (let i = 0; i < this.selectedCategoryIds.length; i++) {
-        this.serviceKnowledge.updateKnowledge(this.knowledgeForm.value).subscribe({
-          next: () => {
-            if (this.knowledge && this.knowledge.idKnowledge) {
-              this.router.navigate(['knowledge/detail', this.knowledge.idKnowledge]);
-            } else {
-              console.error('Knowledge object or its id is undefined');
-            }
-          },
-          error: (err) => console.error(err),
+      const knowledge: KnowledgeDto = {
+          title: this.knowledgeForm.get("titleEdit").value,
+          content: this.knowledgeForm.get("contentEdit").value,
+          userId: this.currentUserId,
+          isPublicKnowledge: this.knowledgeForm.get("isPublicKnowledgeEdit").value
+      };
+
+
+      this.serviceKnowledge.updateKnowledge(knowledge,
+        this.knowledge.idKnowledge,
+        this.selectedCategories).subscribe({
+            next: () => {
+              this.router.navigate(['knowledge/detail', this.knowledge?.idKnowledge]);
+            },
+            error: (err) => console.error(err),
         });
-      }
+
     } else {
       console.log('Form is invalid or knowledge is not defined');
     }
@@ -263,12 +283,6 @@ export class KnowledgeDetailComponent implements OnInit {
 
   onSubmitComment(): void {
     if (this.commentForm.valid && this.knowledge){
-//       console.log("Comment form values: ");
-//       console.table(this.commentForm.value);
-//
-//       console.log("Knowledge object: ", this.knowledge);
-//       console.log("Current User ID: ", this.currentUserId);
-//
 
       const content = this.commentForm.get("content").value;
 

@@ -23,15 +23,30 @@ public class KnowledgeService {
 
     private final KnowledgeRepository kr;
     private final UserRepository ur;
+    private final CategoryService cs;
     private final CategoryKnowledgeGroupService ckgr;
 
     @Autowired
     public KnowledgeService(KnowledgeRepository kr,
                             UserRepository ur,
+                            CategoryService cs,
                             CategoryKnowledgeGroupService ckgr){
         this.kr = kr;
         this.ur = ur;
+        this.cs = cs;
         this.ckgr = ckgr;
+    }
+
+    public Set<Category> getAllCategories(Long knowledgeId){
+        Knowledge knowledge = kr.findById(knowledgeId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid knowledge ID"));
+
+        Set<CategoryKnowledgeGroup> ckgs = knowledge.getCategories();
+        Set<Category> categories = new HashSet<Category>();
+        for (CategoryKnowledgeGroup ckg : ckgs) {
+            categories.add(ckg.getCategory());
+        }
+        return categories;
     }
 
     public Set<Comment> getAllComments(Long knowledgeId){
@@ -110,23 +125,51 @@ public class KnowledgeService {
         }
     }
 
-    public Knowledge updateKnowledge(Knowledge knowledge){
-        Knowledge k = kr.getByIdPublic(knowledge.getIdKnowledge()).orElseThrow(() -> new
+    public Knowledge updateKnowledge(KnowledgeDto knowledge, Long idKnowledge, List<Category> categories){
+        log.info("Service: Trying to update knowledge with id: {}", idKnowledge);
+
+        Knowledge k = kr.getByIdPublic(idKnowledge).orElseThrow(() -> new
                 EntityNotFoundException("Knowledge entity not found with id: " +
-                knowledge.getIdKnowledge()));
+                idKnowledge));
+
+        User user = ur.findById(Math.toIntExact(knowledge.getUserId()))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
         Date currentDate = new Date();
         k.setLastModifiedDate(currentDate);
         k.setCreatedDate(currentDate);
-        k.setIdKnowledge(knowledge.getIdKnowledge());
-        k.setUser(knowledge.getUser());
+
+        k.setUser(user);
         k.setTitle(knowledge.getTitle());
         k.setContent(knowledge.getContent());
+        k.setPublicKnowledge(knowledge.isPublicKnowledge());
+
+        if (k.getCategories() == null) {
+            k.setCategories(new HashSet<>());
+        }
+
+        log.info("Service: Preparing Knowledge entry: {}", k.getIdKnowledge());
+
+        Knowledge savedKnowledge = kr.save(k);
+
+        Set<CategoryKnowledgeGroup> currentCategories = new HashSet<>(k.getCategories());
+        for (CategoryKnowledgeGroup category : currentCategories) {
+            k.removeCategory(category);
+            category.getCategory().removeKnowledge(category);
+        }
+
+        for (Category category : categories) {
+            CategoryKnowledgeGroup ckg = new CategoryKnowledgeGroup(category, savedKnowledge);
+            ckgr.createCategoryKnowledgeGroupService(ckg);
+            savedKnowledge.addCategory(ckg);
+            category.addKnowledge(ckg);
+        }
+
         try {
-            log.info("Service: Updating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
+            log.info("Service: Updating new Knowledge entry: {} {}", idKnowledge, knowledge.getTitle());
             return kr.save(k);
         } catch (Exception e){
-            log.error("Service: Error updating new Knowledge entry: {} {}", knowledge.getIdKnowledge(), knowledge.getTitle());
+            log.error("Service: Error updating new Knowledge entry: {} {}", idKnowledge, knowledge.getTitle());
             throw e;
         }
     }
