@@ -38,6 +38,29 @@ public class KnowledgeController {
         this.us = us;
     }
 
+    // ---------------- PRIVATE KNOWLEDGE ---------------
+    @GetMapping("/allPrivateForUser/{idUser}")
+    public ResponseEntity<List<Knowledge>> getAllPrivateKnowledge(@PathVariable Long idUser){
+        log.info("Controller: Getting all private knowledge for a user: {}", idUser);
+        List<Knowledge> knowledgeList = ks.getAllPrivateKnowledge(idUser);
+        if (knowledgeList == null){
+            knowledgeList = new ArrayList<>();
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(knowledgeList);
+    }
+
+    @GetMapping("/getPrivateById/{userId}/{knowledgeId}")
+    public ResponseEntity<Knowledge> getPrivateKnowledgeById(
+            @PathVariable Long userId,
+            @PathVariable Long knowledgeId
+    ){
+        log.info("Controller: Getting Private Knowledge entry: {}", knowledgeId);
+        return ResponseEntity.status(HttpStatus.OK).body(ks.getPrivateKnowledgeById(userId, knowledgeId));
+    }
+
+    // ---------------- PUBLIC KNOWLEDGE ----------------
     @GetMapping("/getAllCategories/{knowledgeId}")
     public ResponseEntity<List<Category>> getAllCategories(@PathVariable Long knowledgeId) {
         log.info("Controller: Getting all Categories for Knowledge: {}", knowledgeId);
@@ -127,6 +150,10 @@ public class KnowledgeController {
                                                      @PathVariable Long idKnowledge,
                                                      @RequestParam String categories){
 
+        log.info("Controller update knowledge - Incoming Request: KnowledgeDto: {}", knowledge);
+        log.info("Controller update knowledge - Incoming Request: idKnowledge: {}", idKnowledge);
+        log.info("Controller update knowledge - Incoming Request: categories: {}", categories);
+
         if (categories == null || categories.isEmpty()) {
             log.error("Categories parameter is missing or empty.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -157,7 +184,7 @@ public class KnowledgeController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Knowledge>> getAllKnowledge() {
-        log.info("Controller: Getting all knowledge");
+        log.info("Controller: Getting all public knowledge");
         List<Knowledge> knowledgeList = ks.getAllKnowledge();
         if (knowledgeList == null) {
             knowledgeList = new ArrayList<>();
@@ -166,6 +193,7 @@ public class KnowledgeController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(knowledgeList);
     }
+
 
 
 }

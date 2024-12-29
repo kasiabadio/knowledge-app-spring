@@ -21,7 +21,20 @@ export class KnowledgeService {
     private errorHandlingService: ErrorHandlingService
     ) { }
 
+  // --------------- PRIVATE KNOWLEDGE --------------
 
+  getAllPrivateKnowledge(idUser: number): Observable<Knowledge[]>{
+    const url = `${this.apiUrl}/allPrivateForUser/${idUser}`;
+    return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
+  getPrivateKnowledgeById(idUser: number, idKnowledge: number): Observable<Knowledge> {
+        const url = `${this.apiUrl}/getPrivateById/${idUser}/${idKnowledge}`;
+        return this.http.get<Knowledge>(url).pipe(catchError(this.errorHandlingService.handleError));
+      }
+
+
+  // --------------- PUBLIC KNOWLEDGE ----------------
   getKnowledge(): Observable<Knowledge[]>{
     const url = `${this.apiUrl}/all`;
     return this.http.get<Knowledge[]>(url).pipe(catchError(this.errorHandlingService.handleError));

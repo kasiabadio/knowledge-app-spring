@@ -2,8 +2,9 @@
 
 * General info
 * System architecture
+* Use case diagrams
 * Database schema
-* Sequence Diagrams
+* Sequence diagrams
 * Technologies
 * Sources
 
@@ -52,7 +53,7 @@ b.	Non-functional requirements
 <img src="database-schema.png" alt="Database schema" width=1000/>
 
 
-## Sequence Diagrams
+## Sequence diagrams
  
 * ### Registration & activation account  
 <img src="Registration & activation account.png" alt="Registration & activation account" width="1000"/>

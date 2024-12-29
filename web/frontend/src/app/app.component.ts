@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Router, NavigationEnd } from '@angular/router';
+import { NavigationHistoryService } from './services/navigation-history.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Knowledge system';
-  constructor(private router: Router) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        console.log('Navigated to:', event.url);
-      }
-    });
+  constructor(private navigationHistoryService: NavigationHistoryService) {
+
   }
 }

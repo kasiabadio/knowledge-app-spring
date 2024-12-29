@@ -1,13 +1,16 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 
 import { KnowledgeService } from '../../services/knowledge.service';
 import { CategoryService } from '../../services/category.service';
 import { UserService } from '../../services/user.service';
 import { CommentService } from '../../services/comment.service';
 import { TokenService } from '../../token/token.service';
+import { NavigationHistoryService } from '../../services/navigation-history.service';
 
 import { Knowledge } from '../../models/knowledge';
 import { KnowledgeDto } from '../../models/knowledge-dto';
@@ -26,8 +29,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [NgIf, NgFor, ReactiveFormsModule, MatCardModule, FormsModule],
 })
-export class KnowledgeDetailComponent implements OnInit {
-  id: string;
+export class KnowledgeDetailComponent implements OnInit, OnDestroy {
+  id: string = '';
   knowledge: Knowledge | undefined;
   knowledgeTemp: Knowledge | undefined;
 
@@ -46,70 +49,143 @@ export class KnowledgeDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
 
+  private routerSubscription: Subscription | undefined;
+
   constructor(
     private cd: ChangeDetectorRef,
     private serviceKnowledge: KnowledgeService,
     private serviceCategory: CategoryService,
     private serviceComments: CommentService,
+    public navigationHistoryService: NavigationHistoryService,
     public serviceToken: TokenService,
     private serviceUser: UserService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.id = '';
-  }
+    private router: Router,
+  ) {}
 
   ngOnInit() {
+    this.routerSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (event.url.startsWith('/knowledge/detail')) {
+          this.initializeComponent();
+        }
+      }
+    });
+
+    // Initial component setup
+    this.initializeComponent();
+  }
+
+  ngOnDestroy() {
+      // Unsubscribe to avoid memory leaks
+      if (this.routerSubscription) {
+        this.routerSubscription.unsubscribe();
+      }
+    }
+
+  initializeComponent(){
     this.route.params.subscribe((params) => {
-      this.id = params['id'];
-      const idInt = parseInt(this.id, 10);
-      this.cd.detectChanges();
-      console.log('Knowledge Object:', JSON.stringify(this.knowledge, null, 2));
+          this.id = params['id'];
+          const idInt = parseInt(this.id, 10);
+          this.cd.detectChanges();
 
+          this.loadCategories();
+          this.serviceKnowledge.getAllCategories(idInt).subscribe({
+            next: (data) => {
+              this.retrievedCategories = data;
+            },
+          });
 
-      this.commentForm = new FormGroup({
+          this.cd.detectChanges();
+
+          const isEditRoute = this.router.url.includes('edit');
+          if (isEditRoute) {
+            console.log('Initializing Edit Mode');
+
+            this.getCurrentUserId().subscribe({
+              next: () => {
+                console.log("User id: " + this.currentUserId);
+                }
+              })
+
+            this.fetchKnowledgeDetails(idInt).subscribe({
+              next: () => {
+
+                if (this.knowledge) {
+                  this.knowledgeForm = new FormGroup({
+                    titleEdit: new FormControl(this.knowledge.title, [Validators.required]),
+                    contentEdit: new FormControl(this.knowledge.content, [Validators.required]),
+                    isPublicKnowledgeEdit: new FormControl(this.knowledge.isPublicKnowledge),
+                  });
+
+                  this.cd.detectChanges();
+                }
+              },
+              error: (err) => console.error('Error fetching knowledge details:', err),
+            });
+          }
+
+          this.cd.detectChanges();
+
+          this.commentForm = new FormGroup({
             content: new FormControl('', Validators.required),
           });
 
-      this.serviceKnowledge.getAllCategories(idInt).subscribe({
-        next: (data) => {
-          this.retrievedCategories = data;
-          }
-        })
+          const previousUrl = this.navigationHistoryService.getPreviousUrl();
 
-      this.fetchKnowledgeDetails(idInt).subscribe({
-        next: () => {
-          this.cd.detectChanges();
-          this.getCurrentAuthorId().subscribe({
-            next: () => {
-              this.cd.detectChanges();
-              this.getCurrentUserId().subscribe({
-                next: () => {
-                    this.updatePermissions();
-                    this.loadCategories();
-                    this.loadComments();
+          if (previousUrl === '/knowledge') {
+            this.getCurrentUserId().subscribe({
+              next: () => {
+                this.fetchKnowledgeDetails(idInt).subscribe({
+                  next: () => {
                     this.cd.detectChanges();
-                  }
+                    this.initializeDetails();
+                  },
+                  error: (err) => console.error('Error fetching knowledge details:', err),
                 })
-            },
-            error: (err) => console.error('Error fetching author ID:', err),
-          });
-        },
-        error: (err) => console.error('Error fetching knowledge details:', err),
-      });
+              },
+             error: (err) => console.error('Error fetching  idUser details:', err),
+             });
+          } else if (previousUrl === '/private-knowledge') {
+            this.getCurrentUserId().subscribe({
+              next: () => {
+                this.cd.detectChanges();
+                this.fetchKnowledgeDetailsPrivate(idInt, this.currentUserId).subscribe({
+                  next: () => {
+                    this.cd.detectChanges();
+                    this.initializeDetails();
+                  },
+                  error: (err) => console.error('Error fetching private knowledge details:', err),
+                });
+              },
+              error: (err) => console.error('Error fetching current user ID:', err),
+            });
+          }
+        });
+    }
+
+
+  initializeDetails() {
+    this.getCurrentAuthorId().subscribe({
+      next: () => {
+        this.updatePermissions();
+        this.loadCategories();
+        this.loadComments();
+        this.cd.detectChanges();
+      },
+      error: (err) => console.error('Error fetching author ID:', err),
     });
   }
 
- get formattedCategories(): string {
+  get formattedCategories(): string {
     return this.retrievedCategories
-      ? this.retrievedCategories.map(category => category.categoryName).join(', ')
+      ? this.retrievedCategories.map((category) => category.categoryName).join(', ')
       : '';
   }
 
   updatePermissions() {
-    console.log('Comparing ...');
-    console.log('Current user id: ' + this.currentUserId);
-    console.log('Current author id: ' + this.currentAuthorId);
+    console.log("this.currentAuthorId: " + this.currentAuthorId);
+    console.log("this.currentUserId: " + this.currentUserId);
     if (
       this.serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
       this.currentAuthorId === this.currentUserId
@@ -119,15 +195,11 @@ export class KnowledgeDetailComponent implements OnInit {
     this.canEdit = this.canDelete;
   }
 
-  deleteComment(commentId: number) {
-    console.log('Delete comment');
-  }
-
   loadComments() {
     const id = this.knowledge?.idKnowledge;
     if (id !== undefined) {
       this.serviceKnowledge.getAllComments(id).subscribe({
-        next: (data: any[]) => {
+        next: (data) => {
           this.comments = data;
           this.comments.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
         },
@@ -141,20 +213,19 @@ export class KnowledgeDetailComponent implements OnInit {
     if (!currentUserEmail) {
       console.warn('Current user email is undefined');
       return new Observable<number>((observer) => {
-        observer.next(-1); // Default value if email is missing
+        observer.next(-1);
         observer.complete();
       });
     }
 
     return this.serviceUser.getUserIdByEmail(currentUserEmail).pipe(
-      tap((data: number) => {
-        this.currentUserId = data; // Update `currentUserId`
-        console.log('Current User ID:', this.currentUserId);
+      tap((data) => {
+        this.currentUserId = data;
       }),
       catchError((err) => {
         console.error('Error fetching user ID:', err);
         return new Observable<number>((observer) => {
-          observer.next(-1); // Default value on error
+          observer.next(-1);
           observer.complete();
         });
       })
@@ -171,9 +242,8 @@ export class KnowledgeDetailComponent implements OnInit {
       });
     }
     return this.serviceKnowledge.getAuthorId(knowledgeId).pipe(
-      tap((data: number) => {
+      tap((data) => {
         this.currentAuthorId = data;
-        console.log('Current Author ID:', this.currentAuthorId);
       }),
       catchError((err) => {
         console.error('Error fetching author ID:', err);
@@ -187,7 +257,7 @@ export class KnowledgeDetailComponent implements OnInit {
 
   loadCategories() {
     this.serviceCategory.getCategories().subscribe({
-      next: (data: Category[]) => {
+      next: (data) => {
         this.categories = data;
         this.cd.detectChanges();
       },
@@ -198,9 +268,24 @@ export class KnowledgeDetailComponent implements OnInit {
   fetchKnowledgeDetails(knowledgeId: number): Observable<void> {
     return new Observable((observer) => {
       this.serviceKnowledge.getKnowledgeById(knowledgeId).subscribe({
-        next: (data: Knowledge) => {
+        next: (data) => {
           this.knowledge = data;
-          console.log('Knowledge Details:', JSON.stringify(this.knowledge, null, 2));
+          observer.next();
+          observer.complete();
+        },
+        error: (err) => {
+          console.error(err);
+          observer.error(err);
+        },
+      });
+    });
+  }
+
+  fetchKnowledgeDetailsPrivate(knowledgeId: number, userId: number): Observable<void> {
+    return new Observable((observer) => {
+      this.serviceKnowledge.getPrivateKnowledgeById(userId, knowledgeId).subscribe({
+        next: (data) => {
+          this.knowledge = data;
           observer.next();
           observer.complete();
         },
@@ -213,7 +298,12 @@ export class KnowledgeDetailComponent implements OnInit {
   }
 
   backToKnowledge() {
-    this.router.navigate(['knowledge']);
+    const previousUrl = this.navigationHistoryService.getPreviousUrl();
+    if (previousUrl) {
+      this.router.navigateByUrl(previousUrl);
+    } else {
+      this.router.navigate(['knowledge']);
+    }
   }
 
   backToDetail() {
@@ -223,22 +313,18 @@ export class KnowledgeDetailComponent implements OnInit {
   }
 
   deleteKnowledge(knowledge: Knowledge) {
-    console.log('Delete by id: ' + knowledge.idKnowledge);
-    this.serviceKnowledge.deleteKnowledge(knowledge.idKnowledge).subscribe();
-    this.router.navigate(['knowledge']);
+    this.serviceKnowledge.deleteKnowledge(knowledge.idKnowledge).subscribe({
+      next: () => {
+        this.backToKnowledge();
+      },
+      error: (err) => console.error('Error deleting knowledge:', err),
+    });
   }
 
   editKnowledge(knowledge: Knowledge) {
-    this.knowledgeForm = new FormGroup({
-      titleEdit: new FormControl(knowledge.title, [Validators.required]),
-      contentEdit: new FormControl(knowledge.content, [Validators.required]),
-      isPublicKnowledgeEdit: new FormControl(knowledge.isPublicKnowledge)
-    });
   this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
+  this.cd.detectChanges();
   }
-
-
-
 
   onCategoryChange(event: any, category: Category) {
     const isChecked = event.target.checked;
@@ -257,79 +343,70 @@ export class KnowledgeDetailComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.knowledgeForm.valid && this.knowledge) {
+      if (this.knowledgeForm.valid && this.knowledge) {
 
-      const knowledge: KnowledgeDto = {
-          title: this.knowledgeForm.get("titleEdit").value,
-          content: this.knowledgeForm.get("contentEdit").value,
-          userId: this.currentUserId,
-          isPublicKnowledge: this.knowledgeForm.get("isPublicKnowledgeEdit").value
-      };
+        const knowledge: KnowledgeDto = {
+            title: this.knowledgeForm.get("titleEdit").value,
+            content: this.knowledgeForm.get("contentEdit").value,
+            userId: this.currentUserId,
+            isPublicKnowledge: this.knowledgeForm.get("isPublicKnowledgeEdit").value
+        };
 
 
-      this.serviceKnowledge.updateKnowledge(knowledge,
-        this.knowledge.idKnowledge,
-        this.selectedCategories).subscribe({
-            next: () => {
-              this.router.navigate(['knowledge/detail', this.knowledge?.idKnowledge]);
-            },
-            error: (err) => console.error(err),
-        });
+        this.serviceKnowledge.updateKnowledge(knowledge,
+          this.knowledge.idKnowledge,
+          this.selectedCategories).subscribe({
+              next: () => {
+                this.cd.detectChanges();
+                this.router.navigate(['knowledge']);
+              },
+              error: (err) => console.error(err),
+          });
 
-    } else {
-      console.log('Form is invalid or knowledge is not defined');
+      } else {
+        console.log('Form is invalid or knowledge is not defined');
+      }
     }
-  }
+
+
+  deleteComment(groupId: number){
+    console.log("Delete comment");
+    }
 
   onSubmitComment(): void {
-    if (this.commentForm.valid && this.knowledge){
+      if (this.commentForm.valid && this.knowledge) {
 
-      const content = this.commentForm.get("content").value;
+        const content = this.commentForm.get("content")?.value || '';
 
-      if (!content) {
-        console.error('Content is undefined or empty');
-        return;
-      } else {
-        console.log("Content of the comment: " + content);
+        if (!content.trim()) {
+          console.error('Content is undefined or empty');
+          return;
+        } else {
+          console.log("Content of the comment: " + content);
         }
 
-       if (this.currentUserId !== -1){ // Logged in user
-         this.serviceComments.createComment(
-         this.currentUserId,
-         this.knowledge.idKnowledge,
-         content).subscribe({
-         next: ()=>{
-              this.loadComments();
-              this.commentForm.reset()
-              this.cd.detectChanges();
-           },
-          error: (err) => {
-            console.error('Error submitting comment:', err);
-          },
-        })
-      } else { // Anonymous
+        const userId = this.currentUserId !== -1 ? this.currentUserId : 3; // Use default ID for anonymous
+
         this.serviceComments.createComment(
-         3,
-         this.knowledge.idKnowledge,
-         content).subscribe({
-         next: ()=>{
-              this.loadComments();
-              this.commentForm.reset()
-              this.cd.detectChanges();
-           },
+          userId,
+          this.knowledge.idKnowledge,
+          content
+        ).subscribe({
+          next: () => {
+            this.loadComments();
+            this.commentForm.reset();
+            this.cd.detectChanges();
+          },
           error: (err) => {
             console.error('Error submitting comment:', err);
           },
-        })
-
-        }
+        });
 
       } else {
         console.log("Not correct form comment");
-        console.log('Form comment Status:', this.commentForm.status);
-        console.log('Form comment Errors:', this.commentForm.errors);
-        console.log('Form comment Values:', this.commentForm.value);
-        }
-
+        console.log('Form comment Status:', this.commentForm?.status);
+        console.log('Form comment Errors:', this.commentForm?.errors);
+        console.log('Form comment Values:', this.commentForm?.value);
+      }
     }
 }

@@ -11,7 +11,17 @@ import java.util.Optional;
 @Repository
 public interface KnowledgeRepository extends JpaRepository<Knowledge, Long> {
 
-    @Query("SELECT k FROM Knowledge k WHERE k.idKnowledge = :id AND k.isPublicKnowledge = true")
+    // -------------- PRIVATE KNOWLEDGE ------------------
+
+    @Query("SELECT k FROM Knowledge k WHERE k.isPublicKnowledge = false AND k.idKnowledge = :idKnowledge AND k.user.idUser = :idUser")
+    Knowledge getByIdPrivate(@Param("idUser") Long idUser, @Param("idKnowledge") Long idKnowledge);
+
+    @Query("SELECT k FROM Knowledge k WHERE k.isPublicKnowledge = false AND k.user.idUser = :idUser")
+    List<Knowledge> findAllPrivate(@Param("idUser") Long idUser);
+
+    // --------------- PUBLIC KNOWLEDGE ------------------
+
+    @Query("SELECT k FROM Knowledge k WHERE k.idKnowledge = :id")
     Optional<Knowledge> getByIdPublic(@Param("id") Long id);
 
     @Query("SELECT k FROM Knowledge k WHERE k.title LIKE %:phrase% AND k.isPublicKnowledge = true")
@@ -25,6 +35,7 @@ public interface KnowledgeRepository extends JpaRepository<Knowledge, Long> {
 
     @Query("SELECT k FROM Knowledge k WHERE k.isPublicKnowledge = true")
     List<Knowledge> findAllPublic();
+
 
     @Query("SELECT k.user.idUser FROM Knowledge k WHERE k.idKnowledge = :knowledgeId")
     Long getAuthorId(@Param("knowledgeId") Long knowledgeId);

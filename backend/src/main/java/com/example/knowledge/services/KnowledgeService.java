@@ -37,6 +37,19 @@ public class KnowledgeService {
         this.ckgr = ckgr;
     }
 
+    // ----------------- PRIVATE KNOWLEDGE ----------------
+
+    public Knowledge getPrivateKnowledgeById(Long userId, Long knowledgeId){
+        log.info("Service: Getting Private Knowledge entry: {}", knowledgeId);
+        return kr.getByIdPrivate(userId, knowledgeId);
+    }
+
+    public List<Knowledge> getAllPrivateKnowledge(Long idUser){
+        return kr.findAllPrivate(idUser);
+    }
+
+    // ----------------- PUBLIC KNOWLEDGE -----------------
+
     public Set<Category> getAllCategories(Long knowledgeId){
         Knowledge knowledge = kr.findById(knowledgeId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid knowledge ID"));
@@ -128,12 +141,10 @@ public class KnowledgeService {
     public Knowledge updateKnowledge(KnowledgeDto knowledge, Long idKnowledge, List<Category> categories){
         log.info("Service: Trying to update knowledge with id: {}", idKnowledge);
 
-        Knowledge k = kr.getByIdPublic(idKnowledge).orElseThrow(() -> new
-                EntityNotFoundException("Knowledge entity not found with id: " +
-                idKnowledge));
-
         User user = ur.findById(Math.toIntExact(knowledge.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+        Knowledge k = kr.getByIdPublic(idKnowledge).orElse(kr.getByIdPrivate(Long.valueOf(user.getIdUser()), idKnowledge));
 
         Date currentDate = new Date();
         k.setLastModifiedDate(currentDate);
@@ -182,6 +193,7 @@ public class KnowledgeService {
     public List<Knowledge> getAllKnowledge() {
         return kr.findAllPublic();
     }
+
 
 }
 

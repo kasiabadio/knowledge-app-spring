@@ -22,7 +22,7 @@
       </button>
     </div>
 
-    <div *ngIf="knowledge && !knowledgeForm">
+    <div *ngIf="knowledge">
       <p id="title">{{ knowledge.title }}</p>
       <p>{{ knowledge.content }}</p>
       <p>Categories: {{ formattedCategories }}</p>
@@ -35,7 +35,7 @@
         <div class="formGroup">
           <label class="label" for="titleEdit">Title</label>
           <textarea type="text" class="formControl" id="titleEdit" formControlName="titleEdit"></textarea>
-          <div *ngIf="knowledgeForm?.get('title')?.invalid && knowledgeForm?.get('title')?.touched" class="textDanger">
+          <div *ngIf="knowledgeForm?.get('titleEdit')?.invalid && knowledgeForm?.get('titleEdit')?.touched" class="textDanger">
             Title is required.
           </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="formGroup">
           <label class="label" for="contentEdit">Content</label>
           <textarea type="text" class="formControl" id="contentEdit" formControlName="contentEdit"></textarea>
-          <div *ngIf="knowledgeForm?.get('content')?.invalid && knowledgeForm?.get('content')?.touched" class="textDanger">
+          <div *ngIf="knowledgeForm?.get('contentEdit')?.invalid && knowledgeForm?.get('contentEdit')?.touched" class="textDanger">
             Content is required.
           </div>
         </div>

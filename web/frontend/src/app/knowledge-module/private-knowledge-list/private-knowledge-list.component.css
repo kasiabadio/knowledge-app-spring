@@ -5,7 +5,7 @@
     grid-row-gap: 1rem;
     background-color: white;
     color: black;
-    margin-top: 1250px;
+    margin-top: 300px;
 }
 
 .card-container mat-card {
@@ -22,8 +22,7 @@
 }
 
 .searchAdvanced,
-.searchSimple, .categoriesSearch,
- .showAllKnowledge, .authorSearch {
+.searchSimple, .showAllKnowledge  {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -34,16 +33,9 @@
   top: 80px;
 }
 
-.categoriesSearch {
-  top: 150px;
-}
-
-.authorSearch {
-  top:650px;
-}
 
 .showAllKnowledge {
-  top: 1150px;
+  top: 180px;
 }
 
 button {

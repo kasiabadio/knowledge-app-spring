@@ -9,6 +9,7 @@
     "/knowledge/form",
     "/login",
     "/password-reset",
+    "/private-knowledge",
     "/register"
   ]
 }
