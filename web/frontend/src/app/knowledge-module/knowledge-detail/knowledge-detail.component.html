@@ -83,7 +83,7 @@
         </mat-card-content>
 
         <mat-card-actions>
-          <button class="button buttonDelete" type="button" (click)="deleteComment(c.groupId)">Delete</button>
+          <button *ngIf="c.user.idUser === this.currentUserId || this.serviceToken.currentUser?.authorities?.includes('ADMIN')" class="button buttonDelete" type="button" (click)="deleteComment(c.groupId, c.user.idUser)">Delete</button>
         </mat-card-actions>
 
       </mat-card>

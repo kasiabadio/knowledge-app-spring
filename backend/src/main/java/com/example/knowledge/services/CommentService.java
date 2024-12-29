@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -31,6 +32,29 @@ public class CommentService {
         this.ur = ur;
         this.kr = kr;
         this.cr = cr;
+    }
+
+    public void deleteComment(Long idUser, Long idKnowledge, Long idComment){
+        User user = ur.findById(Math.toIntExact(idUser))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+        Knowledge knowledge = kr.findById(idKnowledge)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid knowledge ID"));
+
+        Comment comment = cr.findById(idComment)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
+
+        // Check if the comment belongs to the given user and knowledge
+        if (knowledge.getComments().contains(comment) && user.getComments().contains(comment)) {
+            // Remove the comment from knowledge and user
+            knowledge.removeComment(comment);
+            user.removeComment(comment);
+
+            // Optionally delete the comment from the repository
+            cr.delete(comment);
+        } else {
+            throw new IllegalStateException("Comment does not belong to the given user or knowledge");
+        }
     }
 
     public Comment createComment(Long idUser, Long idKnowledge, String content){

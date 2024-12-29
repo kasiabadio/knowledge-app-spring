@@ -69,15 +69,16 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
         if (event.url.startsWith('/knowledge/detail')) {
           this.initializeComponent();
         }
+      if (event.url.startsWith('/knowledge/edit')) {
+        this.initializeComponent();
+      }
       }
     });
 
-    // Initial component setup
     this.initializeComponent();
   }
 
   ngOnDestroy() {
-      // Unsubscribe to avoid memory leaks
       if (this.routerSubscription) {
         this.routerSubscription.unsubscribe();
       }
@@ -322,7 +323,7 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
   }
 
   editKnowledge(knowledge: Knowledge) {
-  this.router.navigate(['knowledge/detail/edit/', knowledge.idKnowledge]);
+  this.router.navigate(['knowledge/edit/', knowledge.idKnowledge]);
   this.cd.detectChanges();
   }
 
@@ -369,8 +370,16 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
     }
 
 
-  deleteComment(groupId: number){
+  deleteComment(groupId: number, idUser: number){
     console.log("Delete comment");
+    const idKnowledge = this.knowledge?.idKnowledge ?? 0;
+    this.serviceComments.deleteComment(idUser, idKnowledge, groupId).subscribe({
+      next: () => {
+        this.loadComments();
+        this.commentForm.reset();
+        this.cd.detectChanges();
+        }
+      })
     }
 
   onSubmitComment(): void {

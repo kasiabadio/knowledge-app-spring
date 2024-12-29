@@ -24,6 +24,13 @@ public class CommentController {
     }
 
 
+    @DeleteMapping("delete/{idUser}/{idKnowledge}/{idComment}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long idUser, @PathVariable Long idKnowledge, @PathVariable Long idComment){
+        log.info("Controller: Deleting Knowledge entry: {}", idComment);
+        cs.deleteComment(idUser, idKnowledge, idComment);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("add/{idUser}/{idKnowledge}/{content}")
     public ResponseEntity<Comment> createComment(@PathVariable Long idUser, @PathVariable Long idKnowledge, @PathVariable String content){
         if (idUser == null || idKnowledge == null){
