@@ -24,16 +24,19 @@ public class KnowledgeService {
     private final KnowledgeRepository kr;
     private final UserRepository ur;
     private final CategoryService cs;
+    private final CommentService cs2;
     private final CategoryKnowledgeGroupService ckgr;
 
     @Autowired
     public KnowledgeService(KnowledgeRepository kr,
                             UserRepository ur,
                             CategoryService cs,
+                            CommentService cs2,
                             CategoryKnowledgeGroupService ckgr){
         this.kr = kr;
         this.ur = ur;
         this.cs = cs;
+        this.cs2 = cs2;
         this.ckgr = ckgr;
     }
 
@@ -186,6 +189,8 @@ public class KnowledgeService {
     }
 
     public void deleteKnowledge(Long id){
+        // first delete all comments
+        cs2.deleteAllCommentsForAKnowledge(id);
         kr.deleteById(id);
         log.info("Service: Deleting Knowledge entry: {}", id);
     }

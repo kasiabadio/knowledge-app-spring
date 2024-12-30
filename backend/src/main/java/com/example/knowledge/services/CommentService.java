@@ -7,13 +7,16 @@ import com.example.knowledge.repositories.CommentRepository;
 import com.example.knowledge.repositories.KnowledgeRepository;
 import com.example.knowledge.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -32,6 +35,16 @@ public class CommentService {
         this.ur = ur;
         this.kr = kr;
         this.cr = cr;
+    }
+
+    public void deleteAllCommentsForAKnowledge(Long idKnowledge){
+        Knowledge knowledge = kr.findById(idKnowledge)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid knowledge ID"));
+        Set<Comment> comments = knowledge.getComments();
+        for (Comment comment: comments){
+            knowledge.removeComment(comment);
+            comment.setKnowledge(null);
+        }
     }
 
     public void deleteComment(Long idUser, Long idKnowledge, Long idComment){
