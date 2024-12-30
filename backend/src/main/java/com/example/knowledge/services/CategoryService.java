@@ -2,12 +2,15 @@ package com.example.knowledge.services;
 
 import com.example.knowledge.GlobalExceptionHandler;
 import com.example.knowledge.models.Category;
+import com.example.knowledge.models.Dto.CategoryDto;
 import com.example.knowledge.repositories.CategoryRepository;
+import com.example.knowledge.services.mapper.CategoryMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -41,14 +44,17 @@ public class CategoryService {
         return items;
     }
 
-    public Category createCategory(Category category){
-        log.info("Service: Creating new Category entry: {} {}", category.getIdCategory(), category.getCategoryName());
-        return cr.save(category);
+    public Category createCategory(CategoryDto category){
+        log.info("Service: Creating new Category entry: {}", category.getCategoryName());
+        CategoryMapper cm = new CategoryMapper();
+        Category categoryNew = cm.mapToCategory(category);
+        return cr.save(categoryNew);
     }
 
-    public void deleteCategory(Long id){
-        cr.deleteById(id);
-        log.info("Service: Deleting Category entry: {}", id);
+    public void deleteCategory(String categoryName){
+        Category c = cr.findByName(categoryName);
+        cr.deleteById(c.getIdCategory());
+        log.info("Service: Deleting Category entry: {}", c.getIdCategory());
     }
 
     public List<Category> getAllCategories(){

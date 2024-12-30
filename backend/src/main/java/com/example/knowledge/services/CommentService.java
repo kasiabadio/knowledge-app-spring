@@ -44,6 +44,7 @@ public class CommentService {
         for (Comment comment: comments){
             knowledge.removeComment(comment);
             comment.setKnowledge(null);
+            cr.delete(comment);
         }
     }
 
@@ -57,13 +58,9 @@ public class CommentService {
         Comment comment = cr.findById(idComment)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
 
-        // Check if the comment belongs to the given user and knowledge
         if (knowledge.getComments().contains(comment) && user.getComments().contains(comment)) {
-            // Remove the comment from knowledge and user
             knowledge.removeComment(comment);
             user.removeComment(comment);
-
-            // Optionally delete the comment from the repository
             cr.delete(comment);
         } else {
             throw new IllegalStateException("Comment does not belong to the given user or knowledge");

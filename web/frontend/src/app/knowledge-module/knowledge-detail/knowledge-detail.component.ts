@@ -19,7 +19,7 @@ import { Category } from '../../models/category';
 
 import { MatCardModule } from '@angular/material/card';
 import { Observable } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, combineLatestWith } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -29,7 +29,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [NgIf, NgFor, ReactiveFormsModule, MatCardModule, FormsModule],
 })
-export class KnowledgeDetailComponent implements OnInit, OnDestroy {
+export class KnowledgeDetailComponent implements OnInit {
   id: string = '';
   knowledge: Knowledge | undefined;
   knowledgeTemp: Knowledge | undefined;
@@ -49,6 +49,8 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
   canEdit: boolean = false;
   canDelete: boolean = false;
 
+  isEditMode: boolean = false;
+
   private routerSubscription: Subscription | undefined;
 
   constructor(
@@ -64,118 +66,66 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url.startsWith('/knowledge/detail')) {
-          this.initializeComponent();
-        }
-      if (event.url.startsWith('/knowledge/edit')) {
-        this.initializeComponent();
-      }
-      }
-    });
-
     this.initializeComponent();
   }
 
-  ngOnDestroy() {
-      if (this.routerSubscription) {
-        this.routerSubscription.unsubscribe();
-      }
-    }
+  initializeComponent(a?: boolean){
 
-  initializeComponent(){
     this.route.params.subscribe((params) => {
-          this.id = params['id'];
-          const idInt = parseInt(this.id, 10);
-          this.cd.detectChanges();
 
-          this.loadCategories();
-          this.serviceKnowledge.getAllCategories(idInt).subscribe({
-            next: (data) => {
-              this.retrievedCategories = data;
-            },
-          });
+      this.id = params['id'];
+      const idInt = parseInt(this.id, 10);
+      this.cd.detectChanges();
 
-          this.cd.detectChanges();
+      // get all categories
+      this.loadCategories();
 
-          const isEditRoute = this.router.url.includes('edit');
-          if (isEditRoute) {
-            console.log('Initializing Edit Mode');
+      // get categories for knowledge
+      this.serviceKnowledge.getAllCategories(idInt).subscribe({
+        next: (data) => {
+          this.retrievedCategories = data;
+        },
+      });
 
-            this.getCurrentUserId().subscribe({
+      this.cd.detectChanges();
+
+      this.fetchKnowledgeDetails(idInt).subscribe({
+        next: () => {
+            this.cd.detectChanges();
+            this.getCurrentUserId().pipe(combineLatestWith(this.getCurrentAuthorId())).subscribe({
               next: () => {
                 console.log("User id: " + this.currentUserId);
+
+                this.initializeDetails();
                 }
               })
+        },
+        error: (err) => console.error('Error fetching knowledge details:', err),
+      });
 
-            this.fetchKnowledgeDetails(idInt).subscribe({
-              next: () => {
 
-                if (this.knowledge) {
-                  this.knowledgeForm = new FormGroup({
-                    titleEdit: new FormControl(this.knowledge.title, [Validators.required]),
-                    contentEdit: new FormControl(this.knowledge.content, [Validators.required]),
-                    isPublicKnowledgeEdit: new FormControl(this.knowledge.isPublicKnowledge),
-                  });
+      this.commentForm = new FormGroup({
+        content: new FormControl('', Validators.required),
+      });
 
-                  this.cd.detectChanges();
-                }
-              },
-              error: (err) => console.error('Error fetching knowledge details:', err),
-            });
-          }
+    });
+  }
 
-          this.cd.detectChanges();
-
-          this.commentForm = new FormGroup({
-            content: new FormControl('', Validators.required),
-          });
-
-          const previousUrl = this.navigationHistoryService.getPreviousUrl();
-
-          if (previousUrl === '/knowledge') {
-            this.getCurrentUserId().subscribe({
-              next: () => {
-                this.fetchKnowledgeDetails(idInt).subscribe({
-                  next: () => {
-                    this.cd.detectChanges();
-                    this.initializeDetails();
-                  },
-                  error: (err) => console.error('Error fetching knowledge details:', err),
-                })
-              },
-             error: (err) => console.error('Error fetching  idUser details:', err),
-             });
-          } else if (previousUrl === '/private-knowledge') {
-            this.getCurrentUserId().subscribe({
-              next: () => {
-                this.cd.detectChanges();
-                this.fetchKnowledgeDetailsPrivate(idInt, this.currentUserId).subscribe({
-                  next: () => {
-                    this.cd.detectChanges();
-                    this.initializeDetails();
-                  },
-                  error: (err) => console.error('Error fetching private knowledge details:', err),
-                });
-              },
-              error: (err) => console.error('Error fetching current user ID:', err),
-            });
-          }
-        });
+  createKnowledgeForm(){
+     if (this.knowledge && this.isEditMode) {
+        this.knowledgeForm = new FormGroup({
+          titleEdit: new FormControl(this.knowledge.title, [Validators.required]),
+          contentEdit: new FormControl(this.knowledge.content, [Validators.required]),
+          isPublicKnowledgeEdit: new FormControl(this.knowledge.isPublicKnowledge),
+      });
     }
-
+  }
 
   initializeDetails() {
-    this.getCurrentAuthorId().subscribe({
-      next: () => {
-        this.updatePermissions();
-        this.loadCategories();
-        this.loadComments();
-        this.cd.detectChanges();
-      },
-      error: (err) => console.error('Error fetching author ID:', err),
-    });
+
+      this.updatePermissions();
+      this.loadComments();
+      this.cd.detectChanges();
   }
 
   get formattedCategories(): string {
@@ -187,6 +137,7 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
   updatePermissions() {
     console.log("this.currentAuthorId: " + this.currentAuthorId);
     console.log("this.currentUserId: " + this.currentUserId);
+
     if (
       this.serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
       this.currentAuthorId === this.currentUserId
@@ -323,8 +274,8 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
   }
 
   editKnowledge(knowledge: Knowledge) {
-  this.router.navigate(['knowledge/edit/', knowledge.idKnowledge]);
-  this.cd.detectChanges();
+      this.isEditMode = true;
+      this.createKnowledgeForm();
   }
 
   onCategoryChange(event: any, category: Category) {
@@ -353,13 +304,12 @@ export class KnowledgeDetailComponent implements OnInit, OnDestroy {
             isPublicKnowledge: this.knowledgeForm.get("isPublicKnowledgeEdit").value
         };
 
-
         this.serviceKnowledge.updateKnowledge(knowledge,
           this.knowledge.idKnowledge,
           this.selectedCategories).subscribe({
               next: () => {
-                this.cd.detectChanges();
-                this.router.navigate(['knowledge']);
+                this.isEditMode = false;
+                this.initializeComponent(true);
               },
               error: (err) => console.error(err),
           });

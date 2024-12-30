@@ -49,6 +49,11 @@ body {
   background: url('./assets/login.png');
 }
 
+.buttonSubmit {
+  width: 200px;
+  border-radius: 10px;
+}
+
 .navbar-logo {
    width: 100px;
    height: 100px;

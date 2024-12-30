@@ -1,6 +1,6 @@
 <div class="content">
   <div class="knowledge-detail-container">
-    <div class="pagebutton back" *ngIf="!knowledgeForm ">
+    <div class="pagebutton back" *ngIf="!isEditMode ">
       <button class="button buttonBack" type="button" (click)="backToKnowledge()">
       </button>
       <p>Back</p>
@@ -28,7 +28,7 @@
       <p>Categories: {{ formattedCategories }}</p>
     </div>
 
-    <ng-container *ngIf="knowledgeForm">
+    <ng-container *ngIf="isEditMode">
       <p>Edit</p>
       <form [formGroup]="knowledgeForm">
 

@@ -4,6 +4,7 @@ import { ErrorHandlingService } from './error-handling.service';
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category';
+import { CategoryDto } from '../models/category-dto';
 import { HttpClientModule, HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -15,6 +16,7 @@ export class CategoryService {
     private http: HttpClient,
     private errorHandlingService: ErrorHandlingService
     ) { }
+
 
   getCategories(): Observable<Category[]>{
     const url = `${this.apiUrl}/all`;
@@ -33,21 +35,21 @@ export class CategoryService {
       console.log("Service: categoryName: " + categoryName);
       }
 
-    return this.http.get<Category>(this.apiUrl, {params});
+    return this.http.get<Category>(this.apiUrl, {params}).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   findByCategoryName(name: string){
     const url = `${this.apiUrl}/searchAll/${name}`;
     return this.http.get<Category[]>(url).pipe(catchError(this.errorHandlingService.handleError));
-    }
+  }
 
-  createCategory(category: Category): Observable<Category>{
-    return this.http.post<Category>(this.apiUrl, category).pipe(catchError(this.errorHandlingService.handleError));
-    }
+  createCategory(category: CategoryDto): Observable<Category>{
+     const url = `${this.apiUrl}/add`;
+    return this.http.post<Category>(url, category).pipe(catchError(this.errorHandlingService.handleError));
+  }
 
-  deleteCategory(id: number): Observable<void>{
-    const url = `${this.apiUrl}/${id}`;
+  deleteCategory(categoryName: string): Observable<void>{
+    const url = `${this.apiUrl}/delete/${categoryName}`;
     return this.http.delete<void>(url).pipe(catchError(this.errorHandlingService.handleError));
-    }
-
+  }
 }

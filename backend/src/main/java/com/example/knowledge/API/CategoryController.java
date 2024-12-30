@@ -3,6 +3,7 @@ package com.example.knowledge.API;
 import com.example.knowledge.CorsConfiguration;
 import com.example.knowledge.GlobalExceptionHandler;
 import com.example.knowledge.models.Category;
+import com.example.knowledge.models.Dto.CategoryDto;
 import com.example.knowledge.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -50,17 +51,17 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(cs.findByCategoryName(phrase));
     }
 
-    @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category){
-        log.info("Controller: Creating new Category entry: {} {}", category.getIdCategory(), category.getCategoryName());
+    @PostMapping("add")
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryDto category){
+        log.info("Controller: Creating new Category entry: {}", category.getCategoryName());
         return ResponseEntity.status(HttpStatus.OK).body(cs.createCategory(category));
     }
 
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
-        log.info("Controller: Deleting Category entry: {}", id);
-        cs.deleteCategory(id);
+    @DeleteMapping("delete/{categoryName}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable String categoryName){
+        log.info("Controller: Deleting Category entry: {}", categoryName);
+        cs.deleteCategory(categoryName);
         return ResponseEntity.noContent().build();
     }
 

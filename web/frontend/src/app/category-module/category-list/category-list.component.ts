@@ -65,6 +65,7 @@ export class CategoryListComponent implements OnInit {
    deleteCategory(categoryName: string){
      this.serviceCategory.deleteCategory(categoryName).subscribe({
        next: () => {
+         this.loadCategories();
          this.cd.detectChanges();
          },
        error: (err) => console.error(err)
@@ -79,6 +80,8 @@ export class CategoryListComponent implements OnInit {
 
       this.serviceCategory.createCategory(category).subscribe({
         next: () => {
+          this.loadCategories();
+          this.categoryForm.get("categoryName").reset();
           this.cd.detectChanges();
           },
         error: (err) => console.error(err),

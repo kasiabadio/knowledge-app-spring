@@ -32,6 +32,7 @@ export class SidebarDetailComponent {
 
     logout(){
       this.tokenService.token = '';
+      this.router.navigate(['knowledge'])
       }
 
 
