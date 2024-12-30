@@ -1,27 +1,70 @@
+.categoriesList {
+  width: 30%; /* Reduced size */
+  max-height: 40vh; /* Limit height */
+  overflow-y: auto;
+  margin: 0 auto; /* Center horizontally */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-
-.back {
-  font-family: Arial, sans-serif;
-  position: absolute;
-  font-size: 12px;
-  top: 10px;
-  left: 30px;
-  display: flex;
-  white-space: nowrap;
+.categoriesList h3 {
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 ul {
-  max-height: 80vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 li {
   display: flex;
-  white-space: nowrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 50px;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.categoryFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px; /* Space between form fields */
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+textarea {
+  width: 70%;
+  height: 20%;
+  resize: none;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.buttonSubmit {
+  padding: 8px 16px;
+  background-color: #f59c3d
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttonSubmit:hover {
+  background-color: #fcc283
 }

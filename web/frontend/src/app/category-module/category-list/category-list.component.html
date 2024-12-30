@@ -1,9 +1,33 @@
 <div class="content">
-  <div class="pagebutton back">
-    <button class="button buttonBack" type="button" (click)="backToKnowledge()">
-    </button>
-    <p>Back</p>
+
+  <div class="categoriesList">
+    <ul>
+      <li *ngFor="let category of categories">
+        <div
+          class="button delete"
+          *ngIf="canDelete === true">
+          <button class="button buttonRemove" type="button" (click)="deleteCategory(category.categoryName)">
+          </button>
+        </div>
+        {{ category.categoryName }}
+      </li>
+    </ul>
   </div>
+
+  <ng-container *ngIf="categoryForm">
+    <form [formGroup]="categoryForm">
+      <div class="formGroup">
+        <label class="label" for="categoryName">Category Name</label>
+        <textarea type="text" class="formControl" id="categoryName" formControlName="categoryName"></textarea>
+        <div *ngIf="categoryForm?.get('categoryName')?.invalid && categoryForm?.get('categoryName')?.touched" class="textDanger">
+          Category name is required.
+        </div>
+      </div>
+    </form>
+    <button type="button" class="buttonSubmit" (click)="createCategory()">Add Category</button>
+  </ng-container>
+
+
 
 </div>
 
