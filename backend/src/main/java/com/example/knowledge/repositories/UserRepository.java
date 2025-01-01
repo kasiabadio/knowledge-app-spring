@@ -45,4 +45,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "JOIN u.roles r " +
             "WHERE r.idRole = 3")
     List<User> getAuthors();
+
+    @Query("UPDATE User SET firstName = :firstName WHERE idUser = :idUser")
+    User changeFirstName(@Param("idUser") Long idUser, @Param("firstName") String firstName);
+
+    @Query("UPDATE User SET lastName = :lastName WHERE idUser = :idUser")
+    User changeLastName(@Param("idUser") Long idUser, @Param("lastName") String lastName);
 }

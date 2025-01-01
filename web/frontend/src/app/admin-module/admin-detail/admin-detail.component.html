@@ -1,4 +1,21 @@
 <div class="content">
   <h3>Admin Panel</h3>
   <app-category-list></app-category-list>
+  <div class="content">
+    <h4>Users list:</h4>
+    <ul>
+      <li *ngFor="let user of users" class="user-item">
+        <p class="user-info">{{ user.firstName + " " + user.lastName }}</p>
+        <p class="user-info">Email: {{ user.email }}</p>
+        <p class="user-info">Is account locked: {{ user.accountLocked }}</p>
+        <p class="user-info">Is account enabled: {{ user.enabled }}</p>
+        <p class="user-info">Account created date: {{ user.createdDate }}</p>
+        <p class="user-info">Account last modified date: {{ user.lastModifiedDate }}</p>
+        <p class="user-info">User roles:</p>
+        <ul class="roles-list">
+          <li *ngFor="let role of user.roles" class="role-info">{{ role.name }}</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </div>

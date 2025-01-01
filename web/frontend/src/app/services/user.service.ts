@@ -20,6 +20,18 @@ export class UserService {
     private errorHandlingService: ErrorHandlingService
     ) { }
 
+
+  changeFirstNameandLastName(firstName: string, lastName: string){
+    const url = `${this.apiUrl}/changeNameAndSurname/{firstName}/{lastName}`;
+    const body = {};
+    return this.http.put<UserDto>(url, body).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
+  getUsersNotAdmins(){
+    const url = `${this.apiUrl}/all`;
+    return this.http.get<User[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
   getUserIdByEmail(email: string){
     const url = `${this.apiUrl}/getUserIdByEmail/${email}`;
     return this.http.get<number>(url).pipe(catchError(this.errorHandlingService.handleError));

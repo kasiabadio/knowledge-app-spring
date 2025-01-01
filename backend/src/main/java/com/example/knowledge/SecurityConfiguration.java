@@ -58,7 +58,9 @@ public class SecurityConfiguration {
                                         "/api/users/allAuthors",
                                         "/api/categories-knowledges/**",
                                         "/api/comments/**",
-                                        "/api/categories/**"
+                                        "/api/categories/**",
+                                        "/api/users/all",
+                                        "/api/users/changeNameAndSurname/"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/api/users/**"

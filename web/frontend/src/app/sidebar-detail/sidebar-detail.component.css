@@ -42,3 +42,12 @@
   white-space: nowrap;
 }
 
+button {
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #ed9107;
+  transform: scale(1.05);
+}

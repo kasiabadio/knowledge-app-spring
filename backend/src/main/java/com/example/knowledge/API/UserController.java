@@ -36,6 +36,18 @@ public class UserController {
     private final AuthenticationService authenticationService;
 
 
+    @PutMapping("/changeNameAndSurname/{firstName}/{lastName}")
+    private ResponseEntity<UserDto> changeFirstNameandLastName(
+            @PathVariable Long idUser,
+            @PathVariable String firstName,
+            @PathVariable String lastName){
+        if (StringUtils.isEmpty(firstName) || StringUtils.isEmpty(lastName)){
+            log.error("Controller: First name is empty or last name is empty");
+            return null;
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.changeFirstNameandLastName(idUser, firstName, lastName));
+    }
+
     @GetMapping("/all")
     private ResponseEntity<List<User>> getUsersNotAdmins(){
         List<User> users = userService.getUsersNotAdmins();
@@ -80,7 +92,6 @@ public class UserController {
         return null;
     }
 
-    // Return a consistent JSON structure for all responses
     private ResponseEntity<Map<String, String>> createResponse(HttpStatus status, String message) {
         Map<String, String> response = new HashMap<>();
         response.put("message", message);

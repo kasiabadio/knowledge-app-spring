@@ -1,11 +1,13 @@
 package com.example.knowledge.services;
 
+import com.example.knowledge.models.Dto.UserDto;
 import com.example.knowledge.models.PasswordResetToken;
 import com.example.knowledge.models.Role;
 import com.example.knowledge.models.User;
 import com.example.knowledge.repositories.PasswordTokenRepository;
 import com.example.knowledge.repositories.RoleRepository;
 import com.example.knowledge.repositories.UserRepository;
+import com.example.knowledge.services.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,13 @@ public class UserService {
     private final MessageSource messageSource;
     private final PasswordEncoder passwordEncoder;
 
+
+    public UserDto changeFirstNameandLastName(Long idUser, String firstName, String lastName){
+        User user = userRepository.changeFirstName(idUser, firstName);
+        User user2 = userRepository.changeLastName(idUser, lastName);
+        UserMapper um = new UserMapper();
+        return UserMapper.mapToUserDto(user2);
+    }
 
     public List<User> getUsersNotAdmins(){
         return userRepository.getUsersNotAdmins();

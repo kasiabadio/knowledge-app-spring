@@ -23,7 +23,7 @@ body, html {
 }
 
 .back  {
-  top: 10px;
+  top: 20px;
   left: 30px;
 }
 
@@ -112,7 +112,6 @@ body, html {
 }
 
 button {
-    background-color: #ffbd59;
     border: none;
     color: white;
     padding: 5px;
