@@ -51,6 +51,22 @@ public class UserService {
 
     }
 
+
+    public void removeRole(Long idUser, String roleName){
+        String roleNameNew = roleName.trim();
+
+        User user = userRepository.getUserById(idUser)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + idUser + " does not exist"));
+
+        if (roleNameNew.equals("USER")) {
+            this.deleteRoleForUser(Long.valueOf(user.getIdUser()), 1L);
+        } else if (roleNameNew.equals("ADMIN")) {
+            this.deleteRoleForUser(Long.valueOf(user.getIdUser()), 2L);
+        } else if (roleNameNew.equals("AUTHOR")) {
+            this.deleteRoleForUser(Long.valueOf(user.getIdUser()), 3L);
+        }
+    }
+
     public UserDto changeFirstNameandLastName(Long idUser, String firstName, String lastName){
         User user = userRepository.changeFirstName(idUser, firstName);
         User user2 = userRepository.changeLastName(idUser, lastName);

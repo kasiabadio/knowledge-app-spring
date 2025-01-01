@@ -61,7 +61,8 @@ public class SecurityConfiguration {
                                         "/api/categories/**",
                                         "/api/users/all",
                                         "/api/users/changeNameAndSurname/**",
-                                        "/api/users/addRole/**"
+                                        "/api/users/addRole/**",
+                                        "/api/users/deleteRole/**"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/api/users/**"

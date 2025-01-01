@@ -21,6 +21,13 @@ export class UserService {
     ) { }
 
 
+   deleteRole(idUser: number, roleName: string){
+    const url = `${this.apiUrl}/deleteRole/${idUser}/${roleName}`;
+    const body = {};
+    return this.http.post<void>(url, body).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
+
   addRole(idUser: number, roleName: string){
     const url = `${this.apiUrl}/addRole/${idUser}/${roleName}`;
     const body = {};

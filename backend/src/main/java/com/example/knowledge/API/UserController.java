@@ -62,6 +62,32 @@ public class UserController {
         }
     }
 
+    @PostMapping("deleteRole/{idUser}/{roleName}")
+    private ResponseEntity<Void> deleteRole(
+            @PathVariable Long idUser,
+            @PathVariable String roleName
+    ){
+
+        log.info("Controller add Role: idUser: {}, role: {}", idUser, roleName);
+        try {
+            if (StringUtils.isEmpty(roleName)) {
+                log.error("Controller: Role name is empty");
+                return ResponseEntity.badRequest().build();
+            }
+
+            userService.removeRole(idUser, roleName);
+            return ResponseEntity.ok().build();
+
+        } catch (IllegalArgumentException ex) {
+            log.error("Invalid input: {}", ex.getMessage());
+            return ResponseEntity.badRequest().build();
+
+        } catch (Exception ex) {
+            log.error("Internal Server Error: {}", ex.getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("/changeNameAndSurname/{firstName}/{lastName}")
     private ResponseEntity<UserDto> changeFirstNameandLastName(
             @PathVariable Long idUser,
