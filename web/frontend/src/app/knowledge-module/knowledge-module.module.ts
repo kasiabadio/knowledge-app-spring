@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { KnowledgeDetailComponent } from './knowledge-detail/knowledge-detail.component';
 import { KnowledgeFormComponent } from './knowledge-form/knowledge-form.component';
 import { KnowledgeListComponent } from './knowledge-list/knowledge-list.component';
-import { PrivateKnowledgeListComponent } from './private-knowledge-list/private-knowledge-list.component';
 
 import { KnowledgeService } from '../services/knowledge.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -35,7 +34,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     KnowledgeDetailComponent,
     KnowledgeListComponent,
     KnowledgeFormComponent,
-    PrivateKnowledgeListComponent
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -43,7 +41,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     KnowledgeDetailComponent,
     KnowledgeListComponent,
     KnowledgeFormComponent,
-    PrivateKnowledgeListComponent
     ],
   providers: [KnowledgeService],
   bootstrap: []

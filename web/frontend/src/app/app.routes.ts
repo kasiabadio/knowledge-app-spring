@@ -3,7 +3,6 @@ import { Routes } from '@angular/router';
 import { KnowledgeFormComponent } from './knowledge-module/knowledge-form/knowledge-form.component';
 import { KnowledgeDetailComponent } from './knowledge-module/knowledge-detail/knowledge-detail.component';
 import { KnowledgeListComponent } from './knowledge-module/knowledge-list/knowledge-list.component';
-import { PrivateKnowledgeListComponent } from './knowledge-module/private-knowledge-list/private-knowledge-list.component';
 import { CategoryListComponent } from './category-module/category-list/category-list.component';
 import { RegisterComponent } from './login-module/register/register.component';
 import { LoginComponent } from './login-module/login/login.component';
@@ -12,6 +11,7 @@ import { PasswordResetComponent } from './login-module/password-reset/password-r
 import { HomeDetailComponent } from './home-module/home-detail/home-detail.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AdminDetailComponent } from './admin-module/admin-detail/admin-detail.component';
+import { UserDetailComponent } from './user-module/user-detail/user-detail.component';
 
 export const routes: Routes = [
 
@@ -21,8 +21,8 @@ export const routes: Routes = [
       component: MainLayoutComponent,
       children: [
          { path: 'home', component: HomeDetailComponent },
-         { path: 'private-knowledge', component: PrivateKnowledgeListComponent },
           { path: 'admin-panel', component: AdminDetailComponent },
+          { path: 'user-panel', component: UserDetailComponent },
           { path: 'knowledge/form', component: KnowledgeFormComponent },
           { path: 'knowledge', component: KnowledgeListComponent },
           { path: 'knowledge/detail/:id', component: KnowledgeDetailComponent },

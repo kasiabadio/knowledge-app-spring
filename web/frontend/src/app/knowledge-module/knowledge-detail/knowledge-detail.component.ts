@@ -139,8 +139,9 @@ export class KnowledgeDetailComponent implements OnInit {
     console.log("this.currentUserId: " + this.currentUserId);
 
     if (
-      this.serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
-      this.currentAuthorId === this.currentUserId
+      (this.serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
+      this.currentAuthorId === this.currentUserId) ||
+      this.serviceToken?.currentUser?.authorities?.includes('ADMIN')
     ) {
       this.canDelete = true;
     }

@@ -17,6 +17,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -67,11 +68,22 @@ public class UserService {
         }
     }
 
+    @Transactional
     public UserDto changeFirstNameandLastName(Long idUser, String firstName, String lastName){
-        User user = userRepository.changeFirstName(idUser, firstName);
-        User user2 = userRepository.changeLastName(idUser, lastName);
-        UserMapper um = new UserMapper();
-        return UserMapper.mapToUserDto(user2);
+        log.info("Service: Updating user ID: {}, First Name: {}, Last Name: {}", idUser, firstName, lastName);
+
+        // Update first name
+        int firstNameUpdateCount = userRepository.changeFirstName(idUser, firstName);
+        log.info("Service: Updated first name. Rows affected: {}", firstNameUpdateCount);
+
+        // Update last name
+        int lastNameUpdateCount = userRepository.changeLastName(idUser, lastName);
+        log.info("Service: Updated last name. Rows affected: {}", lastNameUpdateCount);
+
+        // Fetch and return the updated user
+        User updatedUser = userRepository.findById(Math.toIntExact(idUser))
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + idUser));
+        return UserMapper.mapToUserDto(updatedUser);
     }
 
     public List<User> getUsersNotAdmins(){

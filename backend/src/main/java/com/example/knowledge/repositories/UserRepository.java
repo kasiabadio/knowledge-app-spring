@@ -15,6 +15,7 @@ package com.example.knowledge.repositories;
 
 import com.example.knowledge.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -46,10 +47,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "WHERE r.idRole = 3")
     List<User> getAuthors();
 
+    @Modifying
     @Query("UPDATE User SET firstName = :firstName WHERE idUser = :idUser")
-    User changeFirstName(@Param("idUser") Long idUser, @Param("firstName") String firstName);
+    int changeFirstName(@Param("idUser") Long idUser, @Param("firstName") String firstName);
 
+    @Modifying
     @Query("UPDATE User SET lastName = :lastName WHERE idUser = :idUser")
-    User changeLastName(@Param("idUser") Long idUser, @Param("lastName") String lastName);
+    int changeLastName(@Param("idUser") Long idUser, @Param("lastName") String lastName);
 
 }

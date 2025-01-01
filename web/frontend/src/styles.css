@@ -49,6 +49,14 @@ body {
   background: url('./assets/login.png');
 }
 
+.book-home {
+  background: url('./assets/book.jpg') no-repeat center center;
+    background-size: cover;
+    width: 300px;
+    height: 400px;
+    border-radius: 15px;
+}
+
 .buttonSubmit {
   width: 200px;
   border-radius: 10px;

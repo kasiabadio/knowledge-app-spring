@@ -35,8 +35,8 @@ export class UserService {
     }
 
 
-  changeFirstNameandLastName(firstName: string, lastName: string){
-    const url = `${this.apiUrl}/changeNameAndSurname/${firstName}/${lastName}`;
+  changeFirstNameandLastName(idUser: number, firstName: string, lastName: string){
+    const url = `${this.apiUrl}/changeNameAndSurname/${idUser}/${firstName}/${lastName}`;
     const body = {};
     return this.http.put<UserDto>(url, body).pipe(catchError(this.errorHandlingService.handleError));
     }

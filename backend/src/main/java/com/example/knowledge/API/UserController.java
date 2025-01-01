@@ -88,7 +88,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/changeNameAndSurname/{firstName}/{lastName}")
+    @PutMapping("/changeNameAndSurname/{idUser}/{firstName}/{lastName}")
     private ResponseEntity<UserDto> changeFirstNameandLastName(
             @PathVariable Long idUser,
             @PathVariable String firstName,
@@ -97,6 +97,7 @@ public class UserController {
             log.error("Controller: First name is empty or last name is empty");
             return null;
         }
+        log.info("Controller: Setting new name : {} {}", firstName, lastName);
         return ResponseEntity.status(HttpStatus.OK).body(userService.changeFirstNameandLastName(idUser, firstName, lastName));
     }
 

@@ -1,0 +1,58 @@
+.user-info {
+  margin: 5px;
+  padding: 2px;
+}
+
+.roles-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.role-info {
+  margin: 2px 0;
+}
+
+h4 {
+  margin-bottom: 16px;
+}
+
+h3 {
+  margin-bottom: 24px;
+}
+
+button {
+    background-color: #ffbd59;
+    width: 200px;
+    border: none;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+}
+
+button:hover {
+  background-color: #ed9107;
+  transform: scale(1.05);
+}
+
+.content-change-user {
+   position: relative;
+    width: 500px;
+    height: 300px;;
+    overflow-y: auto;
+    margin: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}

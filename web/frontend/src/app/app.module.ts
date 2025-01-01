@@ -9,6 +9,7 @@ import { KnowledgeModuleModule } from './knowledge-module/knowledge-module.modul
 import { CategoryModuleModule } from './category-module/category-module.module';
 import { AdminModuleModule } from './admin-module/admin-module.module';
 import { HomeModuleModule } from './home-module/home-module.module';
+import { UserModuleModule } from './user-module/user-module.module';
 
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
@@ -25,6 +26,7 @@ import { routes } from './app.routes';
     CategoryModuleModule,
     AdminModuleModule,
     HomeModuleModule,
+    UserModuleModule,
     RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
   ],
   providers: [],
