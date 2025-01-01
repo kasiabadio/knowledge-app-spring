@@ -26,7 +26,7 @@ public class RoleController {
                                                @PathVariable Long roleId){
         log.info("Trying adding role: id user: {}, id role: {}", userId, roleId);
         try {
-            us.createRoleForUser(userId, roleId);
+            us.createRoleForUser(Math.toIntExact(userId), Math.toIntExact(roleId));
             log.info("Controller: Adding new UserRole entry: id user: {} id role: {}", userId, roleId);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e){

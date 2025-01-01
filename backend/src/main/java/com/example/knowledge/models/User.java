@@ -158,6 +158,5 @@ public class User implements UserDetails, Principal {
             roles.remove(role);
             role.getUsers().remove(this);
         }
-
     }
 }

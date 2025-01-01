@@ -26,7 +26,8 @@ import java.util.Optional;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
-    Optional<Role> findByName(String name);
+    @Query("SELECT r FROM Role r WHERE LOWER(r.name) = LOWER(:name)")
+    Optional<Role> findByName(@Param("name") String name);
 
 
 }

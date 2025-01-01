@@ -21,8 +21,15 @@ export class UserService {
     ) { }
 
 
+  addRole(idUser: number, roleName: string){
+    const url = `${this.apiUrl}/addRole/${idUser}/${roleName}`;
+    const body = {};
+    return this.http.post<void>(url, body).pipe(catchError(this.errorHandlingService.handleError));
+    }
+
+
   changeFirstNameandLastName(firstName: string, lastName: string){
-    const url = `${this.apiUrl}/changeNameAndSurname/{firstName}/{lastName}`;
+    const url = `${this.apiUrl}/changeNameAndSurname/${firstName}/${lastName}`;
     const body = {};
     return this.http.put<UserDto>(url, body).pipe(catchError(this.errorHandlingService.handleError));
     }

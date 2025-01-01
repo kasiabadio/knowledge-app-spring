@@ -20,6 +20,12 @@ import { User } from '../../models/user';
 })
 export class AdminDetailComponent implements OnInit {
      users: User[] = [];
+     currentUser: User | null = null;
+     actions: string[] = ["ADD", "REMOVE"];
+     permissions: string[] = ["AUTHOR", "ADMIN"];
+     selectedAction: string = "ADD";
+     selectedPermission: string = "AUTHOR";
+
 
      constructor(
        private userService: UserService
@@ -29,10 +35,17 @@ export class AdminDetailComponent implements OnInit {
        this.provideUserDetails();
        }
 
+
      provideUserDetails(){
        this.userService.getUsersNotAdmins().subscribe({
          next: (data: any[]) => {
            this.users = data;
+
+           this.users = data.map((user) => ({
+                     ...user,
+                     selectedAction: 'ADD',
+                     selectedPermission: 'AUTHOR',
+                   }));
            },
          error: (err) => {
              console.error("Error while fetching users: ", err);
@@ -49,5 +62,44 @@ export class AdminDetailComponent implements OnInit {
          });
 
        }
+
+     changePermissions(user: any){
+       console.log("Change permissions");
+       this.currentUser = user;
+       console.log('Current User:', this.currentUser);
+       console.log('Selected Action:', user.selectedAction);
+       console.log('Selected Permission:', user.selectedPermission);
+
+        if (this.currentUser?.idUser === undefined ||
+          this.currentUser?.selectedPermission === undefined ||
+          this.currentUser?.selectedAction === undefined) {
+            console.error('idUser or selectedPermission or selectedAction is undefined');
+            return;
+          }
+
+        if (this.currentUser?.selectedAction === 'ADD'){
+
+          this.userService.addRole(this.currentUser?.idUser, this.currentUser?.selectedPermission).subscribe({
+             next: () => {
+               this.provideUserDetails();
+               },
+             error: (err) => {
+                  console.error("Error while fetching users: ", err);
+                  if (err.status) {
+                    console.error(`HTTP Status: ${err.status}`);
+                  }
+                  if (err.error) {
+                    console.error('Backend Error Response:', err.error);
+                  }
+                  if (err.message) {
+                    console.error('Error Message:', err.message);
+                  }
+               }
+             });
+           }
+
+        }
+
+
 
 }

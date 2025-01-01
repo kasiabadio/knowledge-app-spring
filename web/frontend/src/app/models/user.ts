@@ -12,4 +12,6 @@ export interface User {
   roles: any[],
   comments: any[],
   knowledges: any[]
+  selectedAction?: string;
+  selectedPermission?: string;
   }

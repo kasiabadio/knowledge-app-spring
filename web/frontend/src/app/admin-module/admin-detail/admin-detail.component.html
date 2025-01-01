@@ -15,7 +15,20 @@
         <ul class="roles-list">
           <li *ngFor="let role of user.roles" class="role-info">{{ role.name }}</li>
         </ul>
+        <p class="user-info">
+          <select [(ngModel)]="user.selectedAction">
+            <option *ngFor="let action of actions" [ngValue]="action">{{ action }}</option>
+          </select>
+          <span>&nbsp; permission &nbsp;</span>
+          <select [(ngModel)]="user.selectedPermission">
+            <option *ngFor="let permission of permissions" [ngValue]="permission">{{ permission }}</option>
+          </select>
+          <span>&nbsp; for user {{ user.firstName + " " + user.lastName }} &nbsp;</span>
+          <button type="submit" (click)="changePermissions(user)">change permissions</button>
+        </p>
+
       </li>
     </ul>
+
   </div>
 </div>

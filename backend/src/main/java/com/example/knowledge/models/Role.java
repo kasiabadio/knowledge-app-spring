@@ -51,4 +51,12 @@ public class Role {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
+    public void addUser(User user){
+        users.add(user);
+    }
+
+    public void removeUser(User user){
+        users.remove(user);
+    }
+
 }

@@ -35,6 +35,22 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
+    public void addRole(Long idUser, String roleName){
+        String roleNameNew = roleName.trim();
+
+        User user = userRepository.getUserById(idUser)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + idUser + " does not exist"));
+
+        if (roleNameNew.equals("USER")) {
+            this.createRoleForUser(user.getIdUser(), 1);
+        } else if (roleNameNew.equals("ADMIN")) {
+            this.createRoleForUser(user.getIdUser(), 2);
+        } else if (roleNameNew.equals("AUTHOR")) {
+            this.createRoleForUser( user.getIdUser(), 3);
+        }
+
+    }
+
     public UserDto changeFirstNameandLastName(Long idUser, String firstName, String lastName){
         User user = userRepository.changeFirstName(idUser, firstName);
         User user2 = userRepository.changeLastName(idUser, lastName);
@@ -50,9 +66,9 @@ public class UserService {
         return userRepository.getAuthors();
     }
 
-    public void createRoleForUser(Long userId, Long roleId){
+    public void createRoleForUser(Integer userId, Integer roleId){
         try {
-            Optional<User> user = getUserById(userId);
+            Optional<User> user = getUserById(Long.valueOf(userId));
             if (user.isPresent()){
                 User user2 = user.get();
                 Optional<Role> role = roleRepository.findById(Math.toIntExact(roleId));
@@ -102,7 +118,7 @@ public class UserService {
 
     public Optional<User> getUserById(Long id){
         try {
-            log.info("Service: Gettin user by id: {}", id);
+            log.info("Service: Getting user by id: {}", id);
             return userRepository
                     .getUserById(id);
         } catch (EntityNotFoundException e){
