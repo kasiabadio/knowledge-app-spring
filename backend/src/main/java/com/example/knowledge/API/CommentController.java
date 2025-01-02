@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequestMapping("/api/comments")
 @CrossOrigin(origins = { CorsConfiguration.LOCALHOST_ORIGIN })
@@ -23,6 +25,12 @@ public class CommentController {
         this.cs = cs;
     }
 
+
+    @GetMapping("allCommentsForUser/{idUser}")
+    public ResponseEntity<List<Comment>> allCommentsForUser(@PathVariable Long idUser){
+        log.info("Controller: Getting Comment for user: {}", idUser);
+        return ResponseEntity.status(HttpStatus.OK).body(cs.allCommentsForUser(idUser));
+    }
 
     @DeleteMapping("delete/{idUser}/{idKnowledge}/{idComment}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long idUser, @PathVariable Long idKnowledge, @PathVariable Long idComment){

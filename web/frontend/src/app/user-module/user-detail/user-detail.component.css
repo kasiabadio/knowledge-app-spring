@@ -56,3 +56,38 @@ button:hover {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 5;
 }
+
+.user-item {
+  width: 1200px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px;
+  margin: 5px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+.comments-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.comments-table th,
+.comments-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.comments-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.comments-table tr:hover {
+  background-color: #f5b87a;
+}
+

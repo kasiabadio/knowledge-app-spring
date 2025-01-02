@@ -25,7 +25,7 @@ public class Comment {
     @JoinColumn(name = "id_user")
     User user;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_knowledge")
     Knowledge knowledge;

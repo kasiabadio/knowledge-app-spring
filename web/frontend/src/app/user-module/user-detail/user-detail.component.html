@@ -46,11 +46,32 @@
         </div>
       </div>
 
-      <!-- Submit button -->
       <button type="submit" class="button buttonSubmit">
         Update Name and Surname
       </button>
     </form>
+  </div>
+
+  <div class="content">
+    <p>My comments</p>
+    <table class="comments-table">
+      <thead>
+      <tr>
+        <th>Knowledge Title</th>
+        <th>Knowledge Content</th>
+        <th>Comment Created Time</th>
+        <th>Comment Content</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let comment of comments" (click)="navigateToKnowledge(comment.knowledge?.idKnowledge)">
+        <td>{{ comment.knowledge?.title || 'No title available' }}</td>
+        <td>{{ getFirstWords(comment.knowledge?.content || 'No content available', 20) }}</td>
+        <td>{{ comment.createdDate || 'No date available' }}</td>
+        <td>{{ comment.content || 'No comment content available' }}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 
 </div>

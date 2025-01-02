@@ -37,6 +37,10 @@ public class CommentService {
         this.cr = cr;
     }
 
+    public List<Comment> allCommentsForUser(Long idUser){
+        return cr.allCommentsForUser(idUser);
+    }
+
     public void deleteAllCommentsForAKnowledge(Long idKnowledge){
         Knowledge knowledge = kr.findById(idKnowledge)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid knowledge ID"));

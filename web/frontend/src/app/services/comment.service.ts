@@ -17,6 +17,11 @@ export class CommentService {
     private errorHandlingService: ErrorHandlingService
     ) { }
 
+    allCommentsForUser(idUser: number){
+      const url = `${this.apiUrl}/allCommentsForUser/${idUser}`;
+      return this.http.get<Comment[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+      }
+
     deleteComment(idUser: number, idKnowledge: number, idComment: number){
       const url = `${this.apiUrl}/delete/${idUser}/${idKnowledge}/${idComment}`;
       return this.http.delete<void>(url).pipe(catchError(this.errorHandlingService.handleError));
