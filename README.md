@@ -1,5 +1,6 @@
 ## Table of contents
 
+* Result
 * General info
 * System architecture
 * Use case diagrams
@@ -7,6 +8,10 @@
 * Sequence diagrams
 * Technologies
 * Sources
+
+## Result
+
+[![Watch the video](https://img.youtube.com/vi/BZFnjElqAxI/maxresdefault.jpg](https://www.youtube.com/watch?v=BZFnjElqAxI)
 
 ## General info
 
