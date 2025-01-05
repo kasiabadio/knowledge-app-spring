@@ -27,10 +27,9 @@ import { routes } from './app.routes';
     AdminModuleModule,
     HomeModuleModule,
     UserModuleModule,
-    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
+    RouterModule.forRoot(routes, { useHash: true }),
   ],
   providers: [],
-  bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

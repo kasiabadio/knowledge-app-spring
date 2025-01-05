@@ -46,6 +46,17 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
+                                        "/index.html",
+                                        "/",
+                                        "/**/*.js", // Allow JS files
+                                        "/**/*.css", // Allow CSS files
+                                        "/**/*.png", // Allow static resources
+                                        "/**/*.jpg",
+                                        "/**/*.html",
+                                        "/**/*.ico",
+                                        "/**/*.woff2",
+                                        "/**/*.woff",
+                                        "/**/*.ttf",
                                         "/auth/**",
                                         "/api/auth/**",
                                         "/password-reset",
