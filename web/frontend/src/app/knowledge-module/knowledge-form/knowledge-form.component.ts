@@ -47,7 +47,6 @@ export class KnowledgeFormComponent implements OnInit {
            if (this.currentUser) {
                this.userService.getUserIdByEmail(this.currentUser.email).subscribe({
                  next: (id) => {
-                   console.log("Fetched user, id:", id);
                    this.knowledgeForm.patchValue({ userId: id });
                    }
                  })
@@ -57,7 +56,6 @@ export class KnowledgeFormComponent implements OnInit {
 
          this.categoryService.getCategories().subscribe({
              next: (categories) => {
-                 console.log("Fetched categories:", categories);
                  this.categories = categories;
              },
              error: (err) => {
@@ -70,9 +68,7 @@ export class KnowledgeFormComponent implements OnInit {
     onSubmit(): void {
 
       if (this.knowledgeForm.valid){
-        console.log('Submitting Knowledge Form...');
         console.table(this.knowledgeForm.value);
-        console.log("Selected categories: "+ this.selectedCategories);
           this.serviceKnowledge.createKnowledge(this.knowledgeForm.value, this.selectedCategories).subscribe({
             next: ()=>{
               this.router.navigate(['knowledge']);

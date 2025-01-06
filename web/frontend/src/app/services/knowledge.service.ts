@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {HttpClientModule, HttpClient, HttpHeaders} from '@angular/common/http';
 import { Knowledge } from '../models/knowledge';
 import { Category } from '../models/category';
 import { KnowledgeDto } from '../models/knowledge-dto';
@@ -9,6 +9,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
 import { ErrorHandlingService } from './error-handling.service';
 import { HttpParams } from '@angular/common/http';
+import {TokenService} from "../token/token.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,20 @@ export class KnowledgeService {
   private apiUrl = environment.apiUrlKnowledge;
   constructor(
     private http: HttpClient,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private tokenService: TokenService
     ) { }
 
+  private getHeaders(): HttpHeaders {
+    const token = this.tokenService.token;
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
   // --------------- PRIVATE KNOWLEDGE --------------
+
+
 
   getAllPrivateKnowledge(idUser: number): Observable<Knowledge[]>{
     const url = `${this.apiUrl}/allPrivateForUser/${idUser}`;
@@ -75,18 +86,21 @@ export class KnowledgeService {
   createKnowledge(knowledge: KnowledgeDto, categories: string[]): Observable<Knowledge> {
       const url = `${this.apiUrl}/add`
       let params = new HttpParams().set('categories', categories.join(','));
-      return this.http.post<any>(url, knowledge, { params }).pipe(catchError(this.errorHandlingService.handleError));
+      const headers = this.getHeaders();
+      return this.http.post<any>(url, knowledge, { params, headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   updateKnowledge(knowledge: KnowledgeDto, idKnowledge: number, categories: string[]): Observable<Knowledge>{
     const url = `${this.apiUrl}/update/${idKnowledge}`;
     let params = new HttpParams().set('categories', categories.join(','));
-    return this.http.put<any>(url, knowledge, { params }).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.put<any>(url, knowledge, { params, headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   deleteKnowledge(id: number): Observable<void>{
     const url = `${this.apiUrl}/delete/${id}`;
-    return this.http.delete<void>(url).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.delete<void>(url, { headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
 }

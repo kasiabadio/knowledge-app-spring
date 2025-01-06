@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
+import {TokenService} from "../../token/token.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-detail',
@@ -28,11 +30,18 @@ export class AdminDetailComponent implements OnInit {
 
 
      constructor(
-       private userService: UserService
+       private userService: UserService,
+       private tokenService: TokenService,
+       private router: Router
        ){}
 
      ngOnInit(){
-       this.provideUserDetails();
+       let email = this.tokenService.currentUser?.email;
+       if (email === undefined){
+         this.router.navigate(["knowledge"]);
+       } else {
+         this.provideUserDetails();
+       }
        }
 
 
@@ -64,11 +73,7 @@ export class AdminDetailComponent implements OnInit {
        }
 
      changePermissions(user: any){
-       console.log("Change permissions");
        this.currentUser = user;
-       console.log('Current User:', this.currentUser);
-       console.log('Selected Action:', user.selectedAction);
-       console.log('Selected Permission:', user.selectedPermission);
 
         if (this.currentUser?.idUser === undefined ||
           this.currentUser?.selectedPermission === undefined ||

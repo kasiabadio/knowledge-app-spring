@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {HttpClientModule, HttpClient, HttpHeaders} from '@angular/common/http';
 import { UserDto } from '../models/user-dto';
 import { User } from '../models/user';
 
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
 import { ErrorHandlingService } from './error-handling.service';
+import {TokenService} from "../token/token.service";
 
 
 @Injectable({
@@ -17,33 +18,46 @@ export class UserService {
   private apiUrl: string = environment.apiUrlUsers;
   constructor(
     private http: HttpClient,
-    private errorHandlingService: ErrorHandlingService
-    ) { }
+    private errorHandlingService: ErrorHandlingService,
+    private tokenService: TokenService
+  ) { }
+
+
+  private getHeaders(): HttpHeaders {
+    const token = this.tokenService.token;
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
 
    deleteRole(idUser: number, roleName: string){
     const url = `${this.apiUrl}/deleteRole/${idUser}/${roleName}`;
     const body = {};
-    return this.http.post<void>(url, body).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.post<void>(url, body, { headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
 
   addRole(idUser: number, roleName: string){
     const url = `${this.apiUrl}/addRole/${idUser}/${roleName}`;
     const body = {};
-    return this.http.post<void>(url, body).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.post<void>(url, body, { headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
 
   changeFirstNameandLastName(idUser: number, firstName: string, lastName: string){
     const url = `${this.apiUrl}/changeNameAndSurname/${idUser}/${firstName}/${lastName}`;
     const body = {};
-    return this.http.put<UserDto>(url, body).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.put<UserDto>(url, body, { headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   getUsersNotAdmins(){
     const url = `${this.apiUrl}/all`;
-    return this.http.get<User[]>(url).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.get<User[]>(url, { headers }).pipe(catchError(this.errorHandlingService.handleError));
     }
 
   getUserIdByEmail(email: string){

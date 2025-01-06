@@ -37,7 +37,12 @@ export class UserDetailComponent implements OnInit {
       }
 
     ngOnInit(){
-      this.getUser();
+      let email = this.tokenService.currentUser?.email;
+      if (email === undefined){
+        this.router.navigate(["knowledge"]);
+      } else {
+        this.getUser();
+      }
     }
 
     getUser(){

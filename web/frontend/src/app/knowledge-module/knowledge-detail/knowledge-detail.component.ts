@@ -94,8 +94,6 @@ export class KnowledgeDetailComponent implements OnInit {
             this.cd.detectChanges();
             this.getCurrentUserId().pipe(combineLatestWith(this.getCurrentAuthorId())).subscribe({
               next: () => {
-                console.log("User id: " + this.currentUserId);
-
                 this.initializeDetails();
                 }
               })
@@ -135,8 +133,6 @@ export class KnowledgeDetailComponent implements OnInit {
   }
 
   updatePermissions() {
-    console.log("this.currentAuthorId: " + this.currentAuthorId);
-    console.log("this.currentUserId: " + this.currentUserId);
 
     if (
       (this.serviceToken?.currentUser?.authorities?.includes('AUTHOR') &&
@@ -176,7 +172,6 @@ export class KnowledgeDetailComponent implements OnInit {
         this.currentUserId = data;
       }),
       catchError((err) => {
-        console.error('Error fetching user ID:', err);
         return new Observable<number>((observer) => {
           observer.next(-1);
           observer.complete();
@@ -188,7 +183,6 @@ export class KnowledgeDetailComponent implements OnInit {
   getCurrentAuthorId(): Observable<number> {
     const knowledgeId = this.knowledge?.idKnowledge;
     if (knowledgeId === undefined) {
-      console.warn('Knowledge ID is undefined');
       return new Observable<number>((observer) => {
         observer.next(-1);
         observer.complete();
@@ -199,7 +193,6 @@ export class KnowledgeDetailComponent implements OnInit {
         this.currentAuthorId = data;
       }),
       catchError((err) => {
-        console.error('Error fetching author ID:', err);
         return new Observable<number>((observer) => {
           observer.next(-1);
           observer.complete();
@@ -288,7 +281,6 @@ export class KnowledgeDetailComponent implements OnInit {
       this.selectedCategoryIds = this.selectedCategoryIds.filter((id) => id !== category.idCategory);
     }
 
-    console.log('Selected category IDs:', this.selectedCategoryIds);
   }
 
   isSelected(category: Category): boolean {
@@ -322,7 +314,6 @@ export class KnowledgeDetailComponent implements OnInit {
 
 
   deleteComment(groupId: number, idUser: number){
-    console.log("Delete comment");
     const idKnowledge = this.knowledge?.idKnowledge ?? 0;
     this.serviceComments.deleteComment(idUser, idKnowledge, groupId).subscribe({
       next: () => {
@@ -341,10 +332,7 @@ export class KnowledgeDetailComponent implements OnInit {
         if (!content.trim()) {
           console.error('Content is undefined or empty');
           return;
-        } else {
-          console.log("Content of the comment: " + content);
         }
-
         const userId = this.currentUserId !== -1 ? this.currentUserId : 3; // Use default ID for anonymous
 
         this.serviceComments.createComment(

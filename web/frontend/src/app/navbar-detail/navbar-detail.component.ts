@@ -15,7 +15,6 @@ export class NavbarDetailComponent implements OnInit {
 
     constructor (public tokenService: TokenService) {}
     ngOnInit () {
-        console.log("AUTHORITIES: " + this.tokenService.currentUser?.authorities);
 
       }
 }

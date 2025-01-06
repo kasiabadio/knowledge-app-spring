@@ -5,7 +5,8 @@ import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category';
 import { CategoryDto } from '../models/category-dto';
-import { HttpClientModule, HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClientModule, HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
+import {TokenService} from "../token/token.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,17 @@ export class CategoryService {
   private apiUrl = environment.apiUrlCategories;
   constructor(
     private http: HttpClient,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private tokenService: TokenService
     ) { }
 
+
+  private getHeaders(): HttpHeaders {
+    const token = this.tokenService.token;
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   getCategories(): Observable<Category[]>{
     const url = `${this.apiUrl}/all`;
@@ -28,11 +37,9 @@ export class CategoryService {
     let params = new HttpParams();
     if (id){
       params = params.set('id', id.toString());
-      console.log("Service: id: " + id.toString());
       }
     if (categoryName){
       params = params.set('categoryName', categoryName);
-      console.log("Service: categoryName: " + categoryName);
       }
 
     return this.http.get<Category>(this.apiUrl, {params}).pipe(catchError(this.errorHandlingService.handleError));
@@ -45,11 +52,13 @@ export class CategoryService {
 
   createCategory(category: CategoryDto): Observable<Category>{
      const url = `${this.apiUrl}/add`;
-    return this.http.post<Category>(url, category).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.post<Category>(url, category, { headers }).pipe(catchError(this.errorHandlingService.handleError));
   }
 
   deleteCategory(categoryName: string): Observable<void>{
     const url = `${this.apiUrl}/delete/${categoryName}`;
-    return this.http.delete<void>(url).pipe(catchError(this.errorHandlingService.handleError));
+    const headers = this.getHeaders();
+    return this.http.delete<void>(url, { headers }).pipe(catchError(this.errorHandlingService.handleError));
   }
 }

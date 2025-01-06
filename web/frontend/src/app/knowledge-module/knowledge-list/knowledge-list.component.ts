@@ -54,7 +54,6 @@ export class KnowledgeListComponent implements OnInit {
 
   ngOnInit(){
         this.token = this.tokenService.token;
-        console.log("Knowledge list public initialized");
         this.loadCategories();
         this.loadKnowledgeFromAuthors();
         this.loadKnowledge();
@@ -63,7 +62,6 @@ export class KnowledgeListComponent implements OnInit {
   loadKnowledge() {
     this.service.getKnowledge().subscribe({
       next: (data: any[]) => {
-        console.log('Fetched Knowledge:', data);
         this.knowledge = data;
       },
       error: (err) => {
@@ -107,7 +105,6 @@ export class KnowledgeListComponent implements OnInit {
   loadKnowledgeFromCategories(){
     this.knowledge = []
     for (let i = 0; i < this.selectedCategories.length; i++){
-      console.log("Selected category: " + this.selectedCategories[i].categoryName);
       this.categoryKnowledgeGroupService.getAllKnowledgesFromCategory(this.selectedCategories[i].categoryName).subscribe({
         next: (data: Knowledge[]) => {
            this.knowledge = this.removeDuplicates([...this.knowledge, ...data]);
@@ -154,7 +151,6 @@ export class KnowledgeListComponent implements OnInit {
 
   selectKnowledge(knowledge: Knowledge){
       this.selectedKnowledge = knowledge;
-      console.log("Navigate to: " + knowledge.idKnowledge);
       this.router.navigate(['knowledge/detail', knowledge.idKnowledge]);
     }
 

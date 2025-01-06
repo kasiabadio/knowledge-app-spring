@@ -59,24 +59,48 @@ public class SecurityConfiguration {
                                         "/**/*.ttf",
                                         "/auth/**",
                                         "/api/auth/**",
+
                                         "/password-reset",
                                         "/register",
                                         "/activate-account",
-                                        "/api/knowledge/**",
-                                        "/api/roles/**",
+
+                                        "/api/comments/add/**",
+
                                         "/api/users/getUserIdByEmail/**",
                                         "/api/users/getUserByEmail/**",
                                         "/api/users/allAuthors",
+
+                                        "/api/knowledge/all",
+                                        "/api/knowledge/getAuthorEmail/**",
+                                        "/api/knowledge/getAllCategories/**",
+                                        "/api/knowledge/getAllKnowledges/**",
+                                        "/api/knowledge/getById/**",
+                                        "/api/knowledge/searchByPhrase/**",
+                                        "/api/knowledge/searchAllByPhrase/**",
+
+                                        "/api/roles/**",
+
                                         "/api/categories-knowledges/**",
-                                        "/api/comments/**",
-                                        "/api/categories/**",
-                                        "/api/users/all",
-                                        "/api/users/changeNameAndSurname/**",
-                                        "/api/users/addRole/**",
-                                        "/api/users/deleteRole/**"
+
+                                        "/api/categories/all",
+                                        "/api/categories",
+                                        "/api/categories/searchAll/*"
                                 ).permitAll()
                                 .requestMatchers(
-                                        "/api/users/**"
+                                        "/api/knowledge/add/**",
+                                        "/api/knowledge/update/**",
+                                        "/api/knowledge/delete/**",
+
+                                        "/api/users/deleteRole/**",
+                                        "/api/users/addRole/**",
+                                        "/api/users/changeNameAndSurname/**",
+                                        "/api/users/all",
+
+                                        "/api/comments/allCommentsForUser/**",
+                                        "/api/comments/delete/**",
+
+                                        "/api/categories/add/**",
+                                        "/api/categories/delete/**"
                                 )
                                 .authenticated()
                                 .anyRequest()
