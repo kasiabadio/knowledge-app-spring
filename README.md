@@ -1,5 +1,6 @@
 ## Table of contents
 
+* How to run the app with docker
 * Result
 * General info
 * System architecture
@@ -9,6 +10,18 @@
 * Technologies
 * Sources
 
+## How to run the app with docker
+
+* Install IntelliJ, Maven and docker
+* Run Clean & Package    
+![img.png](img.png)    
+* In the command line - this should build backend, frontend, db and maildev server:  
+docker-compose up --build  
+* To visit application, go to http://localhost:8099  
+* To visit maildev, go to http://localhost:1080, here you will have confirmation code for registration  
+* Default credentials for admin are:  
+email: admin@mail.com  
+password: Admin12#%  
 ## Result
 
 [![Watch the video](https://img.youtube.com/vi/BZFnjElqAxI/maxresdefault.jpg](https://www.youtube.com/watch?v=BZFnjElqAxI)
