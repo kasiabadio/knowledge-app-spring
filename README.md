@@ -22,6 +22,37 @@ docker-compose up --build
 * Default credentials for admin are:  
 email: admin@mail.com  
 password: Admin12#%  
+* If default credentials doesn't work (data.sql script doesn't execute), create user by the forms, then:
+- Open your postgres-db terminal in docker.desktop  
+![img_1.png](img_1.png)  
+- connect to the database  
+psql -U katarzyna -d mydb  
+- Add the three required roles manually  
+
+INSERT INTO role (created_date, last_modified_date, name) VALUES
+('2024-12-22 20:27:36.154666', '2024-12-22 20:27:36.154666', 'USER');
+
+
+INSERT INTO role (created_date, last_modified_date, name) VALUES
+('2024-12-22 20:27:36.154666', '2024-12-22 20:27:36.154666', 'ADMIN');
+
+ 
+INSERT INTO role (created_date, last_modified_date, name) VALUES
+('2024-12-22 20:27:36.154666', '2024-12-22 20:27:36.154666', 'AUTHOR');
+
+- Read your user id (your_user_id)
+
+SELECT * FROM _users;
+
+- Add the admin role for the user manually (enter value of your_user_id instead of placeholder) 
+
+INSERT INTO _user_roles (roles_id_role, users_id_user) VALUES (1, your_user_id);
+
+INSERT INTO _user_roles (roles_id_role, users_id_user) VALUES (2, your_user_id);
+
+INSERT INTO _user_roles (roles_id_role, users_id_user) VALUES (3, your_user_id);
+
+
 ## Result
 
 [![Watch the video](https://img.youtube.com/vi/BZFnjElqAxI/maxresdefault.jpg](https://www.youtube.com/watch?v=BZFnjElqAxI)
