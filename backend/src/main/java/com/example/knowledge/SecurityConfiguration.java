@@ -25,6 +25,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,23 +41,17 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix requirement
+    }
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
-                                        "/index.html",
-                                        "/",
-                                        "/**/*.js", // Allow JS files
-                                        "/**/*.css", // Allow CSS files
-                                        "/**/*.png", // Allow static resources
-                                        "/**/*.jpg",
-                                        "/**/*.html",
-                                        "/**/*.ico",
-                                        "/**/*.woff2",
-                                        "/**/*.woff",
-                                        "/**/*.ttf",
+
                                         "/auth/**",
                                         "/api/auth/**",
 
@@ -74,6 +69,7 @@ public class SecurityConfiguration {
                                         "/api/knowledge/getAuthorEmail/**",
                                         "/api/knowledge/getAllCategories/**",
                                         "/api/knowledge/getAllKnowledges/**",
+                                        "/api/knowledge/getAllComments/**",
                                         "/api/knowledge/getById/**",
                                         "/api/knowledge/searchByPhrase/**",
                                         "/api/knowledge/searchAllByPhrase/**",

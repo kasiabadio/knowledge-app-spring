@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: spring-boot-app
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/mydb
+      SPRING_DATASOURCE_USERNAME: katarzyna
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_MAIL_HOST: maildev
+      SPRING_MAIL_PORT: 1025
+    depends_on:
+      - database
+      - maildev
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+
+  front:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "8099:8099"
+
+  database:
+    image: postgres:15
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: katarzyna
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+
+
+volumes:
+  db-data:
